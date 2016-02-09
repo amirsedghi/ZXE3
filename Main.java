@@ -7,7 +7,7 @@
 		System.out.println("Hi guys! I am Armand and I love how shity my Dell laptop is. But seriously I love this guy! *** fuck it all!!! mmmmmmmmmmmmm”);
 >>>>>>> origin/master
 =======
-		System.out.println("Hi guys! I am Armand and I love how shity my Dell laptop is. But seriously I love this guy! *** fuck it all!!! mmmmmmmmmmmmm/////”);
+		System.out.println("Hi guys! I am Armand and I love how shity my Dell laptop is. But seriously I love this guy! *** fuck it all!!! mmmmmmmmmmmmm yeahh mannnnnn/////”);
 >>>>>>> origin/master
 	}
 }
