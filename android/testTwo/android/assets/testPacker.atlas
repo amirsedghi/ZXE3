@@ -1,0 +1,27 @@
+
+testPacker.png
+size: 512,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+green
+  rotate: false
+  xy: 2, 2
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: -1
+orange
+  rotate: false
+  xy: 94, 2
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: -1
+red
+  rotate: false
+  xy: 186, 2
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: -1
