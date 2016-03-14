@@ -70,6 +70,7 @@ public class GameScreen implements Screen {
 
         // rotate the cannon based on the location of the mouse
         Vector2 mousePointer = new Vector2();
+        //cc = new Polygon(new float[]{})
 
 
 
