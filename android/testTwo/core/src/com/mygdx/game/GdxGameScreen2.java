@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.MathUtils;
@@ -52,9 +53,19 @@ public class GdxGameScreen2 implements Screen {
     private long lastDropTime;
     private final MyGdxGame game;
 
+    // Score stuff
+    private int score;
+    BitmapFont scoreFont;
+    private String scoreText;
+
     public GdxGameScreen2(final MyGdxGame game){
         this.game = game;
         this.camera = game.camera;
+
+        // Score
+        score = 0;
+        scoreFont = new BitmapFont();
+        scoreText = "Score: 0";
 
         // load the image for the droplet and the buckt
         dropImage = new Texture(Gdx.files.internal("droplet.png"));
@@ -95,6 +106,8 @@ public class GdxGameScreen2 implements Screen {
         for (Rectangle raindrop: raindrops){
             game.batch.draw(dropImage, raindrop.x, raindrop.y);
         }
+        // Draw score
+        scoreFont.draw(game.batch, scoreText, 50,50);
         game.batch.end();
 
         // adding bucket movement based on touch
@@ -139,6 +152,8 @@ public class GdxGameScreen2 implements Screen {
             if(raindrop.overlaps(bucket)){
                 dropSound.play();
                 iter.remove();
+                score++;
+                scoreText = "Score: " + score;
             }
         }
 
