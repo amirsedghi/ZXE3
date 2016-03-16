@@ -25,62 +25,22 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class GameScreen implements Screen {
     final DD game;
 
-    Texture cannonImage;
-    OrthographicCamera camera;
-    Rectangle cannon;
-    Polygon cc;
+
+
+
 
 
 
     public GameScreen(final DD gam){
         this.game = gam;
 
-        // initializing variables
-        cannonImage = new Texture(Gdx.files.internal("cannonImage.png"));
 
-        // creating the camera and the SpriteBatch
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
-
-        // create a rectangle to represent the cannon
-        cannon = new Rectangle();
-        cannon.x = 800/2 - 120/2;
-        cannon.y = 20;
-
-        cannon.width = 120;
-        cannon.height = 108;
-
-        cc = new Polygon(new float[]{0,0,cannon.width,0,cannon.width,cannon.height,0,cannon.height});
-        cc.setOrigin(cannon.width/2, cannon.height/2);
     }
 
     public void render(float delta){
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // tell the camera to update its matrices
-        camera.update();
-
-        // tell the sprite batch to update in the
-        // coordinate system specified by the camera
-        game.batch.setProjectionMatrix(camera.combined);
-
-
-        // rotate the cannon based on the location of the mouse
-        Vector2 mouseVector = new Vector2(Gdx.input.getX()-cannon.width/2, Gdx.input.getY()-cannon.height/2);
-        //cc = new Polygon(new float[]{})
-        cc.setRotation(mouseVector.angle());
-
-        // begin a new batch and draw the cannon
-        game.batch.begin();
-        game.batch.draw(cannonImage, cannon.x, cannon.y);
-        game.batch.end();
-
-
-
-
-
-        System.out.println("This is the angle " + mouseVector.angle());
 
 
 
@@ -107,6 +67,6 @@ public class GameScreen implements Screen {
     }
 
     public void dispose(){
-        cannonImage.dispose();
+
     }
 }
