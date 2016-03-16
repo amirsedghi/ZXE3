@@ -49,6 +49,9 @@ public class GameScreen implements Screen {
 
         cannon.width = 120;
         cannon.height = 108;
+
+        cc = new Polygon(new float[]{0,0,cannon.width,0,cannon.width,cannon.height,0,cannon.height});
+        cc.setOrigin(cannon.width/2, cannon.height/2);
     }
 
     public void render(float delta){
@@ -62,20 +65,22 @@ public class GameScreen implements Screen {
         // coordinate system specified by the camera
         game.batch.setProjectionMatrix(camera.combined);
 
+
+        // rotate the cannon based on the location of the mouse
+        Vector2 mouseVector = new Vector2(Gdx.input.getX()-cannon.width/2, Gdx.input.getY()-cannon.height/2);
+        //cc = new Polygon(new float[]{})
+        cc.setRotation(mouseVector.angle());
+
         // begin a new batch and draw the cannon
         game.batch.begin();
         game.batch.draw(cannonImage, cannon.x, cannon.y);
         game.batch.end();
 
 
-        // rotate the cannon based on the location of the mouse
-        Vector2 mousePointer = new Vector2();
-        //cc = new Polygon(new float[]{})
 
 
 
-
-
+        System.out.println("This is the angle " + mouseVector.angle());
 
 
 
