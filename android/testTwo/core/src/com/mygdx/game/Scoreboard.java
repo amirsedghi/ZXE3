@@ -13,7 +13,7 @@ public interface Scoreboard {
     // Returns null if implementation is external
     ScoreField getScore(int index);
 
-    // Simple object for storing a scorefiled
+    // Simple object for storing a scorefield
     interface ScoreField{
         String getName();
         int getScoreNum();
