@@ -26,6 +26,16 @@ public class MyGdxGame extends Game {
 	public SpriteBatch batch;
 	public OrthographicCamera camera;
 
+	protected Scoreboard scoreboard;
+
+	// Constructors
+	public MyGdxGame(){
+		// Nothing
+	}
+	public MyGdxGame(Scoreboard scoreboard){
+		this.scoreboard = scoreboard;
+	}
+
 	public void create(){
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();

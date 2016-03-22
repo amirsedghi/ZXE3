@@ -55,8 +55,9 @@ public class GdxGameScreen2 implements Screen {
 
     // Score stuff
     private int score;
-    BitmapFont scoreFont;
+    private BitmapFont scoreFont;
     private String scoreText;
+    private int miss;
 
     public GdxGameScreen2(final MyGdxGame game){
         this.game = game;
@@ -66,6 +67,7 @@ public class GdxGameScreen2 implements Screen {
         score = 0;
         scoreFont = new BitmapFont();
         scoreText = "Score: 0";
+        miss = 0;
 
         // load the image for the droplet and the buckt
         dropImage = new Texture(Gdx.files.internal("droplet.png"));
@@ -146,9 +148,12 @@ public class GdxGameScreen2 implements Screen {
         while(iter.hasNext()){
             Rectangle raindrop = iter.next();
             raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
+            // Miss
             if(raindrop.y + 64 < 0){
                 iter.remove();
+                miss++;
             }
+            // Hit
             if(raindrop.overlaps(bucket)){
                 dropSound.play();
                 iter.remove();
@@ -156,8 +161,12 @@ public class GdxGameScreen2 implements Screen {
                 scoreText = "Score: " + score;
             }
         }
-
-
+        if (miss >= 3){
+            // Game over
+            game.scoreboard.submitScore("Foo Score", score);
+            game.setScreen(new MainMenu(game));
+            dispose();
+        }
     }
     @Override
     public void show(){
@@ -196,6 +205,6 @@ public class GdxGameScreen2 implements Screen {
         bucketImage.dispose();
         dropSound.dispose();
         rainMusic.dispose();
-        game.batch.dispose();
+        //game.batch.dispose();
     }
 }

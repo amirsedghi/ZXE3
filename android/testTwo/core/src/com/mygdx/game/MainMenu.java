@@ -29,10 +29,14 @@ public class MainMenu implements Screen {
     private TextureAtlas buttonAtlas;
     private Skin startButtonSkin;
 
+    // Scoreboard shenanigans
+    private String scoreName1;
+    private BitmapFont scoreFont;
+
     public MainMenu(final MyGdxGame game){
         this.game = game;
 
-        viewPort = new FitViewport(800,400,game.camera);
+        viewPort = new FitViewport(800,480,game.camera);
         stage = new Stage(viewPort, game.batch);
         Gdx.input.setInputProcessor(stage);
 
@@ -59,6 +63,15 @@ public class MainMenu implements Screen {
         });
 
         stage.addActor(startButton);
+
+        // set up scoreboard
+        // Basic for now
+        System.out.printf("Scores: \n");
+        for (int i = 0; i < 10; i++){
+            System.out.printf("%s %d\n", game.scoreboard.getScore(i).getName(),
+                    game.scoreboard.getScore(i).getScoreNum());
+        }
+        System.out.printf("\n");
     }
 
     public void render(float delta){
@@ -74,7 +87,7 @@ public class MainMenu implements Screen {
     }
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, false);
     }
     @Override
     public void hide() {

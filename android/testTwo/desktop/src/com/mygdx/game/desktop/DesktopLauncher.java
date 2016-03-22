@@ -10,6 +10,8 @@ public class DesktopLauncher {
 		config.title = "Drop";
 		config.width = 800;
 		config.height = 480;
-		new LwjglApplication(new MyGdxGame(), config);
+		// Platform specific stuff
+		DesktopScoreboardInsertionSort scoreboard = new DesktopScoreboardInsertionSort();
+		new LwjglApplication(new MyGdxGame(scoreboard), config);
 	}
 }
