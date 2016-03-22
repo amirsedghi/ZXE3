@@ -2,22 +2,19 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.mygdx.game.Enemy;
 import com.mygdx.game.GameConstants;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.InputProcessor;
@@ -28,14 +25,20 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.math.Vector2;
 
 public class MainGame extends Game implements InputProcessor {
+
+    // Variables:
     private SpriteBatch batch;
     private Sprite enemySprite;
     private OrthographicCamera camera;
-    public static Heliboy heliboy; // heliboy instance
-    static Texture enemyTexture;
+    private long lastSpawnTime;
+    public static Skeleton skeleton; // skeleton instance
+    public Texture enemyTexture;
+    public TextureRegion textureRegion;
     public static Texture backgroundTexture;
     public static Sprite backSprite;
-    static Array<Enemy> enemies; // array of enemies
+    private Array<Skeleton> skeletons; // array of enemies
+    TextureAtlas textureAtlas;
+    private int xcordSpawn, skeletonArraySize;
 
     // Declare music object
     private Music mirage;
@@ -56,10 +59,12 @@ public class MainGame extends Game implements InputProcessor {
         // center the camera at screenWidth/2, and screenHeight/2
         camera.setToOrtho(false, screenWidth, screenHeight);
 
+        textureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.skeletonSpriteSheet));
+        textureRegion = textureAtlas.findRegion("go", 1);
         enemyTexture =  new Texture(GameConstants.enemyImage);
-//        // Instantiate and initalize the heliboy class
-        heliboy = new Heliboy(screenWidth, screenHeight, enemyTexture);
-
+//        // Instantiate and initalize the skeleton class
+        skeletons = new Array<Skeleton>();
+        spawnSkeleton();
         // load background texture
         backgroundTexture = new Texture(GameConstants.backgroundImage);
         // set background sprite with texture
@@ -85,30 +90,48 @@ public class MainGame extends Game implements InputProcessor {
         mirage.play();
         mirage.setLooping(true);
 
-//        for(Enemy enemy : enemies)
-//            enemy.render(batch);
+
 
         // Spritebatch drawing must be made between the begin and end methods rendering the game objects:
         batch.begin();
         backSprite.draw(batch);
-        heliboy.update();
-        heliboy.render(batch);
+        for(Skeleton skeleton : skeletons)
+        {
+            skeleton.update();
+            skeleton.render(batch);
+        }
         batch.end();
+
+        // check how much time has passed since we spawned a new skeleton
+        if(TimeUtils.nanoTime() - lastSpawnTime > 1000000000){
+            spawnSkeleton();
+        }
     }
+
+        private void spawnSkeleton()
+    {   // instantiate new enemy and add it to the array
+            xcordSpawn = MathUtils.random((int)screenWidth);
+            skeleton = new Skeleton(screenWidth, screenHeight, textureRegion, xcordSpawn);
+            skeletons.add(skeleton);
+            lastSpawnTime = TimeUtils.nanoTime();
+    }
+
+        private void removeSkeleton() {
+        }
 
 //    public static void initEnemies()
 //    {
-//        enemies = new Array<Enemy>();
+//        skeletons = new Array<Enemy>();
 //        // instantiate new enemies and add it to the array
 //        for (int i = 0; i < 3; i++) {
 //            enemies.add(new Enemy());
 //        }
 //    }
 
+
     @Override
     public void dispose()
-    {
-        // dispose of the textures to ensure no memory leaks
+    {   // dispose of the textures to ensure no memory leaks
         batch.dispose();
         mirage.dispose();
         backgroundTexture.dispose();
