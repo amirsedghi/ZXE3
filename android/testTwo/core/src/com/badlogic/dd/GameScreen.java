@@ -30,7 +30,6 @@ public class GameScreen implements Screen {
 
 
 
-
     public GameScreen(final DD gam){
         this.game = gam;
 
