@@ -8,6 +8,7 @@ public class GameConstants
     public static final String enemyImage = "skeleton.png";
     public static final String backgroundImage = "sand.jpg";
     public static final String skeletonSpriteSheet = "skeleton.atlas";
+    public static final String music = "mirage.mp3";
     public static final float unitScale = 1/2f;
     public static final float ENEMY_RESIZE_FACTOR = 1500f;
     public static final float X_MOVE_UNITS = 0.1f; // units will move in x direction

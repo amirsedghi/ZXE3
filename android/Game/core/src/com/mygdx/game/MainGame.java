@@ -23,6 +23,34 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Color;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.List;
+
+/* To do list:
+    High Priority:
+    1. Replace rectangles with circles for enemy collision.
+    2. Interface enemies with wall
+        2.1 Enemy collison with wall
+        2.2 Enemy attack wall
+            Call attack method
+    3. Interface enemies with cannon/projectile
+        3.1 Call die method for enemies when health reaches 0.
+
+    Lower Priority:
+        2.3 Enemy stops at wall
+    4. Animations for Enemies
+        4.1 Walking Animation
+        4.2 Attack Animation
+        4.3 Death Animation
+    5. Sounds for enemies:
+        5.1 Attack Sound
+        5.2 Footstep Sound
+        5.3 Death Sound
+*/
 
 public class MainGame extends Game implements InputProcessor {
 
@@ -31,17 +59,23 @@ public class MainGame extends Game implements InputProcessor {
     private Sprite enemySprite;
     private OrthographicCamera camera;
     private long lastSpawnTime;
-    public static Skeleton skeleton; // skeleton instance
+    public Skeleton skeleton; // skeleton instance
     public Texture enemyTexture;
     public TextureRegion textureRegion;
     public static Texture backgroundTexture;
     public static Sprite backSprite;
-    private Array<Skeleton> skeletons; // array of enemies
+    // public Array<Skeleton> skeletons; // array of enemies
+    // ArrayList skeletons = new ArrayList();
+    ListIterator<Skeleton> iterEn = null;
+    List<Skeleton> skeletons = new ArrayList<Skeleton>();
+    Iterator<Skeleton> iterEn;
     TextureAtlas textureAtlas;
-    private int xcordSpawn, skeletonArraySize;
+    private int xcordSpawn, skeletonArraySize = 0;
+    ShapeRenderer rect;
+    Color red = Color.RED;
 
     // Declare music object
-    private Music mirage;
+    private Music music;
 
     //Screen dimensions/ Viewport Width and Height
     private float screenWidth, screenHeight;
@@ -62,9 +96,12 @@ public class MainGame extends Game implements InputProcessor {
         textureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.skeletonSpriteSheet));
         textureRegion = textureAtlas.findRegion("go", 1);
         enemyTexture =  new Texture(GameConstants.enemyImage);
-//        // Instantiate and initalize the skeleton class
-        skeletons = new Array<Skeleton>();
+
+        // Instantiate and initalize the skeleton class
+        //skeletons = new Array<Skeleton>();
         spawnSkeleton();
+        skeletonArraySize++;
+
         // load background texture
         backgroundTexture = new Texture(GameConstants.backgroundImage);
         // set background sprite with texture
@@ -76,7 +113,7 @@ public class MainGame extends Game implements InputProcessor {
         Gdx.input.setInputProcessor(this);
 
         //Initialize and set input processor
-        mirage = Gdx.audio.newMusic(Gdx.files.internal("mirage.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal(GameConstants.music));
     }
     @Override
     public void render() { //Called when the Application should render itself.
@@ -87,25 +124,61 @@ public class MainGame extends Game implements InputProcessor {
         batch.setProjectionMatrix(camera.combined);
 
         //Play streaming music
-        mirage.play();
-        mirage.setLooping(true);
-
-
+        music.play();
+        music.setLooping(true);
 
         // Spritebatch drawing must be made between the begin and end methods rendering the game objects:
         batch.begin();
         backSprite.draw(batch);
+//        rect.begin(ShapeRenderer.ShapeType.Filled);
+//        rect.setColor(red);
+//        rect.rect(100, 100, 20, 20);
+//        rect.end();
         for(Skeleton skeleton : skeletons)
         {
             skeleton.update();
             skeleton.render(batch);
+//            if(skeleton.isOutOfBounds())
+//            {
+//                skeletons.remove()
+//            }
         }
         batch.end();
 
         // check how much time has passed since we spawned a new skeleton
-        if(TimeUtils.nanoTime() - lastSpawnTime > 1000000000){
-            spawnSkeleton();
+        if(TimeUtils.nanoTime() - lastSpawnTime > 1000000000)
+        {
+            if(skeletons.size > 15)
+            {
+                ;
+            }
+            else
+                spawnSkeleton();
         }
+
+        while(iterEn.hasNext())
+        {
+            Skeleton e = iterEn.next();
+            if (e.isOutOfBounds() )
+            {
+                iterEn.remove();
+            }
+            if (e.getRectangle().overlaps(e.getRectangle()))
+            {
+                iterEn.remove();
+            }
+        }
+
+//        if(skeletons.size > 20)
+//        {
+//            removeSkeletons();
+//        }
+
+//        if(skeletonArraySize > 20)
+//        {
+//            removeSkeletons();
+//            skeletonArraySize = 0;
+//        }
     }
 
         private void spawnSkeleton()
@@ -113,11 +186,16 @@ public class MainGame extends Game implements InputProcessor {
             xcordSpawn = MathUtils.random((int)screenWidth);
             skeleton = new Skeleton(screenWidth, screenHeight, textureRegion, xcordSpawn);
             skeletons.add(skeleton);
+            skeletonArraySize++;
             lastSpawnTime = TimeUtils.nanoTime();
+            iterEn = skeletons.iterator();
     }
 
-        private void removeSkeleton() {
-        }
+        // Get rid of all the skeletons.
+        private void removeSkeletons()
+    {
+        skeletons.clear();
+    }
 
 //    public static void initEnemies()
 //    {
@@ -128,12 +206,11 @@ public class MainGame extends Game implements InputProcessor {
 //        }
 //    }
 
-
     @Override
     public void dispose()
     {   // dispose of the textures to ensure no memory leaks
         batch.dispose();
-        mirage.dispose();
+        music.dispose();
         backgroundTexture.dispose();
         enemyTexture.dispose();
     }
@@ -144,18 +221,17 @@ public class MainGame extends Game implements InputProcessor {
 
     @Override
     public void pause() {
-        mirage.pause();
+        music.pause();
     }
 
     @Override
     public void resume() {
-        mirage.play();
+        music.play();
     }
 
     //Return true to indicate that the event was handled
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
         return true;
     }
 

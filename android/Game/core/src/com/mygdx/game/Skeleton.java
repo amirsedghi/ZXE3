@@ -7,10 +7,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.GameConstants;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Color;
 
 public class Skeleton extends Enemy
 {
@@ -20,31 +26,49 @@ public class Skeleton extends Enemy
 //    TextureRegion currentFrame;
 //    float stateTime;
 //    private static int ANIMATION_FRAME_SIZE = 8;
-    int currentFrame = 1;
-    int MAX_FRAMES = 8;
+//    int currentFrame = 1;
+//    int MAX_FRAMES = 8;
 
     enum Direction{UP,DOWN,LEFT,RIGHT};
-    Direction direction = Direction.DOWN; //denotes enemies's direction
+    Direction direction; //denotes enemies's direction
 
     // Constructor:
-    public Skeleton(float width, float height, TextureRegion skeletonTexture, int coordSpawn)
+    public Skeleton(float width, float height, TextureRegion skeletonTexture, int xcoordSpawn)
     {
+        health = 1;
+        power = 1;
+        isDead = false;
+        position = new Vector2(xcoordSpawn, height);
         enemySprite = new Sprite(skeletonTexture);
         enemySprite.setSize(enemySprite.getWidth()*(width/GameConstants.ENEMY_RESIZE_FACTOR), enemySprite.getHeight()*(width/GameConstants.ENEMY_RESIZE_FACTOR));
         enemySprite.setSize(enemySprite.getWidth()*GameConstants.unitScale, enemySprite.getHeight()*GameConstants.unitScale);
-        enemySprite.setPosition(coordSpawn, height);
+        enemySprite.setPosition(position.x, position.y);
         velocity = new Vector2(0, (-1)*GameConstants.SKELETON_VELOCITY);
         rectangle = new Rectangle();
+//        circle = new Circle();
     }
     // Behavioral Methods:
-    public void die()
+//    public void checkCollision(Skeleton skeleton)
+//    {
+//        if (skeleton.getRectangle().overlaps(skeleton.getRectangle()))
+//        {
+//            skeleton.stop();
+//        }
+//    }
+
+    public void dead()
     {
 
     }
 
-    public void attack()
+    public int attack()
     {
+        return power;
+    }
 
+    public void hurt(int damage)
+    {
+        this.health -= damage;
     }
 
     // Getters and Setters:
@@ -72,6 +96,39 @@ public class Skeleton extends Enemy
         return power;
     }
 
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
+    public boolean isCollided(Rectangle rect)
+    {
+        Gdx.app.log("Collision Detected", "" + rectangle.overlaps(rect));
+        return rect.overlaps(rectangle);
+    }
+
+    public void checkforcollisions(Rectangle rect)
+    {
+        Gdx.app.log("Collision Detected", "" + rectangle.overlaps(rect));
+    }
+
+    public boolean isOutOfBounds()
+    {
+        if( ( position.x > Gdx.graphics.getWidth() || position.x < Gdx.graphics.getWidth() ) || position.y < Gdx.graphics.getHeight() )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+//    public Circle getCircle()
+//    {
+//        return circle;
+//    }
+
+    // Rendering Methods:
     @Override
     public void render(SpriteBatch batch)
     {
@@ -82,8 +139,9 @@ public class Skeleton extends Enemy
     public void update ()
     {
         // set the rectangle with skeleton's dimensions for collisions
-        rectangle.set(enemySprite.getX(), enemySprite.getY(),
-                enemySprite.getWidth(), enemySprite.getHeight());
+//        rectangle.setPosition(enemySprite.getX(), enemySprite.getY());
+        rectangle.setPosition(position);
+        rectangle.setSize(enemySprite.getWidth(), enemySprite.getHeight());
 
         // change direction based on velocity
             // For x-axis:
@@ -92,8 +150,10 @@ public class Skeleton extends Enemy
         } else {
             direction = Direction.RIGHT;
         }
-        enemySprite.setX(enemySprite.getX()+velocity.x);
-        if(direction==Direction.RIGHT){
+//        enemySprite.setX(enemySprite.getX()+velocity.x);
+
+        // Flip sprite when going right.
+        if(direction == Direction.RIGHT){
             enemySprite.setFlip(true, false);
         }
         else {
@@ -106,21 +166,18 @@ public class Skeleton extends Enemy
         } else {
             direction = Direction.UP;
         }
-        enemySprite.setY(enemySprite.getY()+velocity.y);
-    }
 
-//    public void checkWallHit() {
-//// get the tiles from map utilities
-//        Array<Rectangle> tiles = MapUtils.getHorizNeighbourTiles
-//                (velocity, sprite, "Wall");
-////if zombie collides with any wall tile while walking
-//        right/left, reverse his horizontal motion
-//        for (Rectangle tile : tiles) {
-//            if (rectangle.overlaps(tile)) {
-//                velocity.x *=-1;
-//                break;
-//            }
-//        }
-//    }
+        // Move and stop enemy:
+        if (enemySprite.getY() > 75) {
+            position.add(velocity);
+            enemySprite.setY(position.y);
+            rectangle.setPosition(position);
+        }
+        else {
+            position.sub(velocity);
+            enemySprite.setY(position.y);
+            rectangle.setPosition(position);
+        }
+    }
 
 }
