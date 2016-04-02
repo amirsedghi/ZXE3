@@ -18,7 +18,7 @@ public class DD extends Game{
         batch = new SpriteBatch();
         //Use LibGDX's default
         font = new BitmapFont();
-        this.setScreen(new MainMenuScreen(this));
+        this.setScreen(new GameScreen(this));
     }
 
     public void render(){
