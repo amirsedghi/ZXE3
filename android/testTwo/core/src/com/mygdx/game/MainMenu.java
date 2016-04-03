@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 
 import java.awt.*;
 
@@ -27,10 +29,12 @@ public class MainMenu extends Menu {
     private TextButton startButton;
     private TextButton settingsButton;
     private TextButton exitButton;
+    private TextButton scoreboardButton;
 
     // Scoreboard shenanigans
     private String scoreName1;
     private BitmapFont scoreFont;
+    private String highScoreName;
 
     public MainMenu(final MyGdxGame game){
         super(game);
@@ -56,7 +60,7 @@ public class MainMenu extends Menu {
         // Create a settings button
         settingsButton = new TextButton("Settings", simpleButtonStyle);
         settingsButton.setPosition((800/2) - (176/2), (480/2) - (50/2));
-        settingsButton.addListener(new ChangeListener(){
+         settingsButton.addListener(new ChangeListener(){
             @Override
             public void changed(ChangeEvent event, Actor actor){
                 // TODO: Settings bs
@@ -76,16 +80,56 @@ public class MainMenu extends Menu {
            }
         });
 
+        // Create Scoreboard button
+        scoreboardButton = new TextButton("Scoreboard", simpleButtonStyle);
+        scoreboardButton.setPosition((800/2) - (176/2), (480/2) - ((50/2) + 112));
+        scoreboardButton.addListener(new ChangeListener(){
+            @Override
+            public void changed(ChangeEvent event, Actor actor){
+                showScoreBoardUpdate();
+            }
+        });
+
         // Add any buttons to the stage
         stage.addActor(startButton);
         stage.addActor(settingsButton);
         stage.addActor(exitButton);
+        stage.addActor(scoreboardButton);
     }
     // In the event of a score being submitted, this constructor is called
-    public MainMenu(final MyGdxGame game, int score){
+    public MainMenu(final MyGdxGame game, final int score){
         this(game); // Call main constructor
         // TODO: Do actual scoreboard stuff
-        game.scoreboard.submitScore("Foo Score", score);
+
+        // Dialogue box?
+        /*Dialog diag = new Dialog("Warning", new Skin(Gdx.files.internal("uiskin.json")), "dialog") {
+            public void result(Object obj) {
+                System.out.println("result "+obj);
+            }
+        };
+        diag.text("Are you sure you want to quit?");
+        diag.button("Yes", true); //sends "true" as the result
+        diag.button("No", false);  //sends "false" as the result
+        diag.button("maybe", false);
+        //dialog.key(Keys.Enter, true); //sends "true" when the ENTER key is pressed
+        diag.show(stage);*/
+
+        if(game.scoreboard.nameSubmittable()) {
+            highScoreName = null;
+            Gdx.input.getTextInput(new Input.TextInputListener() {
+                @Override
+                public void input(String text) {
+                    game.scoreboard.submitScore(text, score);
+                    //showScoreBoardUpdate();
+                }
+
+                @Override
+                public void canceled() {
+                    // Do nothing
+                }
+
+            }, "High Score", "Input your name", "");
+        }
     }
 
     // Render method thing, just in case
@@ -97,12 +141,30 @@ public class MainMenu extends Menu {
     @Override
     public void show(){
         super.show();
-        // Temporarily show scoreboard like this. This is always run after the constructor
-        System.out.printf("Scores: \n");
+    }
+
+    public void showScoreBoardUpdate(){
+        // Temporary
+        /*System.out.printf("Scores: \n");
         for (int i = 0; i < 10; i++){
             System.out.printf("%s %d\n", game.scoreboard.getScore(i).getName(),
                     game.scoreboard.getScore(i).getScoreNum());
         }
-        System.out.printf("\n");
+        System.out.printf("\n");*/
+        // Put the printout into a big string
+        String scoreboardString = "";
+        for(int i = 0; i < 10; i++){
+            scoreboardString += String.format("%s %10d\n", game.scoreboard.getScore(i).getName(),
+                    game.scoreboard.getScore(i).getScoreNum());
+        }
+        // Try showing a dialogue box
+        Dialog scoreboardDiag = new Dialog("Scoreboard", new Skin(Gdx.files.internal("uiskin.json")), "dialog") {
+            public void result(Object obj) {
+                //
+            }
+        };
+        scoreboardDiag.text(scoreboardString);
+        scoreboardDiag.button("Ok");
+        scoreboardDiag.show(stage);
     }
 }

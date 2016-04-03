@@ -61,6 +61,7 @@ abstract class Menu implements Screen{
     }
     @Override
     public void resize(int width, int height) {
+        stage.getViewport().update(width, height, false);
     }
     @Override
     public void hide() {
