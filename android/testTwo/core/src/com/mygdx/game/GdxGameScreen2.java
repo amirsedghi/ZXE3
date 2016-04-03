@@ -94,6 +94,7 @@ public class GdxGameScreen2 implements Screen {
     }
 
 
+    @Override
     public void render(float delta){
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -163,8 +164,7 @@ public class GdxGameScreen2 implements Screen {
         }
         if (miss >= 3){
             // Game over
-            game.scoreboard.submitScore("Foo Score", score);
-            game.setScreen(new MainMenu(game));
+            game.setScreen(new MainMenu(game, score));
             dispose();
         }
     }

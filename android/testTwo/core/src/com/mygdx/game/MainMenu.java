@@ -20,40 +20,31 @@ import java.awt.*;
 /**
  * Created by ghost_000 on 3/7/2016.
  */
-public class MainMenu implements Screen {
-    private final MyGdxGame game;
-    private TextButtonStyle startButtonStyle;
+public class MainMenu extends Menu {
+    // Global variables and objects
+
+    // Buttons
     private TextButton startButton;
-    private Stage stage;
-    private FitViewport viewPort;
-    private TextureAtlas buttonAtlas;
-    private Skin startButtonSkin;
+    private TextButton settingsButton;
+    private TextButton exitButton;
 
     // Scoreboard shenanigans
     private String scoreName1;
     private BitmapFont scoreFont;
 
     public MainMenu(final MyGdxGame game){
-        this.game = game;
+        super(game);
 
-        viewPort = new FitViewport(800,480,game.camera);
-        stage = new Stage(viewPort, game.batch);
-        Gdx.input.setInputProcessor(stage);
+        // Button are vertically spaced by 56 units
+        // Buttons are 176x50
+        // Mid point in 800x480 would be 355, 218
 
-        buttonAtlas = new TextureAtlas("testPacker.atlas");
-
-        startButtonSkin = new Skin();
-        startButtonSkin.addRegions(buttonAtlas);
-
-        startButtonStyle = new TextButtonStyle();
-        startButtonStyle.font = new BitmapFont();
-        //startButtonStyle.downFontColor = Color.GRAY;
-        startButtonStyle.down = startButtonSkin.getDrawable("orange");
-        startButtonStyle.up = startButtonSkin.getDrawable("green");
-        startButton = new TextButton("Start", startButtonStyle);
-        //startButton.setWidth(50);
-        //startButton.setHeight(30);
-        startButton.setPosition(100, 100);
+        // Create a Start button
+        // Set style onto the start button object
+        startButton = new TextButton("Start", simpleButtonStyle);
+        // Position
+        startButton.setPosition((800/2) - (176/2), (480/2) - ((50/2) - 56));
+        // The listener for the button, to change screens
         startButton.addListener(new ChangeListener(){
             @Override
             public void changed(ChangeEvent event, Actor actor){
@@ -62,50 +53,56 @@ public class MainMenu implements Screen {
             }
         });
 
-        stage.addActor(startButton);
+        // Create a settings button
+        settingsButton = new TextButton("Settings", simpleButtonStyle);
+        settingsButton.setPosition((800/2) - (176/2), (480/2) - (50/2));
+        settingsButton.addListener(new ChangeListener(){
+            @Override
+            public void changed(ChangeEvent event, Actor actor){
+                // TODO: Settings bs
+                game.setScreen(new SettingsMenu(game));
+                dispose();
+            }
+        });
 
-        // set up scoreboard
-        // Basic for now
+        // Create an exit button
+        exitButton = new TextButton("Exit", simpleButtonStyle);
+        exitButton.setPosition((800/2) - (176/2), (480/2) - ((50/2) + 56));
+        exitButton.addListener(new ChangeListener(){
+           @Override
+            public void changed(ChangeEvent event, Actor actor){
+               dispose();
+               Gdx.app.exit();  // Close the application
+           }
+        });
+
+        // Add any buttons to the stage
+        stage.addActor(startButton);
+        stage.addActor(settingsButton);
+        stage.addActor(exitButton);
+    }
+    // In the event of a score being submitted, this constructor is called
+    public MainMenu(final MyGdxGame game, int score){
+        this(game); // Call main constructor
+        // TODO: Do actual scoreboard stuff
+        game.scoreboard.submitScore("Foo Score", score);
+    }
+
+    // Render method thing, just in case
+    @Override
+    public void render(float delta){
+        super.render(delta);
+    }
+
+    @Override
+    public void show(){
+        super.show();
+        // Temporarily show scoreboard like this. This is always run after the constructor
         System.out.printf("Scores: \n");
         for (int i = 0; i < 10; i++){
             System.out.printf("%s %d\n", game.scoreboard.getScore(i).getName(),
                     game.scoreboard.getScore(i).getScoreNum());
         }
         System.out.printf("\n");
-    }
-
-    public void render(float delta){
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        game.batch.setProjectionMatrix(game.camera.combined);
-
-        stage.act();
-
-        stage.draw();
-        game.batch.begin();
-        game.batch.end();
-    }
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, false);
-    }
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-    @Override
-    public void show(){
-        //
-    }
-    @Override
-    public void dispose(){
-        stage.dispose();
     }
 }

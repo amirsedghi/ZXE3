@@ -1,19 +1,17 @@
-package com.mygdx.game.desktop;
-import com.mygdx.game.Scoreboard;
+package com.mygdx.game;
 
 import java.util.Arrays;
 
-/**
- * Created by ghost_000 on 3/21/2016.
- */
+// Generic scoreboard implementation
+// Uses simple arrays to implement scoreboard
+// Data is not saved once closed.
 
-// Implement scoreboard using an array
-public class DesktopScoreboardInsertionSort implements Scoreboard{
+public class GenericScoreboard implements Scoreboard {
     // Private members
     private ScoreField[] entries;
 
     // Consturctor(s)
-    public DesktopScoreboardInsertionSort(){
+    public GenericScoreboard(){
         // Create blank entries
         entries = new ScoreField[11];    // Leave 1 extra
         for (int i = 0; i < entries.length; i++){
@@ -29,14 +27,6 @@ public class DesktopScoreboardInsertionSort implements Scoreboard{
         // Enter into the end of the array.
         entries[entries.length - 1] = new ScoreField(name, score);
         // Sort it
-        /*for(int i = 1; i < entries.length; i++){
-            int j;
-            int key = entries[i].getScoreNum();
-            for(j = i-1; (j >= 0) && (entries[j].getScoreNum() < key); j--){
-                entries[j+1] = entries[j];
-            }
-            entries[j+1] =  entries[i];
-        }*/
         Arrays.sort(entries);
         // End
     }
@@ -63,7 +53,7 @@ public class DesktopScoreboardInsertionSort implements Scoreboard{
         public int getScoreNum(){
             return score;
         }
-        // Comparator
+        // Comparator for Arrays.sort();
         @Override
         public int compareTo(ScoreField comparison){
             return comparison.getScoreNum() - this.score;

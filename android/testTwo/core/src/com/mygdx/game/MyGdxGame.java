@@ -30,7 +30,8 @@ public class MyGdxGame extends Game {
 
 	// Constructors
 	public MyGdxGame(){
-		// Nothing
+		// Use generic scoreboard
+		this.scoreboard = new GenericScoreboard();
 	}
 	public MyGdxGame(Scoreboard scoreboard){
 		this.scoreboard = scoreboard;
