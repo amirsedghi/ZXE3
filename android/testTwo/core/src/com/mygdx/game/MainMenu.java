@@ -101,19 +101,6 @@ public class MainMenu extends Menu {
         this(game); // Call main constructor
         // TODO: Do actual scoreboard stuff
 
-        // Dialogue box?
-        /*Dialog diag = new Dialog("Warning", new Skin(Gdx.files.internal("uiskin.json")), "dialog") {
-            public void result(Object obj) {
-                System.out.println("result "+obj);
-            }
-        };
-        diag.text("Are you sure you want to quit?");
-        diag.button("Yes", true); //sends "true" as the result
-        diag.button("No", false);  //sends "false" as the result
-        diag.button("maybe", false);
-        //dialog.key(Keys.Enter, true); //sends "true" when the ENTER key is pressed
-        diag.show(stage);*/
-
         if(game.scoreboard.nameSubmittable()) {
             highScoreName = null;
             Gdx.input.getTextInput(new Input.TextInputListener() {
