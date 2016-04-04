@@ -6,6 +6,7 @@ import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.btree.utils.DistributionAdapters;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Cursor;
@@ -52,7 +53,6 @@ public class GameScreen implements Screen {
         mousePos = new Vector3(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
         // pass the vector to the cannon instant
         cannon.setVector(mousePos);
-
 
 
         camera.update();
