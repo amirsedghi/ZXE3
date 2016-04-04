@@ -33,7 +33,6 @@ public class GameScreen implements Screen {
     // instantiate a cannon
     Cannon cannon = new Cannon();
 
-
     public GameScreen(final DD gam){
         this.game = gam;
         camera = new OrthographicCamera();
