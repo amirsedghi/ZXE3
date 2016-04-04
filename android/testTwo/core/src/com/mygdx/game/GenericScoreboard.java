@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Preferences;
+
 import java.util.Arrays;
 
 // Generic scoreboard implementation
@@ -9,14 +11,17 @@ import java.util.Arrays;
 public class GenericScoreboard implements Scoreboard {
     // Private members
     private ScoreField[] entries;
+    private Preferences prefs;
 
     // Consturctor(s)
-    public GenericScoreboard(){
+    public GenericScoreboard(Preferences prefs){
+        this.prefs = prefs;
         // Create blank entries
         entries = new ScoreField[11];    // Leave 1 extra
-        for (int i = 0; i < entries.length; i++){
+        /*for (int i = 0; i < entries.length; i++){
             entries[i] = new ScoreField("None", 0);
-        }
+        }*/
+        loadScores();
     }
     @Override
     public boolean nameSubmittable(){
@@ -29,6 +34,8 @@ public class GenericScoreboard implements Scoreboard {
         // Sort it
         Arrays.sort(entries);
         // End
+        // Save
+        saveScores();
     }
     @Override
     public ScoreField getScore (int index){
@@ -57,6 +64,26 @@ public class GenericScoreboard implements Scoreboard {
         @Override
         public int compareTo(ScoreField comparison){
             return comparison.getScoreNum() - this.score;
+        }
+    }
+
+    private void saveScores(){
+        if(prefs != null){
+            for (int i = 0; i < 10; i++){
+                prefs.putString("ScoreName"+i, entries[i].getName());
+                prefs.putInteger("ScoreNum"+i, entries[i].getScoreNum());
+            }
+            prefs.flush();
+        }
+    }
+
+    public void loadScores(){
+        if(prefs != null){
+            for (int i = 0; i < 10; i++){
+                String loadedScoreName = prefs.getString("ScoreName"+i, "None");  // Default to none if no field
+                int loadedScore = prefs.getInteger("ScoreNum"+i, 0);              // Default to 0
+                entries[i] = new ScoreField(loadedScoreName, loadedScore);
+            }
         }
     }
 }

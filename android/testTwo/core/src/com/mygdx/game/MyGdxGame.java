@@ -1,9 +1,6 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,13 +22,15 @@ import java.util.Iterator;
 public class MyGdxGame extends Game {
 	public SpriteBatch batch;
 	public OrthographicCamera camera;
+	public Preferences prefs;
+	public double screenMultiplier;
 
 	protected Scoreboard scoreboard;
 
 	// Constructors
 	public MyGdxGame(){
 		// Use generic scoreboard
-		this.scoreboard = new GenericScoreboard();
+		this(null);
 	}
 	public MyGdxGame(Scoreboard scoreboard){
 		this.scoreboard = scoreboard;
@@ -42,6 +41,12 @@ public class MyGdxGame extends Game {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 		this.setScreen(new MainMenu(this));
+		prefs = Gdx.app.getPreferences("ZXE3.prefs");
+		if(scoreboard == null){
+			scoreboard = new GenericScoreboard(prefs);
+		}
+		screenMultiplier = (double)prefs.getFloat("Screen Multiplier", 1);
+		Gdx.graphics.setWindowedMode((int)(800 * screenMultiplier), (int)(480 * screenMultiplier));
 	}
 	public void render(){
 		super.render();

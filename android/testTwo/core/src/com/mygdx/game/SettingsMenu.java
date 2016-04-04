@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class SettingsMenu extends Menu {
     // Global variables and objects
-    private double screenMultiplier = 1;
 
     // Buttons
     private TextButton backButton;
@@ -38,17 +37,19 @@ public class SettingsMenu extends Menu {
         });
 
         // Test
-        testButton = new TextButton(String.format("Screen Size x%.2f", screenMultiplier), simpleButtonStyle);
+        testButton = new TextButton(String.format("Screen Size x%.2f", game.screenMultiplier), simpleButtonStyle);
         testButton.setPosition((800/2) - (176/2), (480/2) - ((50/2) + 56));
         testButton.addListener(new ChangeListener(){
             @Override
             public void changed(ChangeEvent event, Actor actor){
-                screenMultiplier += 0.25;
-                if(screenMultiplier > 2){
-                    screenMultiplier = 1;
+                game.screenMultiplier += 0.25;
+                if(game.screenMultiplier > 2){
+                    game.screenMultiplier = 1;
                 }
-                Gdx.graphics.setWindowedMode((int)(800 * screenMultiplier), (int)(480 * screenMultiplier));
-                testButton.setText(String.format("Screen Size x%.2f", screenMultiplier));
+                Gdx.graphics.setWindowedMode((int)(800 * game.screenMultiplier), (int)(480 * game.screenMultiplier));
+                testButton.setText(String.format("Screen Size x%.2f", game.screenMultiplier));
+                game.prefs.putFloat("Screen Multiplier", (float)game.screenMultiplier);
+                game.prefs.flush();
             }
         });
 
