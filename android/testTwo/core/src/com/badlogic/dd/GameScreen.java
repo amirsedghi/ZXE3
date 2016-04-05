@@ -34,7 +34,13 @@ public class GameScreen implements Screen {
     // instantiate a cannon
     Cannon cannon = new Cannon();
 
+
     private Wall wall;
+
+    Bullets bullet = null;
+    //Boolean if mouse is clicked
+    boolean touched = true;
+
 
     public GameScreen(final DD gam){
         this.game = gam;
@@ -62,11 +68,59 @@ public class GameScreen implements Screen {
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+
+        // Cannon sprite properties
+        Sprite cannonSprite = cannon.getSprite();
+        cannonSprite.setOrigin(cannonSprite.getWidth()/2,0);
+        cannonSprite.setRotation(-cannon.getAngle());
+        cannonSprite.setX(320);
+        cannonSprite.setY(10);
         batch.begin();
+
         wall.render(batch);
-        batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1, 1, -cannon.getAngle());
+        //Changed the cannon to sprite to add more functionality
+        //batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
+        cannonSprite.draw(batch);
+        if(bullet != null){
+            if(bullet.updateBullet()) {
+                bullet.getSprite().draw(batch);
+
+            }
+            else{
+                bullet.dispose();
+                bullet = null;
+            }
+        }
         batch.end();
+
+        //If a mouse click is registered on the gamescreen a cannonball will be spawned
+        if(Gdx.input.isTouched() && !touched){
+            touched = true;
+            int X = (int)bulletAngleX(cannonSprite.getX());
+            //int Y = (int)bulletAngleY(cannonSprite.getY());
+            bullet = new Bullets(mousePos,X, 0);
+
+
+        }
+        else if(!Gdx.input.isTouched() && touched){
+            touched = false;
+        }
+
     }
+
+    public float bulletAngleX (float xBall){
+        xBall =  (float)-Math.sin(Math.PI*cannon.getAngle()/180)*54;
+        xBall = 380 - xBall - 30;
+        return xBall;
+
+
+    }
+//    public float bulletAngleY (float yBall){
+//        yBall = (float) Math.cos(Math.PI*cannon.getAngle()/180)*54;
+//        yBall = 64 + yBall;
+//        return yBall;
+//
+//    }
 
     public void resize(int width, int height){
 

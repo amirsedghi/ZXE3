@@ -38,10 +38,14 @@ public class Cannon{
     private double tan =0;
     private float angle=0;
 
+    private Sprite cannonSprite;
+
     // constructor, initiating the texture and texture region
     Cannon(){
         cannonImage = new Texture(Gdx.files.internal("cannonImage.png"));
-        cannonRegion = new TextureRegion(cannonImage, 120, 108);
+        //cannonRegion = new TextureRegion(cannonImage, 120, 108);
+        cannonSprite = new Sprite(cannonImage, 120 , 108);
+
     }
 
     /*
@@ -97,6 +101,11 @@ public class Cannon{
     */
     public TextureRegion getTextureRegion(){
         return cannonRegion;
+    }
+
+
+    public Sprite getSprite(){
+        return cannonSprite;
     }
 
 }
