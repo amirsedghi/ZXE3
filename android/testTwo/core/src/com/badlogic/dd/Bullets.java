@@ -19,7 +19,9 @@ public class Bullets {
     //private double angel;
     private double xVel;
     private double yVel;
-
+    //Cannonballs that will fire from the cannon,
+    //each cannon will be given the position of the mouse click
+    //on the screen and will use that to adjust the velocity of the cannonball
     Bullets(Vector3 mousepos, int initX, int initY){
         this.mousepos = mousepos;
         this.initX = initX;
@@ -28,7 +30,8 @@ public class Bullets {
         bulletTexture = new Texture("cannonBallImage.png");
         bulletSprite = new Sprite(bulletTexture);
         bulletSprite.setSize(60,60);
-        bulletSprite.setOriginCenter();
+        bulletSprite.setOrigin(30, 0);
+
 
         bulletSprite.setPosition(initX, initY);
         double angel = Math.atan((mousepos.y - initY)/(mousepos.x - initX));

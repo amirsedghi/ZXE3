@@ -45,8 +45,6 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
 
 
-
-
     }
 
     public void render(float delta){
@@ -75,6 +73,7 @@ public class GameScreen implements Screen {
         if(bullet != null){
             if(bullet.updateBullet()) {
                 bullet.getSprite().draw(batch);
+
             }
             else{
                 bullet.dispose();
@@ -87,7 +86,12 @@ public class GameScreen implements Screen {
         if(Gdx.input.isTouched() && !touched){
             touched = true;
             // Bullet spawn and travel
-            bullet = new Bullets(mousePos, 90, 0);
+            //position of where ball spawns
+            int X = (int)bulletAngleX(cannonSprite.getX());
+            //int Y = (int)bulletAngleY(cannonSprite.getY());
+
+            bullet = new Bullets(mousePos,X, 0);
+            
 
         }
         else if(!Gdx.input.isTouched() && touched){
@@ -95,6 +99,19 @@ public class GameScreen implements Screen {
         }
 
     }
+    //Used to calculate
+    public float bulletAngleX (float xBall){
+        xBall =  (float)-Math.sin(Math.PI*cannon.getAngle()/180)*54;
+        xBall = 380 - xBall - 30;
+        return xBall;
+
+    }
+//    public float bulletAngleY (float yBall){
+//        yBall = (float) Math.cos(Math.PI*cannon.getAngle()/180)*54;
+//        yBall = 64 + yBall;
+//        return yBall;
+//
+//    }
 
     public void resize(int width, int height){
 
