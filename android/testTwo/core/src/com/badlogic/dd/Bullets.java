@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
- * Created by JosePerez on 4/4/16.
+ * Created by JosePerez A on 4/4/16.
  */
 public class Bullets {
     // Universals
@@ -16,9 +16,11 @@ public class Bullets {
     private Vector3 mousepos;
     private int initX;
     private int initY;
+
     //private double angel;
     private double xVel;
     private double yVel;
+
     //Cannonballs that will fire from the cannon,
     //each cannon will be given the position of the mouse click
     //on the screen and will use that to adjust the velocity of the cannonball
