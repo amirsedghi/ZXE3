@@ -56,6 +56,9 @@ public class GameScreen implements Screen {
 
 
 
+
+        //System.out.println("here is the sin of the angle: " + Math.sin(cannon.getAngle()));
+
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
