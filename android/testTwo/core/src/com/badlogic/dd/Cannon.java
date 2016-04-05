@@ -38,6 +38,7 @@ public class Cannon{
         cannonImage = new Texture(Gdx.files.internal("cannonImage.png"));
         //cannonRegion = new TextureRegion(cannonImage, 120, 108);
         cannonSprite = new Sprite(cannonImage, 120 , 108);
+
     }
 
     // set the vector
@@ -72,6 +73,7 @@ public class Cannon{
     public TextureRegion getTextureRegion(){
         return cannonRegion;
     }
+
 
     public Sprite getSprite(){
         return cannonSprite;

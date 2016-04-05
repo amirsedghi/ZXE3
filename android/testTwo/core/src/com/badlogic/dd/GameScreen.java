@@ -91,7 +91,7 @@ public class GameScreen implements Screen {
             //int Y = (int)bulletAngleY(cannonSprite.getY());
 
             bullet = new Bullets(mousePos,X, 0);
-            
+
 
         }
         else if(!Gdx.input.isTouched() && touched){
