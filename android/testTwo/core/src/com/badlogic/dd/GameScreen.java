@@ -33,6 +33,11 @@ public class GameScreen implements Screen {
     // instantiate a cannon
     Cannon cannon = new Cannon();
 
+    // Init bullet(s)
+    Bullets bullet = null;
+
+    boolean touched = true;
+
     public GameScreen(final DD gam){
         this.game = gam;
         camera = new OrthographicCamera();
@@ -57,13 +62,37 @@ public class GameScreen implements Screen {
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+
+        // Cannon sprite properties
+        Sprite cannonSprite = cannon.getSprite();
+        cannonSprite.setOrigin(cannonSprite.getWidth()/2,0);
+        cannonSprite.setRotation(-cannon.getAngle());
+        cannonSprite.setX(320);
+        cannonSprite.setY(10);
         batch.begin();
-        batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
+        //batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
+        cannonSprite.draw(batch);
+        if(bullet != null){
+            if(bullet.updateBullet()) {
+                bullet.getSprite().draw(batch);
+            }
+            else{
+                bullet.dispose();
+                bullet = null;
+            }
+        }
         batch.end();
 
 
+        if(Gdx.input.isTouched() && !touched){
+            touched = true;
+            // Bullet spawn and travel
+            bullet = new Bullets(mousePos, 90, 0);
 
-
+        }
+        else if(!Gdx.input.isTouched() && touched){
+            touched = false;
+        }
 
     }
 
