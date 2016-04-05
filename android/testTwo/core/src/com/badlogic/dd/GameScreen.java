@@ -34,18 +34,23 @@ public class GameScreen implements Screen {
     // instantiate a cannon
     Cannon cannon = new Cannon();
 
+    private Wall wall;
+
     public GameScreen(final DD gam){
         this.game = gam;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
-
-
-
-
+        wall = new Wall(100, 120);
     }
 
-    public void render(float delta){
+    public void render(float delta) {
+        // Do damage to wall, or calculate wall distance
+        //wall.getDistanceToWall(positionOfEnemy); // how far enemy is to wall to stop enemy from walking through wall
+        //wall.adjustHealth(-10); // Some damage done
+        //wall.getHealth(); // For health bar
+                
+
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -58,13 +63,9 @@ public class GameScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
+        wall.render(batch);
+        batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1, 1, -cannon.getAngle());
         batch.end();
-
-
-
-
-
     }
 
     public void resize(int width, int height){
