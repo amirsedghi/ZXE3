@@ -20,6 +20,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.math.*;
+import java.io.PrintWriter;
 
 /**
  * Created by evolerup on 3/7/16.
@@ -40,6 +41,7 @@ public class GameScreen implements Screen {
     Bullets bullet = null;
     //Boolean if mouse is clicked
     boolean touched = true;
+
 
 
     public GameScreen(final DD gam){
@@ -78,6 +80,9 @@ public class GameScreen implements Screen {
         cannonSprite.setX(340);
         cannonSprite.setY(10);
         batch.begin();
+
+        // print the angle
+        System.out.println("angle: "+-cannon.getAngle());
 
         // enemy:
         enemy.update();
