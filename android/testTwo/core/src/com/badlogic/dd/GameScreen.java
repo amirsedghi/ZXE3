@@ -34,10 +34,8 @@ public class GameScreen implements Screen {
     // instantiate a cannon
     Cannon cannon = new Cannon();
 
-    // instantiate enemy
-    Enemy enemy = new Enemy();
-
     private Wall wall;
+    Enemy enemy;
 
     Bullets bullet = null;
     //Boolean if mouse is clicked
@@ -50,6 +48,8 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
         wall = new Wall(100, 120);
+        // instantiate enemy
+        enemy = new Enemy(wall);
     }
 
     public void render(float delta) {

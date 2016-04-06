@@ -28,12 +28,13 @@ public class Enemy
     protected Vector2 velocity; // velocity of the enemy
     protected Vector2 position;
     protected Rectangle rectangle; // rectangle object to detect collisions
+    Wall wall;
 
     enum Direction{UP,DOWN,LEFT,RIGHT};
     Direction direction; //denotes enemies's direction
 
     // Constructor:
-    public Enemy()
+    public Enemy(Wall passedinWall)
     {
         int xcordSpawn = MathUtils.random(0, 600);
         textureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.skeletonSpriteSheet));
@@ -48,6 +49,7 @@ public class Enemy
         enemySprite.setPosition(position.x, position.y);
         velocity = new Vector2(0, (-1)*GameConstants.SKELETON_VELOCITY);
         rectangle = new Rectangle();
+        wall = passedinWall;
     }
     // Behavioral Methods:
 
@@ -146,6 +148,7 @@ public class Enemy
             position.sub(velocity);
             enemySprite.setY(position.y);
             rectangle.setPosition(position);
+            wall.adjustHealth(-1 * this.getPower());
         }
 
     }
