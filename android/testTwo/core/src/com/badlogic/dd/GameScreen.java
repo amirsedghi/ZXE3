@@ -121,12 +121,7 @@ public class GameScreen implements Screen {
 
 
     }
-//    public float bulletAngleY (float yBall){
-//        yBall = (float) Math.cos(Math.PI*cannon.getAngle()/180)*54;
-//        yBall = 64 + yBall;
-//        return yBall;
-//
-//    }
+
 
     public void resize(int width, int height){
 
