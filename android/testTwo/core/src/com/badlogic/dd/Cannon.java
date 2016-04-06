@@ -92,17 +92,13 @@ public class Cannon{
     }
 
     /*
-   Name: TextureRegion
-   purpose: returns the texture region for batch draw
+   Name: getSprite
+   purpose: returns the sprite belonging to the cannon
    input parameter: no input
-   return: returns the texture region 
+   return: returns the sprite
    author: Amir Sedghi
    date: 3/28/16
     */
-    public TextureRegion getTextureRegion(){
-        return cannonRegion;
-    }
-
 
     public Sprite getSprite(){
         return cannonSprite;

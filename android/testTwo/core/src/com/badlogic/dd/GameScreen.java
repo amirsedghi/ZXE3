@@ -73,7 +73,7 @@ public class GameScreen implements Screen {
 
         // Cannon sprite properties
         Sprite cannonSprite = cannon.getSprite();
-        cannonSprite.setOrigin(cannonSprite.getWidth()/2,54);
+        cannonSprite.setOrigin(cannonSprite.getWidth()/2,10 + cannonSprite.getHeight()/2);
         cannonSprite.setRotation(-cannon.getAngle());
         cannonSprite.setX(340);
         cannonSprite.setY(10);
@@ -104,7 +104,7 @@ public class GameScreen implements Screen {
             touched = true;
             int X = (int)bulletAngleX(cannonSprite.getX());
             //int Y = (int)bulletAngleY(cannonSprite.getY());
-            bullet = new Bullets(mousePos,X, 34);
+            bullet = new Bullets(mousePos,370, 34, cannon.getAngle());
 
 
         }
