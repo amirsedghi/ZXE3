@@ -1,19 +1,48 @@
 package com.mygdx.game;
 
-/**
- * Created by ghost_000 on 3/21/2016.
+/*
+ * Scoreboard Interface
+ * Interface for a scoreboard implementation
+ * Scoreboards could be implemented in different ways on different platforms
+ * Including using a special scoreboard libary, or storing in a particular way
+ * By Jacob
+ * 3/21/16
  */
+
 public interface Scoreboard {
-    // Return true if scoreboard implementation allows for a name submission
+    /*
+     * Name Submittable
+     * Returns true if implementation allows for a name to be submitted
+     * By Jacob
+     * 3/21/16
+     */
     boolean nameSubmittable();
-    // Submits the score
-    // Use null if we're not going to take names
+
+    /*
+     * Submit Score
+     * Simply submits a score
+     * Name is null if the implementer doesn't take a name
+     * By Jacob
+     * 3/21/16
+     */
     void submitScore(String name, int score);
+
     // Get a requested scorefield
     // Returns null if implementation is external
+    /*
+     * Get Score
+     * Returns a scorefield type (written below) of a given index
+     * By Jacob
+     * 3/21/16
+     */
     ScoreField getScore(int index);
 
-    // Simple object for storing a scorefield
+    /*
+     * ScoreField class
+     * Simple object for string a scorefield (just name and number)
+     * By Jacob
+     * 3/21/16
+     */
     interface ScoreField{
         String getName();
         int getScoreNum();
