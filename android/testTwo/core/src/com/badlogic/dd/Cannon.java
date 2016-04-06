@@ -74,7 +74,7 @@ public class Cannon{
         // this calculate the tangent of the angle relative to y
         // and inverse tangent is calculated to get the angle
         // based on the position of the mouse
-        tan = (mousePos.x-380)/(mousePos.y-64);
+        tan = (mousePos.x-400)/(mousePos.y-64);
         angle = (float)(180*Math.atan(tan)/Math.PI);
 
 
