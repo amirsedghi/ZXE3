@@ -7,13 +7,13 @@ import com.badlogic.gdx.*;
 /**
  * Created by evolerup on 3/7/16.
  */
-public class MainMenuScreen implements Screen{
+public class MainMenuScreen2 implements Screen{
 
     final DD game;
 
     OrthographicCamera camera;
 
-    public MainMenuScreen(final DD gam){
+    public MainMenuScreen2(final DD gam){
         game = gam;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 400);

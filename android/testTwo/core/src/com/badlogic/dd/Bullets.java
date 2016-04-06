@@ -40,6 +40,7 @@ public class Bullets {
 
         bulletSprite.setPosition(initX, initY);
         double angel = Math.atan((mousepos.y - initY)/(mousepos.x - initX));
+
         final int velocity = 5;
         xVel = velocity * Math.cos(angel);
         yVel = velocity * Math.sin(angel);
