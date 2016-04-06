@@ -77,7 +77,7 @@ public class MainMenu extends Menu {
             public void changed(ChangeEvent event, Actor actor){
                 // TODO: Settings bs
                 //game.setScreen(new SettingsMenu(game));
-                game.setScreen(null);
+                game.setScreen(new SettingsMenu(game));
                 dispose();
             }
         });
