@@ -13,6 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+/*
+ * SettingsMenu
+ * A settings menu screen
+ * For changing game settings
+ * By Jacob
+ * 3/21/16
+ */
+
 public class SettingsMenu extends Menu {
     // Global variables and objects
 
@@ -20,7 +28,12 @@ public class SettingsMenu extends Menu {
     private TextButton backButton;
     private TextButton testButton;
 
-    // Constuctor(s)
+    /*
+     * Constructors
+     * Takes in game ApplicationAdapter
+     * By Jacob
+     * 3/21/16
+     */
     public SettingsMenu(final MyGdxGame game){
         super(game);
 
@@ -61,7 +74,7 @@ public class SettingsMenu extends Menu {
         }
     }
 
-    // Render method thing, just in case
+    // Render method thing, may or may not use it
     @Override
     public void render(float delta){
         super.render(delta);

@@ -19,9 +19,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 
 import java.awt.*;
 
-/**
- * Created by ghost_000 on 3/7/2016.
+/*
+ * MainMenu screen
+ * This is the very first screen seen when the game starts up.
+ * By Jacob
+ * 3/21/16
  */
+
 public class MainMenu extends Menu {
     // Global variables and objects
 
@@ -36,6 +40,14 @@ public class MainMenu extends Menu {
     private BitmapFont scoreFont;
     private String highScoreName;
 
+    /*
+     * Constructor
+     * Takes necessary game type
+     * Calls abstract constructor as well as creating all buttons
+     * Positioning them and such
+     * By Jacob
+     * 3/21/16
+     */
     public MainMenu(final MyGdxGame game){
         super(game);
 
@@ -96,7 +108,12 @@ public class MainMenu extends Menu {
         stage.addActor(exitButton);
         stage.addActor(scoreboardButton);
     }
-    // In the event of a score being submitted, this constructor is called
+    /*
+     * Alternative constructor
+     * If a score is submitted, this one is called in order to do the score submission process
+     * By Jacob
+     * 3/21/16
+     */
     public MainMenu(final MyGdxGame game, final int score){
         this(game); // Call main constructor
         // TODO: Do actual scoreboard stuff
@@ -125,19 +142,10 @@ public class MainMenu extends Menu {
         super.render(delta);
     }
 
-    @Override
-    public void show(){
-        super.show();
-    }
-
+    /* showScoreBoardUpdate
+     * Pulls the data from the scoreboard, and then displays it in a window
+     */
     public void showScoreBoardUpdate(){
-        // Temporary
-        /*System.out.printf("Scores: \n");
-        for (int i = 0; i < 10; i++){
-            System.out.printf("%s %d\n", game.scoreboard.getScore(i).getName(),
-                    game.scoreboard.getScore(i).getScoreNum());
-        }
-        System.out.printf("\n");*/
         // Put the printout into a big string
         String scoreboardString = "";
         for(int i = 0; i < 10; i++){

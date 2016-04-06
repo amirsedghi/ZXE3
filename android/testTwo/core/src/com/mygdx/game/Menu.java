@@ -12,7 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-// Implement screen or maybe not?
+/*
+ * Menu
+ * Abstract Class that implements most of the redundant systems needed to make a menu screen
+ * Includes Stage and the button skins, as well as the draw routine
+ * By Jacob
+ * 3/21/16
+ */
 abstract class Menu implements Screen{
     // Global variables and objects
     protected final MyGdxGame game;
@@ -59,10 +65,16 @@ abstract class Menu implements Screen{
         game.batch.begin();
         game.batch.end();
     }
+    /*
+     * Ensures that the stage viewpot matches window size when resized
+     * By Jacob
+     * 3/21/16
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, false);
     }
+    // The rest are necessary when implementing screen
     @Override
     public void hide() {
     }
@@ -75,6 +87,11 @@ abstract class Menu implements Screen{
     @Override
     public void show(){
     }
+    /*
+     * Dipose of any disposable objects
+     * By Jacob
+     * 3/21/16
+     */
     @Override
     public void dispose(){
         stage.dispose();
