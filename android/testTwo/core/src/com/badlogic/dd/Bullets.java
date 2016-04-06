@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
- * Created by JosePerez A on 4/4/16.
+ * Created by JosePerez on 4/4/16.
  */
 public class Bullets {
     // Universals
