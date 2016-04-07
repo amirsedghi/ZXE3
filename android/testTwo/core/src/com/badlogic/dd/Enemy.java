@@ -15,33 +15,55 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * Name: Enemy
+ * Purpose: * To define the enemy component for te game.
+            * Enemy has a health, attackPower and various properties
+            * contained in it's sprite to display it on the screen.
+            * The enemy moves from the top of the screen down to the wall.
+            * The enemy starts damaging the wall once it reaches it.
+            * The enemy spawns at a random x coordinate along the top of the screen.
+ * Author: Armand Abrahamian
+ * Date Created: 3/13/2016
+ */
 public class Enemy
 {
     // Variables:
-
-    protected int health, maxHealth, currentHealth, power;
+        // Simple Data Types:
+    protected int health, maxHealth, attackPower;
     protected boolean isDead;
+        // Sprite Properties:
     protected Sprite enemySprite; // enemy sprite
     private TextureAtlas textureAtlas;
     private Texture enemyImage;
     private TextureRegion textureRegion;
+        // Other Properties:
     protected Vector2 velocity; // velocity of the enemy
     protected Vector2 position;
     protected Rectangle rectangle; // rectangle object to detect collisions
+
     Wall wall;
 
     enum Direction{UP,DOWN,LEFT,RIGHT};
     Direction direction; //denotes enemies's direction
-
-    // Constructor:
+/*----------------------------------------------------------------------------------*/
+    /**
+     * Name of Module: Enemy
+     * Purpose: Constructor for the enemy to initialize its data.
+     * Input Parameters: The wall object
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 3/13/2016
+     */
     public Enemy(Wall passedinWall)
     {
         int xcordSpawn = MathUtils.random(0, 600);
         textureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.skeletonSpriteSheet));
         textureRegion = textureAtlas.findRegion("go", 1);
         enemyImage =  new Texture(GameConstants.enemyImage);
-        health = 1;
-        power = 1;
+        this.setMaxHealth(1);
+        this.setCurrentHealth(this.maxHealth);
+        this.setAttackPower(1);
         position = new Vector2(xcordSpawn, GameConstants.screenHeight);
         enemySprite = new Sprite(enemyImage);
         enemySprite.setSize(enemySprite.getWidth()*(GameConstants.screenWidth/GameConstants.ENEMY_RESIZE_FACTOR), enemySprite.getHeight()*(GameConstants.screenWidth/GameConstants.ENEMY_RESIZE_FACTOR));
@@ -53,50 +75,125 @@ public class Enemy
     }
     // Behavioral Methods:
 
+    // TODO
     public void die()
     {
 
     }
 
-    public int attack()
+    /**
+     * Name of Module: attackWall
+     * Purpose: Wall takes damage.
+     * Input Parameters: The wall object
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
+    public void attackWall(Wall wall)
     {
-        return power;
+        wall.adjustHealth(-1 * this.getAttackPower());
     }
 
+    /**
+     * Name of Module: hurt
+     * Purpose: Enemy takes damage and loses health.
+     * Input Parameters: int damage
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
     public void hurt(int damage)
     {
-        this.health -= damage;
+        this.setCurrentHealth(this.getCurrentHealth() - damage);
     }
 
     // Getters and Setters:
+
+    /**
+     * Name of Module: setMaxHealth
+     * Purpose: Sets the maximum health for the enemy.
+     * Input Parameters: int maxHealth
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
 
+    /**
+     * Name of Module: setCurrentHealth
+     * Purpose: Sets the current health for the enemy.
+     * Input Parameters: int currentHealth
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
     public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
+        this.health = currentHealth;
     }
 
-    public void setPower(int power) {
-        this.power = power;
+    /**
+     * Name of Module: setAttackPower
+     * Purpose: Sets the attack power for the enemy.
+     * Input Parameters: int power
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
+    public void setAttackPower(int power) {
+        this.attackPower = power;
     }
 
+    /**
+     * Name of Module: getMaxHealth
+     * Purpose: Return the maximum health
+     * Input Parameters: N/A
+     * Output Parameters: int maxHealth
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
     public int getMaxHealth() {
         return maxHealth;
     }
 
+    /**
+     * Name of Module: getCurrentHealth
+     * Purpose: Return the current health
+     * Input Parameters: N/A
+     * Output Parameters: int health
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
     public int getCurrentHealth() {
-        return currentHealth;
+        return health;
     }
 
-    public int getPower() {
-        return power;
+    /**
+     * Name of Module: getAttackPower
+     * Purpose: Return the enemy's attack power
+     * Input Parameters: N/A
+     * Output Parameters: int attackPower
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
+    public int getAttackPower() {
+        return attackPower;
     }
 
+    /**
+     * Name of Module: getRectangle
+     * Purpose: Return the rectangle drawn around the enemy sprite
+     * Input Parameters: N/A
+     * Output Parameters: Rectangle rectangle
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
     public Rectangle getRectangle() {
         return rectangle;
     }
 
+    // TODO
     public boolean isCollided(Rectangle rect)
     {
         Gdx.app.log("Collision Detected", ""+ rectangle.overlaps(rect));
@@ -104,11 +201,29 @@ public class Enemy
     }
 
     // Rendering Methods:
+
+    /**
+     * Name of Module: render
+     * Purpose: Draws the enemy sprite on the screen.
+     * Input Parameters: SpriteBatch batch
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
     public void render(SpriteBatch batch)
     {
         enemySprite.draw(batch);
     }
 
+    /**
+     * Name of Module: update
+     * Purpose: Updates the enemy's properties.
+     *          Checks when enemy has reached the wall.
+     * Input Parameters: N/A
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
     public void update ()
     {
         // set the rectangle with skeleton's dimensions for collisions
@@ -148,7 +263,8 @@ public class Enemy
             position.sub(velocity);
             enemySprite.setY(position.y);
             rectangle.setPosition(position);
-            wall.adjustHealth(-1 * this.getPower());
+            // Damage wall
+            this.attackWall(wall);
         }
 
     }

@@ -32,9 +32,9 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     public Vector3 mousePos;
 
+    // Declaring game components: cannon, wall, enemy, and bullet
     // instantiate a cannon
-    Cannon cannon = new Cannon();
-
+    Cannon cannon = new Cannon(); // instantiating cannon object
     private Wall wall;
     Enemy enemy;
 
@@ -49,9 +49,8 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
-        wall = new Wall(100, 120);
-        // instantiate enemy
-        enemy = new Enemy(wall);
+        wall = new Wall(100, 120); // instantiate wall object
+        enemy = new Enemy(wall); // instantiate enemy object
     }
 
     public void render(float delta) {
@@ -84,11 +83,12 @@ public class GameScreen implements Screen {
         // print the angle
         System.out.println("angle: "+-cannon.getAngle());
 
-        // enemy:
+        // Draw and update the enemies properties:
         enemy.update();
         enemy.render(batch);
 
-        wall.render(batch);
+        wall.render(batch); // Draw wall onto screen
+
         //Changed the cannon to sprite to add more functionality
         //batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
         cannonSprite.draw(batch);
