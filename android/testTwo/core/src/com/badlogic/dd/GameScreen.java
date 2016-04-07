@@ -50,7 +50,9 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
         wall = new Wall(100, 120); // instantiate wall object
+        System.out.println("Wall Created");
         enemy = new Enemy(wall); // instantiate enemy object
+        System.out.println("Enemy Spawned");
     }
 
     public void render(float delta) {
