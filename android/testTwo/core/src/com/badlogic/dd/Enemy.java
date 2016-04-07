@@ -254,7 +254,7 @@ public class Enemy
         }
 
         // Move and stop enemy:
-        if (enemySprite.getY() > 120 ) {
+        if (enemySprite.getY() > 130 ) {
             position.add(velocity);
             enemySprite.setY(position.y);
             rectangle.setPosition(position);
