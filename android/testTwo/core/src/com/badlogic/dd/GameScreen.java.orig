@@ -20,7 +20,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.math.*;
-import java.io.PrintWriter;
+
 
 /**
  * Created by evolerup on 3/7/16.
@@ -35,13 +35,12 @@ public class GameScreen implements Screen {
     // instantiate a cannon
     Cannon cannon = new Cannon();
 
+
     private Wall wall;
-    Enemy enemy;
 
     Bullets bullet = null;
     //Boolean if mouse is clicked
     boolean touched = true;
-
 
 
     public GameScreen(final DD gam){
@@ -49,9 +48,15 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
+<<<<<<< HEAD
+    }
+
+    // instantiate enemy
+    Enemy enemy = new Enemy();
+
+    public void render(float delta){
+=======
         wall = new Wall(100, 120);
-        // instantiate enemy
-        enemy = new Enemy(wall);
     }
 
     public void render(float delta) {
@@ -61,6 +66,7 @@ public class GameScreen implements Screen {
         //wall.getHealth(); // For health bar
                 
 
+>>>>>>> master
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -68,25 +74,28 @@ public class GameScreen implements Screen {
         mousePos = new Vector3(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
         // pass the vector to the cannon instant
         cannon.setVector(mousePos);
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> master
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
         // Cannon sprite properties
         Sprite cannonSprite = cannon.getSprite();
-        cannonSprite.setOrigin(cannonSprite.getWidth()/2,10 + cannonSprite.getHeight()/2);
+        cannonSprite.setOrigin(cannonSprite.getWidth()/2,0);
         cannonSprite.setRotation(-cannon.getAngle());
-        cannonSprite.setX(340);
+        cannonSprite.setX(320);
         cannonSprite.setY(10);
         batch.begin();
-
-        // print the angle
-        System.out.println("angle: "+-cannon.getAngle());
+<<<<<<< HEAD
+        batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
 
         // enemy:
         enemy.update();
         enemy.render(batch);
+=======
 
         wall.render(batch);
         //Changed the cannon to sprite to add more functionality
@@ -109,7 +118,7 @@ public class GameScreen implements Screen {
             touched = true;
             int X = (int)bulletAngleX(cannonSprite.getX());
             //int Y = (int)bulletAngleY(cannonSprite.getY());
-            bullet = new Bullets(mousePos,370, 34, cannon.getAngle());
+            bullet = new Bullets(mousePos,X, 0);
 
 
         }
@@ -121,12 +130,19 @@ public class GameScreen implements Screen {
 
     public float bulletAngleX (float xBall){
         xBall =  (float)-Math.sin(Math.PI*cannon.getAngle()/180)*54;
-        xBall = 400 - xBall - 30;
+        xBall = 380 - xBall - 30;
         return xBall;
+>>>>>>> master
 
+        batch.end();
 
     }
-
+//    public float bulletAngleY (float yBall){
+//        yBall = (float) Math.cos(Math.PI*cannon.getAngle()/180)*54;
+//        yBall = 64 + yBall;
+//        return yBall;
+//
+//    }
 
     public void resize(int width, int height){
 
@@ -149,6 +165,5 @@ public class GameScreen implements Screen {
     }
 
     public void dispose(){
-
     }
 }

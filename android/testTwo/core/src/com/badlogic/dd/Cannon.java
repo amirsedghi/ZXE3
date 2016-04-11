@@ -22,6 +22,13 @@ import com.badlogic.gdx.math.*;
 /**
  * Created by evolerup on 3/31/16.
  */
+
+/*
+class Cannon:
+Purpose: to instantiate the texture of the cannon and calculate the angle at which the cannon should point to
+Author: Amir Sedghi
+Date: 3/28/16
+ */
 public class Cannon{
 
     // create the variables
@@ -41,18 +48,33 @@ public class Cannon{
 
     }
 
-    // set the vector
+    /*
+    Name: setVector
+    purpose: receives the location of the mouse during the game for angle calculation
+    input parameter: Vector3 which has three elements, x, y, and z
+    no return value
+    author: Amir Sedghi
+    date: 3/28/16
+     */
     public void setVector(Vector3 v){
         mousePos = v;
     }
 
-    // return the calculated angle
+
+    /*
+       Name: getAngle
+       purpose: calculates the angle based on the vector that is passed to mousePos
+       input parameter: no input
+       return: returns a float value, which is the calculated angle
+       author: Amir Sedghi
+       date: 3/28/16
+    */
     public float getAngle(){
 
         // this calculate the tangent of the angle relative to y
         // and inverse tangent is calculated to get the angle
         // based on the position of the mouse
-        tan = (mousePos.x-380)/(mousePos.y-64);
+        tan = (mousePos.x-400)/(mousePos.y-64);
         angle = (float)(180*Math.atan(tan)/Math.PI);
 
 
@@ -69,11 +91,14 @@ public class Cannon{
         return angle;
     }
 
-    // this returns the texture region
-    public TextureRegion getTextureRegion(){
-        return cannonRegion;
-    }
-
+    /*
+   Name: getSprite
+   purpose: returns the sprite belonging to the cannon
+   input parameter: no input
+   return: returns the sprite
+   author: Amir Sedghi
+   date: 3/28/16
+    */
 
     public Sprite getSprite(){
         return cannonSprite;
