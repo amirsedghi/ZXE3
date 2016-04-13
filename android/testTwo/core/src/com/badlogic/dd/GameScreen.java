@@ -58,7 +58,7 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         wall = new Wall(100, 120); // instantiate wall object
         System.out.println("Wall Created");
-        System.out.println("Wall current health: " + wall.getHealth());
+        System.out.println("Wall Current Health: " + wall.getHealth());
         enemies = new ArrayList();// Create array list of enemies
         System.out.println("Initial size of enemies: " + enemies.size());
     }
@@ -77,7 +77,7 @@ public class GameScreen implements Screen {
         //wall.getDistanceToWall(positionOfEnemy); // how far enemy is to wall to stop enemy from walking through wall
         //wall.adjustHealth(-10); // Some damage done
         //wall.getHealth(); // For health bar
-                
+
 
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -107,6 +107,12 @@ public class GameScreen implements Screen {
         {
             enemies.get(index).update();
             enemies.get(index).render(batch);
+
+            if(enemies.get(index).isDead == true)
+            {
+                System.out.println("---Enemy " + index + " is dead!---");
+                enemies.remove(enemies.get(index));
+            }
         }
 
         wall.render(batch); // Draw wall onto screen
@@ -165,7 +171,7 @@ public class GameScreen implements Screen {
     {
         enemy = new Enemy(wall); // instantiate enemy object
         enemies.add(enemy);
-        System.out.println("Enemy Spawned");
+        System.out.println("----Enemy Spawned----");
         System.out.println("Number of enemies: " + enemies.size());
         lastSpawnTime = TimeUtils.nanoTime();
     }

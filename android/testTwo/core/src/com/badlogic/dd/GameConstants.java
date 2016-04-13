@@ -14,6 +14,7 @@ public class GameConstants
     public static final float maxVelocity = 0.1f;
     public static final float SKELETON_VELOCITY = 0.2f;
     public static final float SKELETON_ATTACK_SPEED = 0.1f;
+
     //public static float screenWidth = Gdx.graphics.getWidth();
     //public static float screenHeight = Gdx.graphics.getHeight();
     public static float screenWidth = 800;

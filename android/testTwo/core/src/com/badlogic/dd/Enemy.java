@@ -65,7 +65,7 @@ public class Enemy
         textureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.skeletonSpriteSheet));
         textureRegion = textureAtlas.findRegion("go", 1);
         enemyImage =  new Texture(GameConstants.enemyImage);
-        this.setMaxHealth(1);
+        this.setMaxHealth(3);
         this.setCurrentHealth(this.maxHealth);
         this.setAttackPower(1);
         position = new Vector2(xcordSpawn, GameConstants.screenHeight);
@@ -82,7 +82,7 @@ public class Enemy
     // TODO
     public void die()
     {
-
+        this.isDead = true;
     }
 
     /**
@@ -204,7 +204,7 @@ public class Enemy
         return rect.overlaps(rectangle);
     }
 
-    // Rendering Methods:
+    // Behavioral Methods:
 
     /**
      * Name of Module: render
@@ -271,6 +271,10 @@ public class Enemy
             if(TimeUtils.nanoTime() - prevtime > 1000000000) {
                 this.attackWall(wall); // Damage wall
                 System.out.println("Wall health after taking damage: " + wall.getHealth());
+                this.hurt(this.getAttackPower());
+                System.out.println("--Enemy health after attacking wall: " + this.getCurrentHealth());
+                if(this.getCurrentHealth() == 0)
+                    this.die();
                 prevtime = TimeUtils.nanoTime();
             }
         }
