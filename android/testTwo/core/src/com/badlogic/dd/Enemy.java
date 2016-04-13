@@ -79,7 +79,14 @@ public class Enemy
     }
     // Behavioral Methods:
 
-    // TODO
+    /**
+     * Name of Module: die
+     * Purpose: sets the flag for when the enemy reaches a health of 0.
+     * Input Parameters: N/A
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 4/12/2016
+     */
     public void die()
     {
         this.isDead = true;
@@ -204,7 +211,7 @@ public class Enemy
         return rect.overlaps(rectangle);
     }
 
-    // Behavioral Methods:
+    // Render and Update Methods:
 
     /**
      * Name of Module: render
