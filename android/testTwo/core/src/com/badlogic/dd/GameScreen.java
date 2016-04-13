@@ -17,10 +17,10 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.math.*;
 import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * Created by evolerup on 3/7/16.
@@ -32,18 +32,25 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     public Vector3 mousePos;
 
-    // Declaring game components: cannon, wall, enemy, and bullet
-    // instantiate a cannon
-    Cannon cannon = new Cannon(); // instantiating cannon object
+    // Declaring game components: cannon, wall, enemy, and bullet:
+    Cannon cannon = new Cannon(); // instantiate cannon object
     private Wall wall;
+    ArrayList<Enemy> enemies;
+    long lastSpawnTime;
     Enemy enemy;
-
     Bullets bullet = null;
+
     //Boolean if mouse is clicked
     boolean touched = true;
 
-
-
+    /**
+     * Name of Module: GameScreen
+     * Purpose: Constructor for Gamescreen class to initialize game objects.
+     * Input Parameters:
+     * Output Parameters: N/A
+     * Author: -
+     * Creation Date: 3/7/2016
+     */
     public GameScreen(final DD gam){
         this.game = gam;
         camera = new OrthographicCamera();
@@ -51,10 +58,20 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         wall = new Wall(100, 120); // instantiate wall object
         System.out.println("Wall Created");
-        enemy = new Enemy(wall); // instantiate enemy object
-        System.out.println("Enemy Spawned");
+        System.out.println("Wall current health: " + wall.getHealth());
+        enemies = new ArrayList();// Create array list of enemies
+        System.out.println("Initial size of enemies: " + enemies.size());
     }
 
+    /**
+     * Name of Module: render
+     * Purpose: render is a method called by the game loop from the application every time rendering
+     *          should be performed. Game logic updates are usually also performed in this method.
+     * Input Parameters: float delta
+     * Output Parameters: N/A
+     * Author: -
+     * Creation Date: 3/7/2016
+     */
     public void render(float delta) {
         // Do damage to wall, or calculate wall distance
         //wall.getDistanceToWall(positionOfEnemy); // how far enemy is to wall to stop enemy from walking through wall
@@ -83,11 +100,14 @@ public class GameScreen implements Screen {
         batch.begin();
 
         // print the angle
-        System.out.println("angle: "+-cannon.getAngle());
+        //System.out.println("angle: "+-cannon.getAngle());
 
         // Draw and update the enemies properties:
-        enemy.update();
-        enemy.render(batch);
+        for(int index = 0; index < enemies.size(); index++)
+        {
+            enemies.get(index).update();
+            enemies.get(index).render(batch);
+        }
 
         wall.render(batch); // Draw wall onto screen
 
@@ -105,6 +125,17 @@ public class GameScreen implements Screen {
             }
         }
         batch.end();
+
+        // Enemy Spawn Timer:
+        if(TimeUtils.nanoTime() - lastSpawnTime > 10000000000f)
+        {
+            if(enemies.size() > 20)
+            {
+                ;
+            }
+            else
+                spawnEnemy();
+        }
 
         //If a mouse click is registered on the gamescreen a cannonball will be spawned
         if(Gdx.input.isTouched() && !touched){
@@ -129,7 +160,24 @@ public class GameScreen implements Screen {
 
     }
 
+    // Helper function to spawn enemies:
+    public void spawnEnemy()
+    {
+        enemy = new Enemy(wall); // instantiate enemy object
+        enemies.add(enemy);
+        System.out.println("Enemy Spawned");
+        System.out.println("Number of enemies: " + enemies.size());
+        lastSpawnTime = TimeUtils.nanoTime();
+    }
 
+    /**
+     * Name of Module: resize
+     * Purpose: render is a method is only called on Android, when the application resumes from a paused state.
+     * Input Parameters: int width, int height
+     * Output Parameters: N/A
+     * Author: -
+     * Creation Date: 3/7/2016
+     */
     public void resize(int width, int height){
 
     }
@@ -142,14 +190,40 @@ public class GameScreen implements Screen {
 
     }
 
+    /**
+     * Name of Module: pause
+     * Purpose: On Android this method is called when the Home button is pressed or an incoming call is received.
+     *          On desktop this is called just before dispose() when exiting the application.
+     *          A good place to save the game state.
+     * Input Parameters: N/A
+     * Output Parameters: N/A
+     * Author: -
+     * Creation Date: 3/7/2016
+     */
     public void pause(){
 
     }
 
+    /**
+     * Name of Module: resume
+     * Purpose: This method is only called on Android, when the application resumes from a paused state.
+     * Input Parameters: N/A
+     * Output Parameters: N/A
+     * Author: -
+     * Creation Date: 3/7/2016
+     */
     public void resume(){
 
     }
 
+    /**
+     * Name of Module: dispose
+     * Purpose: Called when the application is destroyed. It is preceded by a call to pause().
+     * Input Parameters: N/A
+     * Output Parameters: N/A
+     * Author: -
+     * Creation Date: 3/7/2016
+     */
     public void dispose(){
 
     }

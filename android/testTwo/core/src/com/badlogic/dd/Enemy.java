@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 
 /**
  * Name: Enemy
@@ -32,18 +32,22 @@ public class Enemy
         // Simple Data Types:
     protected int health, maxHealth, attackPower;
     protected boolean isDead;
+    protected long prevtime;
+
         // Sprite Properties:
     protected Sprite enemySprite; // enemy sprite
     private TextureAtlas textureAtlas;
     private Texture enemyImage;
     private TextureRegion textureRegion;
-        // Other Properties:
+
+        // Other Properties for enemy:
     protected Vector2 velocity; // velocity of the enemy
     protected Vector2 position;
     protected Rectangle rectangle; // rectangle object to detect collisions
 
-    Wall wall;
+    Wall wall; // Used to refer to wall object passed in
 
+    // Enumerator to hold the direction of the enemy:
     enum Direction{UP,DOWN,LEFT,RIGHT};
     Direction direction; //denotes enemies's direction
 /*----------------------------------------------------------------------------------*/
@@ -263,8 +267,12 @@ public class Enemy
             position.sub(velocity);
             enemySprite.setY(position.y);
             rectangle.setPosition(position);
-            // Damage wall
-            this.attackWall(wall);
+
+            if(TimeUtils.nanoTime() - prevtime > 1000000000) {
+                this.attackWall(wall); // Damage wall
+                System.out.println("Wall health after taking damage: " + wall.getHealth());
+                prevtime = TimeUtils.nanoTime();
+            }
         }
 
     }
