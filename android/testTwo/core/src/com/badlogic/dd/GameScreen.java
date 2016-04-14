@@ -40,9 +40,6 @@ public class GameScreen implements Screen {
     Enemy enemy;
     Bullets bullet = null;
 
-    //Boolean if mouse is clicked
-    boolean touched = true;
-
     /**
      * Name of Module: GameScreen
      * Purpose: Constructor for Gamescreen class to initialize game objects.
@@ -122,11 +119,19 @@ public class GameScreen implements Screen {
         //batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
         cannonSprite.draw(batch);
         if(bullet != null){
-            if(bullet.updateBullet(mousePos, cannon.getAngle())) {
+            if(bullet.updateBullet()) {
                 bullet.getSprite().draw(batch);
-
             }
             else{
+                // Dispose/hide the bullet, because it landed
+                // Now, check whether or not it has hit an enemy.
+
+                for (Enemy e : enemies) {
+                    if (e.isCollided(bullet)) {
+                        e.die();
+                    }
+                }
+
                 bullet.dispose();
                 bullet = null;
             }
@@ -145,18 +150,11 @@ public class GameScreen implements Screen {
         }
 
         //If a mouse click is registered on the gamescreen a cannonball will be spawned
-        if(Gdx.input.isTouched() && !touched){
-            touched = true;
+        if(Gdx.input.isTouched() && bullet == null){
             int X = (int)bulletAngleX(cannonSprite.getX());
             //int Y = (int)bulletAngleY(cannonSprite.getY());
             bullet = new Bullets(mousePos,370, 34, cannon.getAngle());
-
-
         }
-        else if(!Gdx.input.isTouched() && touched){
-            touched = false;
-        }
-
     }
 
     public float bulletAngleX (float xBall){

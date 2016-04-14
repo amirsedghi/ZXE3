@@ -2,6 +2,7 @@ package com.badlogic.dd;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -67,7 +68,12 @@ public class Bullets {
         return coordinates;
     }
 
-    public boolean updateBullet(Vector3 b, float a){
+
+    public Vector2 getBulletPosition() {
+        return new Vector2(bulletSprite.getX(), bulletSprite.getY());
+    }
+
+    public boolean updateBullet(){
         // True if finished travelling, False if not.
         // Update the travel path of the bullet
         // Dispose if finished
