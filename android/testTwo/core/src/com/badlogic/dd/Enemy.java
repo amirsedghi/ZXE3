@@ -31,7 +31,7 @@ public class Enemy
 {
     // Variables:
         // Simple Data Types:
-    protected int health, maxHealth, attackPower;
+    protected int health, maxHealth, attackPower, behavior, updateCount;
     protected boolean isDead;
     protected long prevtime;
     protected float elapsedTime = 0f;
@@ -87,8 +87,9 @@ public class Enemy
         walkingAnimation = new Animation(GameConstants.WALK_FRAME_DURATION, walkingtextureAtlas.getRegions(), Animation.PlayMode.LOOP);
         attackAnimation = new Animation(GameConstants.ATTACK_FRAME_DURATION, attacktextureAtlas.getRegions(), Animation.PlayMode.LOOP);
 
-
         wall = passedinWall;
+        // Behavior defined
+        behavior = 1;
     }
     // Behavioral Methods:
 
@@ -259,6 +260,7 @@ public class Enemy
      */
     public void update ()
     {
+        updateCount++;
         // set the rectangle with skeleton's dimensions for collisions
         rectangle.setPosition(position);
         rectangle.setSize(enemySprite.getWidth(), enemySprite.getHeight());
@@ -288,9 +290,21 @@ public class Enemy
 
         // Move and stop enemy:
         if (enemySprite.getY() > 130 ) {
-                position.add(velocity);
-                enemySprite.setY(position.y);
-                rectangle.setPosition(position);
+            switch (behavior){
+                case 1:{
+                    position.add(velocity);
+                    enemySprite.setY(position.y);
+                    // ZigZag
+                    enemySprite.translateX(((updateCount % (17*2) < 17) ? 6:-6));
+                    position.y = enemySprite.getY();
+                    rectangle.setPosition(position);
+                }
+                default:{
+                    position.add(velocity);
+                    enemySprite.setY(position.y);
+                    rectangle.setPosition(position);
+                }
+            }
         }
         else {
             enemySprite.setY(position.y);
