@@ -79,7 +79,8 @@ public class GameScreen implements Screen {
         //wall.getHealth(); // For health bar
 
 
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        //Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // get the coordinates of mouse position
@@ -93,7 +94,7 @@ public class GameScreen implements Screen {
 
         // Cannon sprite properties
         Sprite cannonSprite = cannon.getSprite();
-        cannonSprite.setOrigin(cannonSprite.getWidth()/2,10 + cannonSprite.getHeight()/2);
+        cannonSprite.setOrigin(cannonSprite.getWidth()/2, 54);
         cannonSprite.setRotation(-cannon.getAngle());
         cannonSprite.setX(340);
         cannonSprite.setY(10);
@@ -121,7 +122,7 @@ public class GameScreen implements Screen {
         //batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
         cannonSprite.draw(batch);
         if(bullet != null){
-            if(bullet.updateBullet()) {
+            if(bullet.updateBullet(mousePos, cannon.getAngle())) {
                 bullet.getSprite().draw(batch);
 
             }
