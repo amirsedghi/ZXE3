@@ -1,0 +1,61 @@
+
+enemyattack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+hit
+  rotate: false
+  xy: 1, 383
+  size: 257, 362
+  orig: 328, 384
+  offset: 63, 18
+  index: 5
+hit
+  rotate: false
+  xy: 1, 15
+  size: 241, 366
+  orig: 328, 384
+  offset: 1, 18
+  index: 7
+hit
+  rotate: false
+  xy: 260, 383
+  size: 238, 362
+  orig: 328, 384
+  offset: 13, 18
+  index: 4
+hit
+  rotate: false
+  xy: 244, 19
+  size: 206, 362
+  orig: 328, 384
+  offset: 116, 18
+  index: 2
+hit
+  rotate: false
+  xy: 500, 383
+  size: 204, 362
+  orig: 328, 384
+  offset: 121, 18
+  index: 1
+hit
+  rotate: false
+  xy: 452, 19
+  size: 204, 362
+  orig: 328, 384
+  offset: 121, 18
+  index: 8
+hit
+  rotate: false
+  xy: 706, 384
+  size: 187, 361
+  orig: 328, 384
+  offset: 140, 18
+  index: 6
+hit
+  rotate: false
+  xy: 658, 1
+  size: 150, 380
+  orig: 328, 384
+  offset: 116, 0
+  index: 3
