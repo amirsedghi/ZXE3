@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
 /**
@@ -33,17 +34,20 @@ public class Enemy
     protected int health, maxHealth, attackPower;
     protected boolean isDead;
     protected long prevtime;
+    protected float elapsedTime = 0f;
 
         // Sprite Properties:
     protected Sprite enemySprite; // enemy sprite
-    private TextureAtlas textureAtlas;
-    private Texture enemyImage;
-    private TextureRegion textureRegion;
+    private TextureAtlas walkingtextureAtlas, attacktextureAtlas;
+    //private Texture enemyImage;
+    private TextureRegion walkingtextureRegion, attackTextureRegion;
 
         // Other Properties for enemy:
     protected Vector2 velocity; // velocity of the enemy
     protected Vector2 position;
     protected Rectangle rectangle; // rectangle object to detect collisions
+    // Walking animation
+    private Animation walkingAnimation, attackAnimation;
 
     Wall wall; // Used to refer to wall object passed in
 
@@ -62,19 +66,28 @@ public class Enemy
     public Enemy(Wall passedinWall)
     {
         int xcordSpawn = MathUtils.random(0, 600);
-        textureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.skeletonSpriteSheet));
-        textureRegion = textureAtlas.findRegion("go", 1);
-        enemyImage =  new Texture(GameConstants.enemyImage);
+        // Frames loading from atlas:
+        walkingtextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.enemywalkSpriteSheet));
+        walkingtextureRegion = walkingtextureAtlas.findRegion("go", 1);
+        attacktextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.enemyattackSpriteSheet));
+        attackTextureRegion = walkingtextureAtlas.findRegion("hit", 1);
+
+        //enemyImage =  new Texture(GameConstants.enemyImage);
         this.setMaxHealth(3);
         this.setCurrentHealth(this.maxHealth);
         this.setAttackPower(1);
         position = new Vector2(xcordSpawn, GameConstants.screenHeight);
-        enemySprite = new Sprite(enemyImage);
+        enemySprite = new Sprite(walkingtextureRegion);
         enemySprite.setSize(enemySprite.getWidth()*(GameConstants.screenWidth/GameConstants.ENEMY_RESIZE_FACTOR), enemySprite.getHeight()*(GameConstants.screenWidth/GameConstants.ENEMY_RESIZE_FACTOR));
         enemySprite.setSize(enemySprite.getWidth()*GameConstants.unitScale, enemySprite.getHeight()*GameConstants.unitScale);
         enemySprite.setPosition(position.x, position.y);
         velocity = new Vector2(0, (-1)*GameConstants.SKELETON_VELOCITY);
         rectangle = new Rectangle();
+        // Building the animation:
+        walkingAnimation = new Animation(GameConstants.WALK_FRAME_DURATION, walkingtextureAtlas.getRegions(), Animation.PlayMode.LOOP);
+        attackAnimation = new Animation(GameConstants.ATTACK_FRAME_DURATION, attacktextureAtlas.getRegions(), Animation.PlayMode.LOOP);
+
+
         wall = passedinWall;
     }
     // Behavioral Methods:
@@ -223,6 +236,15 @@ public class Enemy
      */
     public void render(SpriteBatch batch)
     {
+        elapsedTime += Gdx.graphics.getDeltaTime();
+        // Getting the frame which must be rendered
+        if (enemySprite.getY() > 130 ) {
+            enemySprite.setRegion(walkingAnimation.getKeyFrame(elapsedTime));
+        }
+        else {
+            enemySprite.setRegion(attackAnimation.getKeyFrame(elapsedTime));
+        }
+        // Drawing the frame
         enemySprite.draw(batch);
     }
 
@@ -266,12 +288,11 @@ public class Enemy
 
         // Move and stop enemy:
         if (enemySprite.getY() > 130 ) {
-            position.add(velocity);
-            enemySprite.setY(position.y);
-            rectangle.setPosition(position);
+                position.add(velocity);
+                enemySprite.setY(position.y);
+                rectangle.setPosition(position);
         }
         else {
-            position.sub(velocity);
             enemySprite.setY(position.y);
             rectangle.setPosition(position);
 
@@ -288,4 +309,10 @@ public class Enemy
 
     }
 
+    public void dispose()
+    {
+        //enemyImage.dispose();
+        walkingtextureAtlas.dispose();
+        attacktextureAtlas.dispose();
+    }
 }
