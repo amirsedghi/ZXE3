@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.TimeUtils;
+import javafx.scene.shape.Circle;
 
 /**
  * Name: Enemy
@@ -209,6 +210,13 @@ public class Enemy
     {
         Gdx.app.log("Collision Detected", ""+ rectangle.overlaps(rect));
         return rect.overlaps(rectangle);
+    }
+    public boolean isCollided(Bullets b)
+    {
+        Vector2 bpos = b.getBulletPosition();
+        Gdx.app.log("Collision with bullet detected", "" + bpos.x + ", " + bpos.y);
+        Rectangle r = new Rectangle(bpos.x, bpos.y, b.getSprite().getWidth(), b.getSprite().getHeight());
+        return r.overlaps(rectangle);
     }
 
     // Render and Update Methods:

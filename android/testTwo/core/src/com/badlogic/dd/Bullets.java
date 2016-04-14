@@ -2,6 +2,7 @@ package com.badlogic.dd;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -52,6 +53,10 @@ public class Bullets {
 
     public Sprite getSprite(){
         return bulletSprite;
+    }
+
+    public Vector2 getBulletPosition() {
+        return new Vector2(bulletSprite.getX(), bulletSprite.getY());
     }
 
     public boolean updateBullet(){
