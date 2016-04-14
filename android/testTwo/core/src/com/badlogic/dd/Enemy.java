@@ -321,10 +321,10 @@ public class Enemy
             if(TimeUtils.nanoTime() - prevtime > 1000000000) {
                 this.attackWall(wall); // Damage wall
                 System.out.println("Wall health after taking damage: " + wall.getHealth());
-                this.hurt(this.getAttackPower());
-                System.out.println("--Enemy health after attacking wall: " + this.getCurrentHealth());
-                if(this.getCurrentHealth() == 0)
-                    this.die();
+//                this.hurt(this.getAttackPower());
+//                System.out.println("--Enemy health after attacking wall: " + this.getCurrentHealth());
+//                if(this.getCurrentHealth() == 0)
+//                    this.die();
                 prevtime = TimeUtils.nanoTime();
             }
         }
