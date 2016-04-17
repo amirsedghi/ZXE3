@@ -21,6 +21,8 @@ public class Bullets {
     private int initX;
     private int initY;
     private Vector3 coordinates;
+    private final int WIDTH = 60;
+    private final int HEIGHT = 60;
 
     //private double angel;
     private double xVel;
@@ -40,11 +42,11 @@ public class Bullets {
         //
         bulletTexture = new Texture("cannonBallImage.png");
         bulletSprite = new Sprite(bulletTexture);
-        bulletSprite.setSize(60,60);
-        bulletSprite.setOrigin(30, 30);
+        bulletSprite.setSize(WIDTH,HEIGHT);
+        bulletSprite.setOrigin(WIDTH/2, HEIGHT/2);
 
-        xCC = initX + 30;
-        yCC = initY + 30;
+        xCC = initX + WIDTH/2;
+        yCC = initY + HEIGHT/2;
 
 
         bulletSprite.setPosition(initX, initY);
