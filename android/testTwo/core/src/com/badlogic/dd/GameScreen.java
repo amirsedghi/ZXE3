@@ -139,11 +139,11 @@ public class GameScreen implements Screen {
         batch.end();
 
         // Enemy Spawn Timer:
-        if(TimeUtils.nanoTime() - lastSpawnTime > 10000000000f)
+        if(TimeUtils.nanoTime() - lastSpawnTime > 1000000000f)
         {
             if(enemies.size() > 20)
             {
-                ;
+
             }
             else
                 spawnEnemy();

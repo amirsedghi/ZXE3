@@ -219,7 +219,6 @@ public class Enemy
     {
         Vector2 bpos = b.getBulletPosition();
         Gdx.app.log("Collision with bullet detected", "" + bpos.x + ", " + bpos.y);
-        Rectangle r = new Rectangle(bpos.x, bpos.y, b.getSprite().getWidth(), b.getSprite().getHeight());
         com.badlogic.gdx.math.Circle cir = new com.badlogic.gdx.math.Circle((float) (bpos.x+WIDTH/2), (float) (bpos.y + HEIGHT/2), (float) (2*WIDTH/2));
 
         //return r.overlaps(rectangle);
