@@ -42,16 +42,15 @@ public class Enemy
 
         // Sprite Properties:
     protected Sprite enemySprite; // enemy sprite
-    private TextureAtlas walkingtextureAtlas, attacktextureAtlas;
+    private TextureAtlas walkingtextureAtlas, attacktextureAtlas, deathtextureAtlas;
     //private Texture enemyImage;
-    private TextureRegion walkingtextureRegion, attackTextureRegion;
-
+    private TextureRegion walkingtextureRegion, attackTextureRegion, deathTextureRegion;
 
         // Other Properties for enemy:
     protected Vector2 velocity; // velocity of the enemy
     protected Vector2 position;
     protected Rectangle rectangle; // rectangle object to detect collisions
-    private Animation walkingAnimation, attackAnimation; // animations
+    private Animation walkingAnimation, attackAnimation, deathAnimation; // animations
 
     Wall wall; // Used to refer to wall object passed in
 
@@ -70,11 +69,12 @@ public class Enemy
     public Enemy(Wall passedinWall)
     {
         int xcordSpawn = MathUtils.random(0, 600);
-        // Frames loading from atlas:
-        walkingtextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.enemywalkSpriteSheet));
+        // Frames loaded from texture atlas:
+        walkingtextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.SkeletonWalkSpriteSheet));
         walkingtextureRegion = walkingtextureAtlas.findRegion("go", 1);
-        attacktextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.enemyattackSpriteSheet));
-        attackTextureRegion = walkingtextureAtlas.findRegion("hit", 1);
+        attacktextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.SkeletonAttackSpriteSheet));
+        //attackTextureRegion = walkingtextureAtlas.findRegion("hit", 1);
+        deathtextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.SkeletonDeathSpriteSheet));
 
         //enemyImage =  new Texture(GameConstants.enemyImage);
         this.setMaxHealth(3);
@@ -90,6 +90,7 @@ public class Enemy
         // Building the animation:
         walkingAnimation = new Animation(GameConstants.WALK_FRAME_DURATION, walkingtextureAtlas.getRegions(), Animation.PlayMode.LOOP);
         attackAnimation = new Animation(GameConstants.ATTACK_FRAME_DURATION, attacktextureAtlas.getRegions(), Animation.PlayMode.LOOP);
+        deathAnimation = new Animation(GameConstants.DEATH_FRAME_DURATION, deathtextureAtlas.getRegions(), Animation.PlayMode.NORMAL);
 
         wall = passedinWall;
         // Behavior defined
@@ -304,27 +305,27 @@ public class Enemy
 
         // Move and stop enemy:
         if (enemySprite.getY() > 130 ) {
-            switch (behavior){
-                case 1:{
+//            switch (behavior){
+//                case 1:{
+//                    position.add(velocity);
+//                    enemySprite.setY(position.y);
+//                    // ZigZag
+//                    enemySprite.translateX(((updateCount % (17*2) < 17) ? 6:-6));
+//                    position.y = enemySprite.getY();
+//                    rectangle.setPosition(position);
+//                }
+//                default:{
                     position.add(velocity);
                     enemySprite.setY(position.y);
-                    // ZigZag
-                    enemySprite.translateX(((updateCount % (17*2) < 17) ? 6:-6));
-                    position.y = enemySprite.getY();
                     rectangle.setPosition(position);
-                }
-                default:{
-                    position.add(velocity);
-                    enemySprite.setY(position.y);
-                    rectangle.setPosition(position);
-                }
-            }
+//                }
+//            }
         }
         else {
             enemySprite.setY(position.y);
             rectangle.setPosition(position);
 
-            if(TimeUtils.nanoTime() - prevtime > 1000000000) {
+            if(TimeUtils.nanoTime() - prevtime > 1000000000) { // damages every second
                 this.attackWall(wall); // Damage wall
                 System.out.println("Wall health after taking damage: " + wall.getHealth());
 //                this.hurt(this.getAttackPower());
