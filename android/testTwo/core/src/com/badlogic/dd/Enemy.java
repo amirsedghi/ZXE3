@@ -47,8 +47,7 @@ public class Enemy
     protected Vector2 velocity; // velocity of the enemy
     protected Vector2 position;
     protected Rectangle rectangle; // rectangle object to detect collisions
-    // Walking animation
-    private Animation walkingAnimation, attackAnimation;
+    private Animation walkingAnimation, attackAnimation; // animations
 
     Wall wall; // Used to refer to wall object passed in
 

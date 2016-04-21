@@ -1,0 +1,61 @@
+
+skeletondead.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+die
+  rotate: false
+  xy: 1, 479
+  size: 278, 363
+  orig: 456, 364
+  offset: 101, 1
+  index: 1
+die
+  rotate: false
+  xy: 281, 509
+  size: 303, 333
+  orig: 456, 364
+  offset: 85, 1
+  index: 2
+die
+  rotate: false
+  xy: 586, 586
+  size: 322, 256
+  orig: 456, 364
+  offset: 70, 1
+  index: 3
+die
+  rotate: false
+  xy: 1, 308
+  size: 334, 169
+  orig: 456, 364
+  offset: 60, 1
+  index: 4
+die
+  rotate: false
+  xy: 1, 170
+  size: 335, 136
+  orig: 456, 364
+  offset: 60, 1
+  index: 5
+die
+  rotate: false
+  xy: 1, 73
+  size: 372, 95
+  orig: 456, 364
+  offset: 32, 1
+  index: 6
+die
+  rotate: false
+  xy: 1, 23
+  size: 418, 48
+  orig: 456, 364
+  offset: 11, 2
+  index: 7
+die
+  rotate: false
+  xy: 1, 1
+  size: 453, 20
+  orig: 456, 364
+  offset: 1, 1
+  index: 8
