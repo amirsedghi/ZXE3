@@ -1,6 +1,7 @@
 package com.badlogic.dd;
 
 import java.beans.VetoableChangeListener;
+import java.sql.Time;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
@@ -37,8 +38,10 @@ public class GameScreen implements Screen {
     private Wall wall;
     ArrayList<Enemy> enemies;
     long lastSpawnTime;
+    long lastBulletTime;
     Enemy enemy;
     Bullets bullet = null;
+    ArrayList<Bullets> ammo;
 
     /**
      * Name of Module: GameScreen
@@ -57,6 +60,8 @@ public class GameScreen implements Screen {
         System.out.println("Wall Created");
         System.out.println("Wall Current Health: " + wall.getHealth());
         enemies = new ArrayList();// Create array list of enemies
+        ammo = new ArrayList();//array list for cannonballs
+        lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
     }
 
@@ -118,22 +123,25 @@ public class GameScreen implements Screen {
         //Changed the cannon to sprite to add more functionality
         //batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
         cannonSprite.draw(batch);
-        if(bullet != null){
-            if(bullet.updateBullet()) {
-                bullet.getSprite().draw(batch);
-            }
-            else{
-                // Dispose/hide the bullet, because it landed
-                // Now, check whether or not it has hit an enemy.
 
-                for (Enemy e : enemies) {
-                    if (e.isCollided(bullet)) {
-                        e.die();
+        for(int i = 0; i < ammo.size(); i++) {
+            if (ammo.get(i) != null) {
+                if (ammo.get(i).updateBullet()) {
+                    ammo.get(i).getSprite().draw(batch);
+                } else {
+
+                    // Dispose/hide the bullet, because it landed
+                    // Now, check whether or not it has hit an enemy.
+
+                    for (Enemy e : enemies) {
+                        if (e.isCollided(ammo.get(i))) {
+                            e.die();
+                        }
                     }
-                }
 
-                bullet.dispose();
-                bullet = null;
+                    ammo.get(i).dispose();
+                    ammo.remove(ammo.get(i));
+                }
             }
         }
         batch.end();
@@ -150,10 +158,13 @@ public class GameScreen implements Screen {
         }
 
         //If a mouse click is registered on the gamescreen a cannonball will be spawned
-        if(Gdx.input.isTouched() && bullet == null){
+        //if half a second has passed since last bullet
+        if(Gdx.input.isTouched() && TimeUtils.nanoTime() - lastBulletTime > 500000000f){
             int X = (int)bulletAngleX(cannonSprite.getX());
             //int Y = (int)bulletAngleY(cannonSprite.getY());
-            bullet = new Bullets(mousePos,370, 34, cannon.getAngle());
+                bullet = new Bullets(mousePos, 370, 34, cannon.getAngle());
+                ammo.add(bullet);
+            lastBulletTime = TimeUtils.nanoTime();
         }
     }
 
