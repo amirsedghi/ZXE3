@@ -1,6 +1,7 @@
 package com.badlogic.dd;
 
 import java.beans.VetoableChangeListener;
+import java.sql.Time;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
@@ -37,8 +38,10 @@ public class GameScreen implements Screen {
     private Wall wall;
     ArrayList<Enemy> enemies;
     long lastSpawnTime;
+    long lastBulletTime;
     Enemy enemy;
     Bullets bullet = null;
+    ArrayList<Bullets> ammo;
 
     /**
      * Name of Module: GameScreen
@@ -57,6 +60,8 @@ public class GameScreen implements Screen {
         System.out.println("Wall Created");
         System.out.println("Wall Current Health: " + wall.getHealth());
         enemies = new ArrayList();// Create array list of enemies
+        ammo = new ArrayList();//array list for cannonballs
+        lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
     }
 
@@ -76,7 +81,8 @@ public class GameScreen implements Screen {
         //wall.getHealth(); // For health bar
 
 
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        //Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // get the coordinates of mouse position
@@ -90,7 +96,7 @@ public class GameScreen implements Screen {
 
         // Cannon sprite properties
         Sprite cannonSprite = cannon.getSprite();
-        cannonSprite.setOrigin(cannonSprite.getWidth()/2,10 + cannonSprite.getHeight()/2);
+        cannonSprite.setOrigin(cannonSprite.getWidth()/2, 54);
         cannonSprite.setRotation(-cannon.getAngle());
         cannonSprite.setX(340);
         cannonSprite.setY(10);
@@ -117,42 +123,48 @@ public class GameScreen implements Screen {
         //Changed the cannon to sprite to add more functionality
         //batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
         cannonSprite.draw(batch);
-        if(bullet != null){
-            if(bullet.updateBullet()) {
-                bullet.getSprite().draw(batch);
-            }
-            else{
-                // Dispose/hide the bullet, because it landed
-                // Now, check whether or not it has hit an enemy.
 
-                for (Enemy e : enemies) {
-                    if (e.isCollided(bullet)) {
-                        e.die();
+        for(int i = 0; i < ammo.size(); i++) {
+            if (ammo.get(i) != null) {
+                if (ammo.get(i).updateBullet()) {
+                    ammo.get(i).getSprite().draw(batch);
+                } else {
+
+                    // Dispose/hide the bullet, because it landed
+                    // Now, check whether or not it has hit an enemy.
+
+                    for (Enemy e : enemies) {
+                        if (e.isCollided(ammo.get(i))) {
+                            e.die();
+                        }
                     }
-                }
 
-                bullet.dispose();
-                bullet = null;
+                    ammo.get(i).dispose();
+                    ammo.remove(ammo.get(i));
+                }
             }
         }
         batch.end();
 
         // Enemy Spawn Timer:
-        if(TimeUtils.nanoTime() - lastSpawnTime > 10000000000f)
+        if(TimeUtils.nanoTime() - lastSpawnTime > 1000000000f)
         {
             if(enemies.size() > 20)
             {
-                ;
+
             }
             else
                 spawnEnemy();
         }
 
         //If a mouse click is registered on the gamescreen a cannonball will be spawned
-        if(Gdx.input.isTouched() && bullet == null){
+        //if half a second has passed since last bullet
+        if(Gdx.input.isTouched() && TimeUtils.nanoTime() - lastBulletTime > 500000000f){
             int X = (int)bulletAngleX(cannonSprite.getX());
             //int Y = (int)bulletAngleY(cannonSprite.getY());
-            bullet = new Bullets(mousePos,370, 34, cannon.getAngle());
+                bullet = new Bullets(mousePos, 370, 34, cannon.getAngle());
+                ammo.add(bullet);
+            lastBulletTime = TimeUtils.nanoTime();
         }
     }
 

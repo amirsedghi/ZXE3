@@ -20,10 +20,17 @@ public class Bullets {
     private Vector3 mousepos;
     private int initX;
     private int initY;
+    private Vector3 coordinates;
+    private final int WIDTH = 60;
+    private final int HEIGHT = 60;
 
     //private double angel;
     private double xVel;
     private double yVel;
+
+    //coordinates of the center of the cannon ball
+    private double xCC;
+    private double yCC;
 
     //Cannonballs that will fire from the cannon,
     //each cannon will be given the position of the mouse click
@@ -35,14 +42,17 @@ public class Bullets {
         //
         bulletTexture = new Texture("cannonBallImage.png");
         bulletSprite = new Sprite(bulletTexture);
-        bulletSprite.setSize(60,60);
-        bulletSprite.setOrigin(30, 30);
+        bulletSprite.setSize(WIDTH,HEIGHT);
+        bulletSprite.setOrigin(WIDTH/2, HEIGHT/2);
+
+        xCC = initX + WIDTH/2;
+        yCC = initY + HEIGHT/2;
 
 
         bulletSprite.setPosition(initX, initY);
         //double angel = Math.atan((mousepos.y - initY)/(mousepos.x - initX));
 
-        final int velocity = 5;
+        final double velocity = 5;
         xVel = velocity * Math.sin(Math.PI*a/180);
         yVel = velocity * Math.cos(Math.PI*a/180);
         if(yVel < 0){
@@ -54,6 +64,12 @@ public class Bullets {
     public Sprite getSprite(){
         return bulletSprite;
     }
+
+    public Vector3 getCoordinates(){
+        coordinates = new Vector3((float) (mousepos.x - xCC+ initX),(float) (mousepos.y-yCC+initY),0);
+        return coordinates;
+    }
+
 
     public Vector2 getBulletPosition() {
         return new Vector2(bulletSprite.getX(), bulletSprite.getY());
@@ -67,12 +83,15 @@ public class Bullets {
         bulletSprite.translate((float)xVel, (float)yVel);
 
         // Return false if we've reached past the destination
-        if(bulletSprite.getY() >= mousepos.y){
+        if(bulletSprite.getY() - initY > mousepos.y - yCC){
             return false;
+            //-30*Math.cos(Math.PI*a/180)
         }
         else {
             return true;
         }
+
+        // if(bulletSprite.getY() >= mousepos.y-30*Math.cos(Math.PI*a/180))
     }
 
     public void dispose(){

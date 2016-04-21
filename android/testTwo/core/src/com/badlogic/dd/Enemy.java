@@ -36,12 +36,16 @@ public class Enemy
     protected boolean isDead;
     protected long prevtime;
     protected float elapsedTime = 0f;
+    private double WIDTH=60;
+    private double HEIGHT=60;
+    public Intersector intersector = new Intersector();
 
         // Sprite Properties:
     protected Sprite enemySprite; // enemy sprite
     private TextureAtlas walkingtextureAtlas, attacktextureAtlas;
     //private Texture enemyImage;
     private TextureRegion walkingtextureRegion, attackTextureRegion;
+
 
         // Other Properties for enemy:
     protected Vector2 velocity; // velocity of the enemy
@@ -228,8 +232,11 @@ public class Enemy
     {
         Vector2 bpos = b.getBulletPosition();
         Gdx.app.log("Collision with bullet detected", "" + bpos.x + ", " + bpos.y);
-        Rectangle r = new Rectangle(bpos.x, bpos.y, b.getSprite().getWidth(), b.getSprite().getHeight());
-        return r.overlaps(rectangle);
+        com.badlogic.gdx.math.Circle cir = new com.badlogic.gdx.math.Circle((float) (bpos.x+WIDTH/2), (float) (bpos.y + HEIGHT/2), (float) (2*WIDTH/2));
+
+        //return r.overlaps(rectangle);
+        return intersector.overlaps(cir, rectangle);
+
     }
 
     // Render and Update Methods:
