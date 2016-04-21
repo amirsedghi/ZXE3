@@ -10,11 +10,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.btree.utils.DistributionAdapters;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -42,7 +40,7 @@ public class GameScreen implements Screen {
     Enemy enemy;
     Bullets bullet = null;
     ArrayList<Bullets> ammo;
-
+    ShapeRenderer shapeRenderer = new ShapeRenderer();
     /**
      * Name of Module: GameScreen
      * Purpose: Constructor for Gamescreen class to initialize game objects.
@@ -81,6 +79,12 @@ public class GameScreen implements Screen {
         //wall.getHealth(); // For health bar
 
 
+        if (wall.getHealth() == 0) {
+            game.setScreen(new MainMenu(game));
+            dispose();
+            return;
+        }
+
         //Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -100,7 +104,20 @@ public class GameScreen implements Screen {
         cannonSprite.setRotation(-cannon.getAngle());
         cannonSprite.setX(340);
         cannonSprite.setY(10);
+
+        // Health bar background
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(100, 100, 200, 40);
+        shapeRenderer.end();
+        // Health bar
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(wall.getHealthBarColor());
+        shapeRenderer.rect(100, 100, wall.getHealth() * 2, 40);
+        shapeRenderer.end();
+
         batch.begin();
+
 
         // print the angle
         //System.out.println("angle: "+-cannon.getAngle());

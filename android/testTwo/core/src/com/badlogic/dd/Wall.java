@@ -1,6 +1,7 @@
 package com.badlogic.dd;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -102,5 +103,16 @@ public class Wall {
             return "wall75.png";
         }
         return "wall.png";              //The wall is at 100% health.
+    }
+
+
+    public Color getHealthBarColor(){
+        if(health < maxHealth/4){
+            return Color.RED;
+        }
+        if(health < maxHealth/2){
+            return Color.YELLOW;
+        }
+        return Color.GREEN;
     }
 }
