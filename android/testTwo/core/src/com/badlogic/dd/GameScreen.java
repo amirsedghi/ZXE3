@@ -37,8 +37,9 @@ public class GameScreen implements Screen {
     Cannon cannon = new Cannon(); // instantiate cannon object
     private Wall wall;
     ArrayList<Enemy> enemies;
-    long lastSpawnTime;
+    long lastSpawnTime; // holds enemies last spawn time
     long lastBulletTime;
+    long corpseDuration = 0;
     Enemy enemy;
     Bullets bullet = null;
     ArrayList<Bullets> ammo;
@@ -109,12 +110,25 @@ public class GameScreen implements Screen {
         for(int index = 0; index < enemies.size(); index++)
         {
             enemies.get(index).update();
-            enemies.get(index).render(batch);
+            enemies.get(index).render(batch, delta);
 
             if(enemies.get(index).isDead == true)
             {
-                System.out.println("---Enemy " + index + " is dead!---");
-                enemies.remove(enemies.get(index));
+//                if(TimeUtils.nanoTime() - lastSpawnTime > 1000000000f) {
+//
+//                    System.out.println("---Enemy " + index + " is dead!---");
+//                    //enemies.get(index).dispose();
+//                    enemies.remove(enemies.get(index));
+//                    //corpseDuration = TimeUtils.nanoTime();;
+//                }
+//                else
+//                    enemies.get(index).playDeathAnimation(batch, delta);
+
+                if(enemies.get(index).playDeathAnimation(batch, delta) == true) {
+                    System.out.println("---Enemy " + index + " is dead!---");
+                    enemies.get(index).dispose();
+                    enemies.remove(enemies.get(index));
+                }
             }
         }
 
@@ -151,7 +165,7 @@ public class GameScreen implements Screen {
         {
             if(enemies.size() > 20)
             {
-
+                ; // Do nothing
             }
             else
                 spawnEnemy();

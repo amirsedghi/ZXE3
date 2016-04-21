@@ -18,7 +18,7 @@ public class GameConstants
     public static final float SKELETON_ATTACK_SPEED = 0.1f;
     public static float WALK_FRAME_DURATION = 0.08f; // Time which each walk frame is kept on the screen
     public static float ATTACK_FRAME_DURATION = 0.12f; // Time which each attack frame is kept on the screen
-    public static float DEATH_FRAME_DURATION = 0.12f; // Time which each death frame is kept on the screen
+    public static float DEATH_FRAME_DURATION = 0.1f; // Time which each death frame is kept on the screen
 
     //public static float screenWidth = Gdx.graphics.getWidth();
     //public static float screenHeight = Gdx.graphics.getHeight();

@@ -36,6 +36,7 @@ public class Enemy
     protected boolean isDead;
     protected long prevtime;
     protected float elapsedTime = 0f;
+    protected float deathTimer = 0f;
     private double WIDTH=60;
     private double HEIGHT=60;
     public Intersector intersector = new Intersector();
@@ -109,6 +110,7 @@ public class Enemy
     public void die()
     {
         this.isDead = true;
+        velocity.setZero();
     }
 
     /**
@@ -250,18 +252,37 @@ public class Enemy
      * Author: Armand Abrahamian
      * Creation Date: 3/15/2016
      */
-    public void render(SpriteBatch batch)
+    public void render(SpriteBatch batch, float delta)
     {
-        elapsedTime += Gdx.graphics.getDeltaTime();
+        elapsedTime += delta;
+        //elapsedTime += Gdx.graphics.getDeltaTime();
         // Getting the frame which must be rendered
-        if (enemySprite.getY() > 130 ) {
+        if (enemySprite.getY() > 130 && isDead != true) {
             enemySprite.setRegion(walkingAnimation.getKeyFrame(elapsedTime));
         }
-        else {
+//        else if(isDead == true)
+//        {
+//            enemySprite.setRegion(deathAnimation.getKeyFrame(elapsedTime));
+//        }
+        else if(enemySprite.getY() <= 130 && isDead != true)
+        {
             enemySprite.setRegion(attackAnimation.getKeyFrame(elapsedTime));
         }
         // Drawing the frame
         enemySprite.draw(batch);
+    }
+
+    public boolean playDeathAnimation(SpriteBatch batch, float delta)
+    {
+        boolean ok = false;
+        deathTimer += delta;
+
+        enemySprite.setRegion(deathAnimation.getKeyFrame(deathTimer));
+        // Drawing the frame
+        enemySprite.draw(batch);
+        if (deathAnimation.isAnimationFinished(deathTimer) == true)
+            ok = true;
+        return ok;
     }
 
     /**
@@ -343,5 +364,6 @@ public class Enemy
         //enemyImage.dispose();
         walkingtextureAtlas.dispose();
         attacktextureAtlas.dispose();
+        deathtextureAtlas.dispose();
     }
 }
