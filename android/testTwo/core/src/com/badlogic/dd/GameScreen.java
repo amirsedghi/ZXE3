@@ -118,12 +118,11 @@ public class GameScreen implements Screen {
             enemies.get(index).render(batch, delta);
 
             if (enemies.get(index).isDead == true) {
-                //if(enemies.get(index).playDeathAnimation(batch, delta) == true) {
-                System.out.println("---Enemy " + index + " is dead!---");
-                bosscounter++;
-                //enemies.get(index).dispose();
-                enemies.remove(enemies.get(index));
-                // }
+                if(enemies.get(index).playDeathAnimation(batch, delta) == true) {
+                    System.out.println("---Enemy " + index + " is dead!---");
+                    bosscounter++;
+                    enemies.remove(enemies.get(index));
+                 }
             }
         }
 

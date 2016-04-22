@@ -33,7 +33,7 @@ public class Enemy
     // Variables:
         // Simple Data Types:
     protected int health, maxHealth, attackPower, behavior, updateCount;
-    protected boolean isDead;
+    protected boolean isDead = false;
     protected long prevtime;
     protected float elapsedTime = 0f;
     protected float deathTimer = 0f;
@@ -70,13 +70,13 @@ public class Enemy
     public Enemy(Wall passedinWall)
     {
         int xcordSpawn = MathUtils.random(0, 600);
-        this.isDead = false;
 
         // Frames loaded from texture atlas:
         walkingtextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.SkeletonWalkSpriteSheet));
         walkingtextureRegion = walkingtextureAtlas.findRegion("go", 1);
         attacktextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.SkeletonAttackSpriteSheet));
         deathtextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.SkeletonDeathSpriteSheet));
+        deathTextureRegion = deathtextureAtlas.findRegion("die", 8);
 
         this.setMaxHealth(3);
         this.setCurrentHealth(this.maxHealth);
@@ -284,7 +284,10 @@ public class Enemy
         // Drawing the frame
         enemySprite.draw(batch);
         if (deathAnimation.isAnimationFinished(deathTimer) == true)
+        {
+            //enemySprite.setRegion(deathTextureRegion);
             ok = true;
+        }
         return ok;
     }
 
@@ -306,19 +309,19 @@ public class Enemy
 
         // change direction based on velocity
         // For x-axis:
-        if (velocity.x < 0) {
-            direction = Direction.LEFT;
-        } else {
-            direction = Direction.RIGHT;
-        }
-
-        // Flip sprite when going right.
-        if(direction == Direction.RIGHT){
-            enemySprite.setFlip(true, false);
-        }
-        else {
-            enemySprite.setFlip(false, false);
-        }
+//        if (velocity.x < 0) {
+//            direction = Direction.LEFT;
+//        } else {
+//            direction = Direction.RIGHT;
+//        }
+//
+//        // Flip sprite when going right.
+//        if(direction == Direction.RIGHT){
+//            enemySprite.setFlip(true, false);
+//        }
+//        else {
+//            enemySprite.setFlip(false, false);
+//        }
 
         // For y-axis:
         if (velocity.y < 0) {
