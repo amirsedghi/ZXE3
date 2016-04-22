@@ -247,7 +247,7 @@ public class Enemy
     /**
      * Name of Module: render
      * Purpose: Draws the enemy sprite on the screen.
-     * Input Parameters: SpriteBatch batch
+     * Input Parameters: SpriteBatch batch, float delta
      * Output Parameters: N/A
      * Author: Armand Abrahamian
      * Creation Date: 3/15/2016
@@ -267,6 +267,14 @@ public class Enemy
         enemySprite.draw(batch);
     }
 
+    /**
+     * Name of Module: playDeathAnimation
+     * Purpose: Draws the enemy death animation sprite on the screen.
+     * Input Parameters: SpriteBatch batch, float delta
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 4/20/2016
+     */
     public boolean playDeathAnimation(SpriteBatch batch, float delta)
     {
         boolean ok = false;

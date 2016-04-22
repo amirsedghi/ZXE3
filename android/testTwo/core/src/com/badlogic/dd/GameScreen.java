@@ -43,7 +43,11 @@ public class GameScreen implements Screen {
     Bullets bullet = null;
     ArrayList<Bullets> ammo;
     Boss boss;
+    int bosscounter = 0;
     boolean bossalive = false;
+    boolean hasBossSpawned = false;
+    long startTime = TimeUtils.nanoTime();
+    long elapsedTime = TimeUtils.timeSinceNanos(startTime);
 
     /**
      * Name of Module: GameScreen
@@ -65,7 +69,7 @@ public class GameScreen implements Screen {
         ammo = new ArrayList();//array list for cannonballs
         lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
-        spawnBoss();
+        //spawnBoss();
     }
 
     /**
@@ -99,7 +103,7 @@ public class GameScreen implements Screen {
 
         // Cannon sprite properties
         Sprite cannonSprite = cannon.getSprite();
-        cannonSprite.setOrigin(cannonSprite.getWidth()/2, 54);
+        cannonSprite.setOrigin(cannonSprite.getWidth() / 2, 54);
         cannonSprite.setRotation(-cannon.getAngle());
         cannonSprite.setX(340);
         cannonSprite.setY(10);
@@ -109,33 +113,37 @@ public class GameScreen implements Screen {
         //System.out.println("angle: "+-cannon.getAngle());
 
         // Draw and update the enemies properties:
-        for(int index = 0; index < enemies.size(); index++)
-        {
+        for (int index = 0; index < enemies.size(); index++) {
             enemies.get(index).update();
             enemies.get(index).render(batch, delta);
 
-            if(enemies.get(index).isDead == true)
-            {
+            if (enemies.get(index).isDead == true) {
                 //if(enemies.get(index).playDeathAnimation(batch, delta) == true) {
-                    System.out.println("---Enemy " + index + " is dead!---");
-                    //enemies.get(index).dispose();
-                    enemies.remove(enemies.get(index));
-               // }
+                System.out.println("---Enemy " + index + " is dead!---");
+                bosscounter++;
+                //enemies.get(index).dispose();
+                enemies.remove(enemies.get(index));
+                // }
             }
         }
 
-        if(bossalive == true)
+        if (bosscounter == 10)
         {
+            spawnBoss();
+            bosscounter++;
+        }
+
+        if (bossalive == true) {
             boss.update();
             boss.render(batch, delta);
-            if(boss.isDead == true)
-            {
-                if(boss.playDeathAnimation(batch, delta) == true) {
+            if (boss.isDead == true) {
+                if (boss.playDeathAnimation(batch, delta) == true) {
                     System.out.println("---Boss is dead!---");
                     bossalive = false;
                 }
             }
         }
+
 
         wall.render(batch); // Draw wall onto screen
 
@@ -198,7 +206,7 @@ public class GameScreen implements Screen {
         return xBall;
     }
 
-    // Helper function to spawn enemies:
+    // Helper functions to spawn enemies:
     public void spawnEnemy()
     {
         enemy = new Enemy(wall); // instantiate enemy object
@@ -270,6 +278,8 @@ public class GameScreen implements Screen {
      * Creation Date: 3/7/2016
      */
     public void dispose(){
+        enemies.clear();
+        enemy.dispose();
         boss.dispose();
     }
 }
