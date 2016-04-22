@@ -1,0 +1,110 @@
+
+bossappear.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+appear
+  rotate: false
+  xy: 1, 1401
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 1
+appear
+  rotate: false
+  xy: 1, 1051
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 10
+appear
+  rotate: false
+  xy: 459, 1401
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 11
+appear
+  rotate: false
+  xy: 1, 701
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 12
+appear
+  rotate: false
+  xy: 459, 1051
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 13
+appear
+  rotate: false
+  xy: 917, 1401
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 14
+appear
+  rotate: false
+  xy: 1, 351
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 15
+appear
+  rotate: false
+  xy: 459, 701
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 2
+appear
+  rotate: false
+  xy: 917, 1051
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 3
+appear
+  rotate: false
+  xy: 1375, 1401
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 4
+appear
+  rotate: false
+  xy: 1, 1
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 5
+appear
+  rotate: false
+  xy: 459, 351
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 6
+appear
+  rotate: false
+  xy: 917, 701
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 7
+appear
+  rotate: false
+  xy: 1375, 1051
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 8
+appear
+  rotate: false
+  xy: 459, 1
+  size: 456, 348
+  orig: 456, 348
+  offset: 0, 0
+  index: 9

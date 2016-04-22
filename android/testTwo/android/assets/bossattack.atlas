@@ -1,0 +1,47 @@
+
+bossattack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+hit
+  rotate: false
+  xy: 1, 375
+  size: 528, 372
+  orig: 528, 372
+  offset: 0, 0
+  index: 1
+hit
+  rotate: false
+  xy: 1, 375
+  size: 528, 372
+  orig: 528, 372
+  offset: 0, 0
+  index: 6
+hit
+  rotate: false
+  xy: 1, 1
+  size: 528, 372
+  orig: 528, 372
+  offset: 0, 0
+  index: 2
+hit
+  rotate: false
+  xy: 531, 375
+  size: 528, 372
+  orig: 528, 372
+  offset: 0, 0
+  index: 3
+hit
+  rotate: false
+  xy: 531, 1
+  size: 528, 372
+  orig: 528, 372
+  offset: 0, 0
+  index: 4
+hit
+  rotate: false
+  xy: 1061, 375
+  size: 528, 372
+  orig: 528, 372
+  offset: 0, 0
+  index: 5

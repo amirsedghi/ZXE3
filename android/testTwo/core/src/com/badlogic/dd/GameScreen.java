@@ -39,10 +39,11 @@ public class GameScreen implements Screen {
     ArrayList<Enemy> enemies;
     long lastSpawnTime; // holds enemies last spawn time
     long lastBulletTime;
-    long corpseDuration = 0;
     Enemy enemy;
     Bullets bullet = null;
     ArrayList<Bullets> ammo;
+    Boss boss;
+    boolean bossalive = false;
 
     /**
      * Name of Module: GameScreen
@@ -64,6 +65,7 @@ public class GameScreen implements Screen {
         ammo = new ArrayList();//array list for cannonballs
         lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
+        spawnBoss();
     }
 
     /**
@@ -114,20 +116,23 @@ public class GameScreen implements Screen {
 
             if(enemies.get(index).isDead == true)
             {
-//                if(TimeUtils.nanoTime() - lastSpawnTime > 1000000000f) {
-//
-//                    System.out.println("---Enemy " + index + " is dead!---");
-//                    //enemies.get(index).dispose();
-//                    enemies.remove(enemies.get(index));
-//                    //corpseDuration = TimeUtils.nanoTime();;
-//                }
-//                else
-//                    enemies.get(index).playDeathAnimation(batch, delta);
-
-                if(enemies.get(index).playDeathAnimation(batch, delta) == true) {
+                //if(enemies.get(index).playDeathAnimation(batch, delta) == true) {
                     System.out.println("---Enemy " + index + " is dead!---");
-                    enemies.get(index).dispose();
+                    //enemies.get(index).dispose();
                     enemies.remove(enemies.get(index));
+               // }
+            }
+        }
+
+        if(bossalive == true)
+        {
+            boss.update();
+            boss.render(batch, delta);
+            if(boss.isDead == true)
+            {
+                if(boss.playDeathAnimation(batch, delta) == true) {
+                    System.out.println("---Boss is dead!---");
+                    bossalive = false;
                 }
             }
         }
@@ -151,6 +156,11 @@ public class GameScreen implements Screen {
                         if (e.isCollided(ammo.get(i))) {
                             e.die();
                         }
+                    }
+                    if(bossalive == true)
+                    {
+                        if (boss.isCollided(ammo.get(i)))
+                            boss.hurt(1);
                     }
 
                     ammo.get(i).dispose();
@@ -186,8 +196,6 @@ public class GameScreen implements Screen {
         xBall =  (float)-Math.sin(Math.PI*cannon.getAngle()/180)*54;
         xBall = 400 - xBall - 30;
         return xBall;
-
-
     }
 
     // Helper function to spawn enemies:
@@ -198,6 +206,13 @@ public class GameScreen implements Screen {
         System.out.println("----Enemy Spawned----");
         System.out.println("Number of enemies: " + enemies.size());
         lastSpawnTime = TimeUtils.nanoTime();
+    }
+
+    public void spawnBoss()
+    {
+        boss = new Boss(wall);
+        System.out.println("----Boss Spawned----");
+        bossalive = true;
     }
 
     /**
@@ -255,6 +270,6 @@ public class GameScreen implements Screen {
      * Creation Date: 3/7/2016
      */
     public void dispose(){
-
+        boss.dispose();
     }
 }
