@@ -4,8 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Jose Perez and Jacob on 4/4/16.
@@ -23,6 +25,12 @@ public class Bullets {
     private Vector3 coordinates;
     private final int WIDTH = 60;
     private final int HEIGHT = 60;
+    private double groundDisplacement = 0;
+    private double time = 0;
+    private double velocity = 5;
+    private double heightDisplacement = 0;
+
+
 
     //private double angel;
     private double xVel;
@@ -50,14 +58,15 @@ public class Bullets {
 
 
         bulletSprite.setPosition(initX, initY);
-        //double angel = Math.atan((mousepos.y - initY)/(mousepos.x - initX));
 
-        final double velocity = 5;
+
         xVel = velocity * Math.sin(Math.PI*a/180);
         yVel = velocity * Math.cos(Math.PI*a/180);
+
+
         if(yVel < 0){
-            xVel *= -1;
-            yVel *= -1;
+            xVel *= 1;
+            yVel *= 1;
         }
     }
 
@@ -75,23 +84,39 @@ public class Bullets {
         return new Vector2(bulletSprite.getX(), bulletSprite.getY());
     }
 
-    public boolean updateBullet(){
+    public boolean updateBullet(Vector3 mousepos){
         // True if finished travelling, False if not.
         // Update the travel path of the bullet
         // Dispose if finished
+        // variables for bullet size change
+        double xDisplacement = Math.pow(mousepos.x - xCC,2);
+        double yDisplacement = Math.pow(mousepos.y - yCC,2);
+        double sumDisplacement = xDisplacement + yDisplacement;
+        double bulletPosX = bulletSprite.getX();
+        double bulletPosY = bulletSprite.getY();
+        double currentXPos = Math.sqrt(Math.pow(bulletPosX-initX,2)+Math.pow(bulletPosY-initY,2));
 
+        // move the bullet with the given speed
         bulletSprite.translate((float)xVel, (float)yVel);
+        // calculate how far on the x axis the bullet needs to travel
+        groundDisplacement = Math.sqrt(sumDisplacement);
+        // a parabolic equations that gets the value of y as the bullet moves forward
+        heightDisplacement = -8/Math.pow(groundDisplacement,2)*Math.pow(currentXPos-groundDisplacement/2,2) + 2;
+
+
+        // change the size of the bullet based on how high it goes in the air
+        this.getSprite().setSize((float) (1 + heightDisplacement/2) * WIDTH, (float) (1 + heightDisplacement/2) * HEIGHT);
 
         // Return false if we've reached past the destination
         if(bulletSprite.getY() - initY > mousepos.y - yCC){
             return false;
-            //-30*Math.cos(Math.PI*a/180)
+
         }
         else {
             return true;
         }
 
-        // if(bulletSprite.getY() >= mousepos.y-30*Math.cos(Math.PI*a/180))
+
     }
 
     public void dispose(){

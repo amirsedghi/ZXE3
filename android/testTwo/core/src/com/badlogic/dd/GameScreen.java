@@ -143,7 +143,7 @@ public class GameScreen implements Screen {
 
         for(int i = 0; i < ammo.size(); i++) {
             if (ammo.get(i) != null) {
-                if (ammo.get(i).updateBullet()) {
+                if (ammo.get(i).updateBullet(mousePos)) {
                     ammo.get(i).getSprite().draw(batch);
                 } else {
 
@@ -177,7 +177,7 @@ public class GameScreen implements Screen {
         //If a mouse click is registered on the gamescreen a cannonball will be spawned
         //if half a second has passed since last bullet
         if(Gdx.input.isTouched() && TimeUtils.nanoTime() - lastBulletTime > 500000000f){
-            int X = (int)bulletAngleX(cannonSprite.getX());
+            //int X = (int)bulletAngleX(cannonSprite.getX());
             //int Y = (int)bulletAngleY(cannonSprite.getY());
                 bullet = new Bullets(mousePos, 370, 34, cannon.getAngle());
                 ammo.add(bullet);
