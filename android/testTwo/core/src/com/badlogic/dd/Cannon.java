@@ -34,7 +34,7 @@ public class Cannon{
     // create the variables
     private Texture cannonImage;
     private TextureRegion cannonRegion;
-    Vector3 mousePos;
+    private Vector3 mousePos;
     private double tan =0;
     private float angle=0;
 

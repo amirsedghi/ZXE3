@@ -48,6 +48,11 @@ public class GameScreen implements Screen {
     long startTime = TimeUtils.nanoTime();
     long elapsedTime = TimeUtils.timeSinceNanos(startTime);
 
+
+    ParticleEffect effect = new ParticleEffect();
+
+
+
     /**
      * Name of Module: GameScreen
      * Purpose: Constructor for Gamescreen class to initialize game objects.
@@ -70,6 +75,9 @@ public class GameScreen implements Screen {
         System.out.println("Initial size of enemies: " + enemies.size());
         bosscounter = 0;
         //spawnBoss();
+        effect.load(Gdx.files.internal("explosion.p"), Gdx.files.internal("img"));
+        effect.setPosition((float) (200), (float) (30));
+        effect.start();
     }
 
     /**
@@ -95,7 +103,7 @@ public class GameScreen implements Screen {
         }
 
         //Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // get the coordinates of mouse position
@@ -126,6 +134,7 @@ public class GameScreen implements Screen {
         shapeRenderer.end();
 
         batch.begin();
+
 
 
         // print the angle
@@ -179,7 +188,7 @@ public class GameScreen implements Screen {
                     // Now, check whether or not it has hit an enemy.
 
                     for (Enemy e : enemies) {
-                        if (e.isCollided(ammo.get(i))) {
+                        if (e.isCollided(ammo.get(i), batch, delta)) {
                             e.die();
                         }
                     }
