@@ -43,7 +43,6 @@ public class GameScreen implements Screen {
     ShapeRenderer shapeRenderer = new ShapeRenderer();
     Boss boss;
     int bosscounter;
-    boolean bossalive = false;
     boolean hasBossSpawned = false;
     long startTime = TimeUtils.nanoTime();
     long elapsedTime = TimeUtils.timeSinceNanos(startTime);
@@ -151,13 +150,13 @@ public class GameScreen implements Screen {
             bosscounter++;
         }
 
-        if (bossalive == true) {
+        if (hasBossSpawned == true) {
             boss.update();
             boss.render(batch, delta);
             if (boss.isDead == true) {
                 if (boss.playDeathAnimation(batch, delta) == true) {
                     System.out.println("---Boss is dead!---");
-                    bossalive = false;
+                    hasBossSpawned = false;
                     bosscounter = 0;
                 }
             }
@@ -183,7 +182,7 @@ public class GameScreen implements Screen {
                             e.die();
                         }
                     }
-                    if(bossalive == true)
+                    if(hasBossSpawned == true)
                     {
                         if (boss.isCollided(ammo.get(i)))
                         {
@@ -240,7 +239,7 @@ public class GameScreen implements Screen {
     {
         boss = new Boss(wall);
         System.out.println("----Boss Spawned----");
-        bossalive = true;
+        hasBossSpawned = true;
     }
 
     /**
