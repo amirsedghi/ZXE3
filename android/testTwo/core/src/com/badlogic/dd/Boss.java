@@ -231,6 +231,14 @@ public class Boss
         bossSprite.draw(batch);
     }
 
+    /**
+     * Name of Module: playDeathAnimation
+     * Purpose: Draws the boss death animation sprite on the screen.
+     * Input Parameters: SpriteBatch batch, float delta
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 4/20/2016
+     */
     public boolean playDeathAnimation(SpriteBatch batch, float delta)
     {
         boolean ok = false;
@@ -300,7 +308,14 @@ public class Boss
         }
 
     }
-
+    /**
+     * Name of Module: dispose
+     * Purpose: Cleans up resources used for boss.
+     * Input Parameters: N/A
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 4/15/2016
+     */
     public void dispose()
     {
         walkingtextureAtlas.dispose();

@@ -44,8 +44,7 @@ public class Enemy
         // Sprite Properties:
     protected Sprite enemySprite; // enemy sprite
     private TextureAtlas walkingtextureAtlas, attacktextureAtlas, deathtextureAtlas;
-    //private Texture enemyImage;
-    private TextureRegion walkingtextureRegion, attackTextureRegion, deathTextureRegion;
+    private TextureRegion walkingtextureRegion;
 
         // Other Properties for enemy:
     protected Vector2 velocity; // velocity of the enemy
@@ -76,9 +75,8 @@ public class Enemy
         walkingtextureRegion = walkingtextureAtlas.findRegion("go", 1);
         attacktextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.SkeletonAttackSpriteSheet));
         deathtextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.SkeletonDeathSpriteSheet));
-        deathTextureRegion = deathtextureAtlas.findRegion("die", 8);
 
-        this.setMaxHealth(3);
+        this.setMaxHealth(1);
         this.setCurrentHealth(this.maxHealth);
         this.setAttackPower(1);
         position = new Vector2(xcordSpawn, GameConstants.screenHeight);
@@ -285,7 +283,6 @@ public class Enemy
         enemySprite.draw(batch);
         if (deathAnimation.isAnimationFinished(deathTimer) == true)
         {
-            //enemySprite.setRegion(deathTextureRegion);
             ok = true;
         }
         return ok;
@@ -365,6 +362,14 @@ public class Enemy
 
     }
 
+    /**
+     * Name of Module: dispose
+     * Purpose: Cleans up resources used for enemy.
+     * Input Parameters: N/A
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 4/15/2016
+     */
     public void dispose()
     {
         walkingtextureAtlas.dispose();

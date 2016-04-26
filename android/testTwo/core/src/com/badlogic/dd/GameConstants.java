@@ -19,7 +19,7 @@ public class GameConstants
     public static final float X_MOVE_UNITS = 0.1f; // units will move in x direction
     public static final float Y_MOVE_UNITS = 0.1f; // units will move in y direction
     public static final float maxVelocity = 0.1f;
-    public static final float SKELETON_VELOCITY = 0.24f;
+    public static final float SKELETON_VELOCITY = 0.29f;
     public static final float BOSS_VELOCITY = 0.18f;
     public static final float SKELETON_ATTACK_SPEED = 0.1f;
     public static float WALK_FRAME_DURATION = 0.08f; // Time which each walk frame is kept on the screen

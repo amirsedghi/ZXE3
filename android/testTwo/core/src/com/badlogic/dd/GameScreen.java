@@ -43,7 +43,7 @@ public class GameScreen implements Screen {
     Bullets bullet = null;
     ArrayList<Bullets> ammo;
     Boss boss;
-    int bosscounter = 0;
+    int bosscounter;
     boolean bossalive = false;
     boolean hasBossSpawned = false;
     long startTime = TimeUtils.nanoTime();
@@ -69,6 +69,7 @@ public class GameScreen implements Screen {
         ammo = new ArrayList();//array list for cannonballs
         lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
+        bosscounter = 0;
         //spawnBoss();
     }
 
