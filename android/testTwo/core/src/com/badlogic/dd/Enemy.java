@@ -19,7 +19,7 @@ import javafx.scene.shape.Circle;
 
 /**
  * Name: Enemy
- * Purpose: * To define the enemy component for te game.
+ * Purpose: * To define the enemy component for the game.
             * Enemy has a health, attackPower and various properties
             * contained in it's sprite to display it on the screen.
             * The enemy moves from the top of the screen down to the wall.
@@ -32,27 +32,27 @@ public class Enemy
 {
     // Variables:
         // Simple Data Types:
-    protected int health, maxHealth, attackPower, behavior, updateCount;
+    private int health, maxHealth, attackPower, behavior, updateCount;
     protected boolean isDead = false;
-    protected long prevtime;
-    protected float elapsedTime = 0f;
-    protected float deathTimer = 0f;
+    private long prevtime;
+    private float elapsedTime = 0f;
+    private float deathTimer = 0f;
     private double WIDTH=60;
     private double HEIGHT=60;
     public Intersector intersector = new Intersector();
 
         // Sprite Properties:
-    protected Sprite enemySprite; // enemy sprite
+    private Sprite enemySprite; // enemy sprite
     private TextureAtlas walkingtextureAtlas, attacktextureAtlas, deathtextureAtlas;
     private TextureRegion walkingtextureRegion;
 
         // Other Properties for enemy:
-    protected Vector2 velocity; // velocity of the enemy
+    private Vector2 velocity; // velocity of the enemy
     protected Vector2 position;
-    protected Rectangle rectangle; // rectangle object to detect collisions
+    private Rectangle rectangle; // rectangle object to detect collisions
     private Animation walkingAnimation, attackAnimation, deathAnimation; // animations
 
-    Wall wall; // Used to refer to wall object passed in
+    private Wall wall; // Used to refer to wall object passed in
 
     // Enumerator to hold the direction of the enemy:
     enum Direction{UP,DOWN,LEFT,RIGHT};
