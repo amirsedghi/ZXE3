@@ -35,12 +35,19 @@ public class GameScreen implements Screen {
     Cannon cannon = new Cannon(); // instantiate cannon object
     private Wall wall;
     ArrayList<Enemy> enemies;
-    long lastSpawnTime;
+    long lastSpawnTime; // holds enemies last spawn time
     long lastBulletTime;
     Enemy enemy;
     Bullets bullet = null;
     ArrayList<Bullets> ammo;
     ShapeRenderer shapeRenderer = new ShapeRenderer();
+    Boss boss;
+    int bosscounter;
+    boolean bossalive = false;
+    boolean hasBossSpawned = false;
+    long startTime = TimeUtils.nanoTime();
+    long elapsedTime = TimeUtils.timeSinceNanos(startTime);
+
     /**
      * Name of Module: GameScreen
      * Purpose: Constructor for Gamescreen class to initialize game objects.
@@ -61,6 +68,8 @@ public class GameScreen implements Screen {
         ammo = new ArrayList();//array list for cannonballs
         lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
+        bosscounter = 0;
+        //spawnBoss();
     }
 
     /**
@@ -100,7 +109,7 @@ public class GameScreen implements Screen {
 
         // Cannon sprite properties
         Sprite cannonSprite = cannon.getSprite();
-        cannonSprite.setOrigin(cannonSprite.getWidth()/2, 54);
+        cannonSprite.setOrigin(cannonSprite.getWidth() / 2, 54);
         cannonSprite.setRotation(-cannon.getAngle());
         cannonSprite.setX(340);
         cannonSprite.setY(10);
@@ -123,17 +132,36 @@ public class GameScreen implements Screen {
         //System.out.println("angle: "+-cannon.getAngle());
 
         // Draw and update the enemies properties:
-        for(int index = 0; index < enemies.size(); index++)
-        {
+        for (int index = 0; index < enemies.size(); index++) {
             enemies.get(index).update();
-            enemies.get(index).render(batch);
+            enemies.get(index).render(batch, delta);
 
-            if(enemies.get(index).isDead == true)
-            {
-                System.out.println("---Enemy " + index + " is dead!---");
-                enemies.remove(enemies.get(index));
+            if (enemies.get(index).isDead == true) {
+                if(enemies.get(index).playDeathAnimation(batch, delta) == true) {
+                    System.out.println("---Enemy " + index + " is dead!---");
+                    bosscounter++;
+                    enemies.remove(enemies.get(index));
+                 }
             }
         }
+
+        if (bosscounter == 10)
+        {
+            spawnBoss();
+            bosscounter++;
+        }
+
+        if (bossalive == true) {
+            boss.update();
+            boss.render(batch, delta);
+            if (boss.isDead == true) {
+                if (boss.playDeathAnimation(batch, delta) == true) {
+                    System.out.println("---Boss is dead!---");
+                    bossalive = false;
+                }
+            }
+        }
+
 
         wall.render(batch); // Draw wall onto screen
 
@@ -155,6 +183,11 @@ public class GameScreen implements Screen {
                             e.die();
                         }
                     }
+                    if(bossalive == true)
+                    {
+                        if (boss.isCollided(ammo.get(i)))
+                            boss.hurt(1);
+                    }
 
                     ammo.get(i).dispose();
                     ammo.remove(ammo.get(i));
@@ -168,7 +201,7 @@ public class GameScreen implements Screen {
         {
             if(enemies.size() > 20)
             {
-
+                ; // Do nothing
             }
             else
                 spawnEnemy();
@@ -189,11 +222,9 @@ public class GameScreen implements Screen {
         xBall =  (float)-Math.sin(Math.PI*cannon.getAngle()/180)*54;
         xBall = 400 - xBall - 30;
         return xBall;
-
-
     }
 
-    // Helper function to spawn enemies:
+    // Helper functions to spawn enemies:
     public void spawnEnemy()
     {
         enemy = new Enemy(wall); // instantiate enemy object
@@ -201,6 +232,13 @@ public class GameScreen implements Screen {
         System.out.println("----Enemy Spawned----");
         System.out.println("Number of enemies: " + enemies.size());
         lastSpawnTime = TimeUtils.nanoTime();
+    }
+
+    public void spawnBoss()
+    {
+        boss = new Boss(wall);
+        System.out.println("----Boss Spawned----");
+        bossalive = true;
     }
 
     /**
@@ -258,6 +296,8 @@ public class GameScreen implements Screen {
      * Creation Date: 3/7/2016
      */
     public void dispose(){
-
+        enemies.clear();
+        enemy.dispose();
+        boss.dispose();
     }
 }
