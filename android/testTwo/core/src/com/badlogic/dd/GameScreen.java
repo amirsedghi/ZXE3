@@ -48,6 +48,9 @@ public class GameScreen implements Screen {
     long startTime = TimeUtils.nanoTime();
     long elapsedTime = TimeUtils.timeSinceNanos(startTime);
     long hurtTime;
+    private double WIDTH = 60;
+    private double HEIGHT = 60;
+    private float deltaTime = 0;
 
 
     ParticleEffect effect = new ParticleEffect();
@@ -162,7 +165,7 @@ public class GameScreen implements Screen {
             boss.update();
             boss.render(batch, delta);
             if (boss.isDead == true) {
-                if (boss.playDeathAnimation(batch, delta) == true) {
+                if (boss.playDeathAnimation(batch, delta, bullet) == true) {
                     System.out.println("---Boss is dead!---");
                     bossalive = false;
                     bosscounter = 0;
