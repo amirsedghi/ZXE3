@@ -7,39 +7,58 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
-
+import com.badlogic.gdx.graphics.Color;
 /**
  * Created by Armand on 4/21/2016.
+ */
+/**
+ * Name: Boss
+ * Purpose: * To define the boss component for the game.
+            * Boss has a health, attackPower and various properties
+            * contained in it's sprite to display it on the screen.
+            * The boss moves from the top of the screen down to the wall.
+            * The boss starts damaging the wall once it reaches it.
+            * The boss spawns at the middle x coordinate along the top of the screen.
+ * Author: Armand Abrahamian
+ * Date Created: 4/21/2016
  */
 public class Boss
 {
     // Variables:
         // Simple Data Types:
-    protected int health, maxHealth, attackPower;
+    private int health, maxHealth, attackPower;
     protected boolean isDead;
-    protected long prevtime;
-    protected float elapsedTime = 0f;
-    protected float deathTimer = 0f;
+    private long prevtime;
+    private float elapsedTime = 0f;
+    private float deathTimer = 0f;
     private double WIDTH=60;
     private double HEIGHT=60;
     public Intersector intersector = new Intersector();
 
     // Sprite Properties:
-    protected Sprite bossSprite; // enemy sprite
+    private Sprite bossSprite; // enemy sprite
     private TextureAtlas walkingtextureAtlas, attacktextureAtlas, deathtextureAtlas, appeartextureAtlas;
     private TextureRegion walkingtextureRegion;
 
-    protected Vector2 velocity; // velocity of the enemy
+    private Vector2 velocity; // velocity of the boss
     protected Vector2 position;
-    protected Rectangle rectangle; // rectangle object to detect collisions
+    private Rectangle rectangle; // rectangle object to detect collisions
     private Animation walkingAnimation, attackAnimation, deathAnimation, appearAnimation; // animations
 
-    Wall wall; // Used to refer to wall object passed in
+    private Wall wall; // Used to refer to wall object passed in
 
     // Enumerator to hold the direction of the enemy:
     enum Direction{UP,DOWN,LEFT,RIGHT};
     Enemy.Direction direction; //denotes enemies's direction
-
+/*----------------------------------------------------------------------------------*/
+    /**
+     * Name of Module: Boss
+     * Purpose: Constructor for the boss to initialize its data.
+     * Input Parameters: The wall object
+     * Output Parameters: N/A
+     * Author: Armand Abrahamian
+     * Creation Date: 4/21/2016
+     */
     public Boss(Wall passedinWall)
     {
         int xcordSpawn = 300;
@@ -66,7 +85,7 @@ public class Boss
         // Building the animation:
         walkingAnimation = new Animation(GameConstants.WALK_FRAME_DURATION, walkingtextureAtlas.getRegions(), Animation.PlayMode.LOOP);
         attackAnimation = new Animation(GameConstants.ATTACK_FRAME_DURATION, attacktextureAtlas.getRegions(), Animation.PlayMode.LOOP);
-        deathAnimation = new Animation(GameConstants.DEATH_FRAME_DURATION, deathtextureAtlas.getRegions(), Animation.PlayMode.NORMAL);
+        deathAnimation = new Animation(GameConstants.BOSS_DEATH_FRAME_DURATION, deathtextureAtlas.getRegions(), Animation.PlayMode.NORMAL);
         appearAnimation = new Animation(GameConstants.APPEAR_FRAME_DURATION, appeartextureAtlas.getRegions(), Animation.PlayMode.NORMAL);
 
         wall = passedinWall;
@@ -104,7 +123,10 @@ public class Boss
         if(this.getCurrentHealth() == 0)
             this.die();
         else
+        {
             this.setCurrentHealth(this.getCurrentHealth() - damage);
+            bossSprite.setColor(Color.RED);
+        }
     }
 
     // Getters and Setters:
@@ -206,7 +228,6 @@ public class Boss
 
         //return r.overlaps(rectangle);
         return intersector.overlaps(cir, rectangle);
-
     }
 
     // Render and Update Methods:
@@ -222,6 +243,7 @@ public class Boss
     public void render(SpriteBatch batch, float delta)
     {
         elapsedTime += delta;
+        //elapsedTime += Gdx.graphics.getDeltaTime();
         // Getting the frame which must be rendered
         if(bossSprite.getY() > 130 && isDead != true)
             bossSprite.setRegion(walkingAnimation.getKeyFrame(elapsedTime));
@@ -229,6 +251,7 @@ public class Boss
             bossSprite.setRegion(attackAnimation.getKeyFrame(elapsedTime));
         // Drawing the frame
         bossSprite.draw(batch);
+        bossSprite.setColor(Color.WHITE);
     }
 
     /**
@@ -269,19 +292,19 @@ public class Boss
 
         // change direction based on velocity
         // For x-axis:
-        if (velocity.x < 0) {
-            direction = Enemy.Direction.LEFT;
-        } else {
-            direction = Enemy.Direction.RIGHT;
-        }
-
-        // Flip sprite when going right.
-        if(direction == Enemy.Direction.RIGHT){
-            bossSprite.setFlip(true, false);
-        }
-        else {
-            bossSprite.setFlip(false, false);
-        }
+//        if (velocity.x < 0) {
+//            direction = Enemy.Direction.LEFT;
+//        } else {
+//            direction = Enemy.Direction.RIGHT;
+//        }
+//
+//        // Flip sprite when going right.
+//        if(direction == Enemy.Direction.RIGHT){
+//            bossSprite.setFlip(true, false);
+//        }
+//        else {
+//            bossSprite.setFlip(false, false);
+//        }
 
         // For y-axis:
         if (velocity.y < 0) {

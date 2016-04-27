@@ -47,6 +47,7 @@ public class GameScreen implements Screen {
     boolean hasBossSpawned = false;
     long startTime = TimeUtils.nanoTime();
     long elapsedTime = TimeUtils.timeSinceNanos(startTime);
+    long hurtTime;
 
 
     ParticleEffect effect = new ParticleEffect();
@@ -74,10 +75,7 @@ public class GameScreen implements Screen {
         lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
         bosscounter = 0;
-        //spawnBoss();
-        effect.load(Gdx.files.internal("explosion.p"), Gdx.files.internal("img"));
-        effect.setPosition((float) (200), (float) (30));
-        effect.start();
+
     }
 
     /**
@@ -154,7 +152,7 @@ public class GameScreen implements Screen {
             }
         }
 
-        if (bosscounter == 10)
+        if (bosscounter == 15)
         {
             spawnBoss();
             bosscounter++;
@@ -167,10 +165,10 @@ public class GameScreen implements Screen {
                 if (boss.playDeathAnimation(batch, delta) == true) {
                     System.out.println("---Boss is dead!---");
                     bossalive = false;
+                    bosscounter = 0;
                 }
             }
         }
-
 
         wall.render(batch); // Draw wall onto screen
 
@@ -195,7 +193,9 @@ public class GameScreen implements Screen {
                     if(bossalive == true)
                     {
                         if (boss.isCollided(ammo.get(i)))
+                        {
                             boss.hurt(1);
+                        }
                     }
 
                     ammo.get(i).dispose();

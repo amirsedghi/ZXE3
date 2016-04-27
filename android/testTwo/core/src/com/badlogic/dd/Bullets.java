@@ -105,6 +105,7 @@ public class Bullets {
 
 
         // change the size of the bullet based on how high it goes in the air
+        if (heightDisplacement>0)
         this.getSprite().setSize((float) (1 + heightDisplacement/2) * WIDTH, (float) (1 + heightDisplacement/2) * HEIGHT);
 
         // Return false if we've reached past the destination
