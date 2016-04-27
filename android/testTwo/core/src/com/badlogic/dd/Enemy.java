@@ -1,18 +1,15 @@
 package com.badlogic.dd;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import javafx.scene.shape.Circle;
@@ -40,7 +37,9 @@ public class Enemy
     private double WIDTH=60;
     private double HEIGHT=60;
     public Intersector intersector = new Intersector();
-
+    private ParticleEffect effect = new ParticleEffect();
+    private Vector2 bpos;
+    private Bullets theBullet;
         // Sprite Properties:
     private Sprite enemySprite; // enemy sprite
     private TextureAtlas walkingtextureAtlas, attacktextureAtlas, deathtextureAtlas;
@@ -230,13 +229,18 @@ public class Enemy
         Gdx.app.log("Collision Detected", ""+ rectangle.overlaps(rect));
         return rect.overlaps(rectangle);
     }
-    public boolean isCollided(Bullets b)
+    public boolean isCollided(Bullets b, SpriteBatch batch, float delta)
     {
-        Vector2 bpos = b.getBulletPosition();
-        Gdx.app.log("Collision with bullet detected", "" + bpos.x + ", " + bpos.y);
-        com.badlogic.gdx.math.Circle cir = new com.badlogic.gdx.math.Circle((float) (bpos.x+WIDTH/2), (float) (bpos.y + HEIGHT/2), (float) (2*WIDTH/2));
+        theBullet = b;
+        if (b != null) {
+            bpos = b.getBulletPosition();
+            Gdx.app.log("Collision with bullet detected", "" + bpos.x + ", " + bpos.y);
+            com.badlogic.gdx.math.Circle cir = new com.badlogic.gdx.math.Circle((float) (bpos.x + WIDTH / 2), (float) (bpos.y + HEIGHT / 2), (float) (2 * WIDTH / 2));
 
-        return intersector.overlaps(cir, rectangle);
+            return intersector.overlaps(cir, rectangle);
+        }
+        else
+            return false;
 
     }
 
@@ -261,7 +265,6 @@ public class Enemy
         {
             enemySprite.setRegion(attackAnimation.getKeyFrame(elapsedTime));
         }
-        // Drawing the frame
         enemySprite.draw(batch);
     }
 
@@ -281,6 +284,11 @@ public class Enemy
         enemySprite.setRegion(deathAnimation.getKeyFrame(deathTimer));
         // Drawing the frame
         enemySprite.draw(batch);
+        effect.load(Gdx.files.internal("explosion.p"), Gdx.files.internal("img"));
+        effect.setPosition((float) (bpos.x + WIDTH/2),(float) (bpos.y + HEIGHT/2));
+        effect.start();
+        effect.update(deathTimer);
+        effect.draw(batch);
         if (deathAnimation.isAnimationFinished(deathTimer) == true)
         {
             ok = true;

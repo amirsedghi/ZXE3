@@ -34,6 +34,7 @@ public class Boss
     private double WIDTH=60;
     private double HEIGHT=60;
     public Intersector intersector = new Intersector();
+    private ParticleEffect effect = new ParticleEffect();
 
     // Sprite Properties:
     private Sprite bossSprite; // enemy sprite
@@ -262,7 +263,7 @@ public class Boss
      * Author: Armand Abrahamian
      * Creation Date: 4/20/2016
      */
-    public boolean playDeathAnimation(SpriteBatch batch, float delta)
+    public boolean playDeathAnimation(SpriteBatch batch, float delta, Bullets bpos)
     {
         boolean ok = false;
         deathTimer += delta;
@@ -270,6 +271,11 @@ public class Boss
         bossSprite.setRegion(deathAnimation.getKeyFrame(deathTimer));
         // Drawing the frame
         bossSprite.draw(batch);
+//        effect.load(Gdx.files.internal("explosion.p"), Gdx.files.internal("img"));
+//        effect.setPosition((float) (bpos.getBulletPosition().x + WIDTH/2),(float) (bpos.getBulletPosition().y + HEIGHT/2));
+//        effect.start();
+//        effect.update(deathTimer);
+//        effect.draw(batch);
         if (deathAnimation.isAnimationFinished(deathTimer) == true)
             ok = true;
         return ok;

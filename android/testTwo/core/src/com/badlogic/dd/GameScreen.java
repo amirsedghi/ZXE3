@@ -47,6 +47,14 @@ public class GameScreen implements Screen {
     long startTime = TimeUtils.nanoTime();
     long elapsedTime = TimeUtils.timeSinceNanos(startTime);
     long hurtTime;
+    private double WIDTH = 60;
+    private double HEIGHT = 60;
+    private float deltaTime = 0;
+
+
+    ParticleEffect effect = new ParticleEffect();
+
+
 
     /**
      * Name of Module: GameScreen
@@ -69,6 +77,7 @@ public class GameScreen implements Screen {
         lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
         bosscounter = 0;
+
     }
 
     /**
@@ -94,7 +103,7 @@ public class GameScreen implements Screen {
         }
 
         //Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // get the coordinates of mouse position
@@ -127,6 +136,7 @@ public class GameScreen implements Screen {
         batch.begin();
 
 
+
         // print the angle
         //System.out.println("angle: "+-cannon.getAngle());
 
@@ -154,7 +164,7 @@ public class GameScreen implements Screen {
             boss.update();
             boss.render(batch, delta);
             if (boss.isDead == true) {
-                if (boss.playDeathAnimation(batch, delta) == true) {
+                if (boss.playDeathAnimation(batch, delta, bullet) == true) {
                     System.out.println("---Boss is dead!---");
                     hasBossSpawned = false;
                     bosscounter = 0;
@@ -178,7 +188,7 @@ public class GameScreen implements Screen {
                     // Now, check whether or not it has hit an enemy.
 
                     for (Enemy e : enemies) {
-                        if (e.isCollided(ammo.get(i))) {
+                        if (e.isCollided(ammo.get(i), batch, delta)) {
                             e.die();
                         }
                     }
