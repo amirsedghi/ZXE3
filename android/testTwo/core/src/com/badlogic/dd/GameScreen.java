@@ -311,7 +311,7 @@ public class GameScreen implements Screen {
      * Creation Date: 3/7/2016
      */
     public void dispose(){
-
+        bosscounter = 0;
         enemies.clear();
         enemy.dispose();
         boss.dispose();
