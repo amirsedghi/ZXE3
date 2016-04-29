@@ -43,7 +43,7 @@ public class GameScreen implements Screen {
     ArrayList<Bullets> ammo;
     ShapeRenderer shapeRenderer = new ShapeRenderer();
     Boss boss;
-    int bosscounter;
+    int bosscounter = 0;
     boolean hasBossSpawned = false;
     long startTime = TimeUtils.nanoTime();
     long elapsedTime = TimeUtils.timeSinceNanos(startTime);
@@ -51,8 +51,6 @@ public class GameScreen implements Screen {
     private double HEIGHT = 60;
     private float deltaTime = 0;
     ParticleEffect effect = new ParticleEffect();
-
-
 
     /**
      * Name of Module: GameScreen
@@ -74,7 +72,6 @@ public class GameScreen implements Screen {
         ammo = new ArrayList();//array list for cannonballs
         lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
-        bosscounter = 0;
     }
 
     /**
@@ -91,7 +88,6 @@ public class GameScreen implements Screen {
         //wall.getDistanceToWall(positionOfEnemy); // how far enemy is to wall to stop enemy from walking through wall
         //wall.adjustHealth(-10); // Some damage done
         //wall.getHealth(); // For health bar
-
 
         if (wall.getHealth() == 0) {
             game.setScreen(new MainMenu(game));
@@ -134,8 +130,6 @@ public class GameScreen implements Screen {
 
         batch.begin();
 
-
-
         // print the angle
         //System.out.println("angle: "+-cannon.getAngle());
 
@@ -148,8 +142,10 @@ public class GameScreen implements Screen {
                 if(enemies.get(index).playDeathAnimation(batch, delta) == true) {
                     System.out.println("---Enemy " + index + " is dead!---");
                     enemies.remove(enemies.get(index));
-                    if(hasBossSpawned == false)
+                    if(hasBossSpawned == false) {
                         bosscounter++;
+                        System.out.println("Bosscounter: " + bosscounter);
+                    }
                  }
             }
         }
@@ -207,7 +203,6 @@ public class GameScreen implements Screen {
             }
         }
 
-
         batch.end();
 
         // Enemy Spawn Timer:
@@ -231,7 +226,6 @@ public class GameScreen implements Screen {
             lastBulletTime = TimeUtils.nanoTime();
         }
     }
-
 
     public float bulletAngleX (float xBall){
         xBall =  (float)-Math.sin(Math.PI*cannon.getAngle()/180)*54;
@@ -268,9 +262,11 @@ public class GameScreen implements Screen {
 
     }
 
+
     public void show(){
 
     }
+
 
     public void hide(){
 
@@ -312,6 +308,7 @@ public class GameScreen implements Screen {
      */
     public void dispose(){
         bosscounter = 0;
+        hasBossSpawned = false;
         enemies.clear();
         enemy.dispose();
         boss.dispose();
