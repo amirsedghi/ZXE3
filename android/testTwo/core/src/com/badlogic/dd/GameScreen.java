@@ -183,7 +183,8 @@ public class GameScreen implements Screen {
             if (ammo.get(i) != null) {
                 if (ammo.get(i).updateBullet()) {
                     ammo.get(i).getSprite().draw(batch);
-                } else {
+                }
+                else {
 
                     // Dispose/hide the bullet, because it landed
                     // Now, check whether or not it has hit an enemy.
