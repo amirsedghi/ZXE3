@@ -150,10 +150,9 @@ public class GameScreen implements Screen {
             }
         }
 
-        if (bosscounter == 15)
+        if (bosscounter >= 15 && hasBossSpawned != true)
         {
             spawnBoss();
-            bosscounter++;
         }
 
         if (hasBossSpawned == true) {
