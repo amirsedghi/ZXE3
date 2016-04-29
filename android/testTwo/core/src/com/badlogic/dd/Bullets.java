@@ -29,6 +29,8 @@ public class Bullets {
     private double time = 0;
     private double velocity = 5;
     private double heightDisplacement = 0;
+    private double sumDisplacement;
+    private Vector3 mousePosition;
 
 
 
@@ -59,6 +61,11 @@ public class Bullets {
 
         bulletSprite.setPosition(initX, initY);
 
+        // calculation for bullet size change
+        double xDisplacement = Math.pow(mousepos.x - xCC,2);
+        double yDisplacement = Math.pow(mousepos.y - yCC,2);
+        sumDisplacement = xDisplacement + yDisplacement;
+        mousePosition = mp;
 
         xVel = velocity * Math.sin(Math.PI*a/180);
         yVel = velocity * Math.cos(Math.PI*a/180);
@@ -84,14 +91,12 @@ public class Bullets {
         return new Vector2(bulletSprite.getX(), bulletSprite.getY());
     }
 
-    public boolean updateBullet(Vector3 mousepos){
+    public boolean updateBullet(){
         // True if finished travelling, False if not.
         // Update the travel path of the bullet
         // Dispose if finished
         // variables for bullet size change
-        double xDisplacement = Math.pow(mousepos.x - xCC,2);
-        double yDisplacement = Math.pow(mousepos.y - yCC,2);
-        double sumDisplacement = xDisplacement + yDisplacement;
+
         double bulletPosX = bulletSprite.getX();
         double bulletPosY = bulletSprite.getY();
         double currentXPos = Math.sqrt(Math.pow(bulletPosX-initX,2)+Math.pow(bulletPosY-initY,2));
@@ -109,7 +114,7 @@ public class Bullets {
         this.getSprite().setSize((float) (1 + heightDisplacement/2) * WIDTH, (float) (1 + heightDisplacement/2) * HEIGHT);
 
         // Return false if we've reached past the destination
-        if(bulletSprite.getY() - initY > mousepos.y - yCC){
+        if(bulletSprite.getY() - initY > mousePosition.y - yCC){
             return false;
 
         }

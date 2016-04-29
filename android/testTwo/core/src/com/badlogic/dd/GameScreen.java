@@ -30,6 +30,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private SpriteBatch batch;
     public Vector3 mousePos;
+    private Vector3 mouseClickPos;
 
     // Declaring game components: cannon, wall, enemy, and bullet:
     Cannon cannon = new Cannon(); // instantiate cannon object
@@ -50,8 +51,6 @@ public class GameScreen implements Screen {
     private double WIDTH = 60;
     private double HEIGHT = 60;
     private float deltaTime = 0;
-
-
     ParticleEffect effect = new ParticleEffect();
 
 
@@ -107,6 +106,8 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // get the coordinates of mouse position
+        if(Gdx.input.isTouched())
+            mouseClickPos= new Vector3(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
         mousePos = new Vector3(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
         // pass the vector to the cannon instant
         cannon.setVector(mousePos);
@@ -180,7 +181,7 @@ public class GameScreen implements Screen {
 
         for(int i = 0; i < ammo.size(); i++) {
             if (ammo.get(i) != null) {
-                if (ammo.get(i).updateBullet(mousePos)) {
+                if (ammo.get(i).updateBullet()) {
                     ammo.get(i).getSprite().draw(batch);
                 } else {
 
@@ -205,6 +206,8 @@ public class GameScreen implements Screen {
                 }
             }
         }
+
+
         batch.end();
 
         // Enemy Spawn Timer:
@@ -223,11 +226,12 @@ public class GameScreen implements Screen {
         if(Gdx.input.isTouched() && TimeUtils.nanoTime() - lastBulletTime > 500000000f){
             //int X = (int)bulletAngleX(cannonSprite.getX());
             //int Y = (int)bulletAngleY(cannonSprite.getY());
-                bullet = new Bullets(mousePos, 370, 34, cannon.getAngle());
+                bullet = new Bullets(mouseClickPos, 370, 34, cannon.getAngle());
                 ammo.add(bullet);
             lastBulletTime = TimeUtils.nanoTime();
         }
     }
+
 
     public float bulletAngleX (float xBall){
         xBall =  (float)-Math.sin(Math.PI*cannon.getAngle()/180)*54;
