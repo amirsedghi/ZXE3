@@ -47,7 +47,6 @@ public class GameScreen implements Screen {
     boolean hasBossSpawned = false;
     long startTime = TimeUtils.nanoTime();
     long elapsedTime = TimeUtils.timeSinceNanos(startTime);
-    long hurtTime;
     private double WIDTH = 60;
     private double HEIGHT = 60;
     private float deltaTime = 0;
@@ -76,7 +75,6 @@ public class GameScreen implements Screen {
         lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
         bosscounter = 0;
-
     }
 
     /**
@@ -149,8 +147,9 @@ public class GameScreen implements Screen {
             if (enemies.get(index).isDead == true) {
                 if(enemies.get(index).playDeathAnimation(batch, delta) == true) {
                     System.out.println("---Enemy " + index + " is dead!---");
-                    bosscounter++;
                     enemies.remove(enemies.get(index));
+                    if(hasBossSpawned == false)
+                        bosscounter++;
                  }
             }
         }
@@ -167,8 +166,8 @@ public class GameScreen implements Screen {
             if (boss.isDead == true) {
                 if (boss.playDeathAnimation(batch, delta, bullet) == true) {
                     System.out.println("---Boss is dead!---");
-                    hasBossSpawned = false;
                     bosscounter = 0;
+                    hasBossSpawned = false;
                 }
             }
         }
@@ -312,6 +311,7 @@ public class GameScreen implements Screen {
      * Creation Date: 3/7/2016
      */
     public void dispose(){
+
         enemies.clear();
         enemy.dispose();
         boss.dispose();

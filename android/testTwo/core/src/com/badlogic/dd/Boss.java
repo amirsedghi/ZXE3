@@ -271,11 +271,11 @@ public class Boss
         bossSprite.setRegion(deathAnimation.getKeyFrame(deathTimer));
         // Drawing the frame
         bossSprite.draw(batch);
-//        effect.load(Gdx.files.internal("explosion.p"), Gdx.files.internal("img"));
-//        effect.setPosition((float) (bpos.getBulletPosition().x + WIDTH/2),(float) (bpos.getBulletPosition().y + HEIGHT/2));
-//        effect.start();
-//        effect.update(deathTimer);
-//        effect.draw(batch);
+        effect.load(Gdx.files.internal("explosion.p"), Gdx.files.internal("img"));
+        effect.setPosition((float) (bpos.getBulletPosition().x + WIDTH/2),(float) (bpos.getBulletPosition().y + HEIGHT/2));
+        effect.start();
+        effect.update(deathTimer);
+        effect.draw(batch);
         if (deathAnimation.isAnimationFinished(deathTimer) == true)
             ok = true;
         return ok;
