@@ -310,6 +310,8 @@ public class GameScreen implements Screen {
         hasBossSpawned = false;
         enemies.clear();
         enemy.dispose();
-        boss.dispose();
+        if (boss != null) {
+            boss.dispose();
+        }
     }
 }
