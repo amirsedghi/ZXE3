@@ -111,8 +111,6 @@ public class GameScreen implements Screen {
         mousePos = new Vector3(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
         // pass the vector to the cannon instant
         cannon.setVector(mousePos);
-
-
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
@@ -123,20 +121,10 @@ public class GameScreen implements Screen {
         cannonSprite.setX(340);
         cannonSprite.setY(10);
 
-        // Health bar background
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(100, 100, 200, 40);
-        shapeRenderer.end();
-        // Health bar
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(wall.getHealthBarColor());
-        shapeRenderer.rect(100, 100, wall.getHealth() * 2, 40);
-        shapeRenderer.end();
-
         batch.begin();
 
         backgroundsprite.draw(batch); // draw the background as the first thing!
+
         // print the angle
         //System.out.println("angle: "+-cannon.getAngle());
 
@@ -210,6 +198,17 @@ public class GameScreen implements Screen {
         }
 
         batch.end();
+
+        // Health bar background
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(100, 100, 200, 40);
+        shapeRenderer.end();
+        // Health bar
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(wall.getHealthBarColor());
+        shapeRenderer.rect(100, 100, wall.getHealth() * 2, 40);
+        shapeRenderer.end();
 
         // Enemy Spawn Timer:
         if(TimeUtils.nanoTime() - lastSpawnTime > 1000000000f)
