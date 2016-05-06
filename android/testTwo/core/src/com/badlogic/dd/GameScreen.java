@@ -34,6 +34,7 @@ public class GameScreen implements Screen {
     private Vector3 mouseClickPos;
     private Texture backgroundimg;
     private Sprite backgroundsprite;
+    private Vector2 explosionPosition;
 
     // Declaring game components: cannon, wall, enemy, and bullet:
     Cannon cannon = new Cannon(); // instantiate cannon object
@@ -52,8 +53,7 @@ public class GameScreen implements Screen {
     long elapsedTime = TimeUtils.timeSinceNanos(startTime);
     private double WIDTH = 60;
     private double HEIGHT = 60;
-    private float deltaTime = 0;
-    ParticleEffect effect = new ParticleEffect();
+    private ParticleEffect effect = new ParticleEffect();
 
     /**
      * Name of Module: GameScreen
@@ -78,6 +78,7 @@ public class GameScreen implements Screen {
         ammo = new ArrayList();//array list for cannonballs
         lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
+        effect.load(Gdx.files.internal("explosion.p"), Gdx.files.internal("img"));
     }
 
     /**
@@ -121,6 +122,9 @@ public class GameScreen implements Screen {
         cannonSprite.setX(340);
         cannonSprite.setY(10);
 
+        //effect.update(Gdx.graphics.getDeltaTime());
+        //effect.update(delta);
+
         batch.begin();
 
         backgroundsprite.draw(batch); // draw the background as the first thing!
@@ -163,6 +167,7 @@ public class GameScreen implements Screen {
         }
 
         wall.render(batch); // Draw wall onto screen
+        effect.draw(batch, delta);
 
         //Changed the cannon to sprite to add more functionality
         //batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
@@ -174,10 +179,12 @@ public class GameScreen implements Screen {
                     ammo.get(i).getSprite().draw(batch);
                 }
                 else {
-
                     // Dispose/hide the bullet, because it landed
-                    // Now, check whether or not it has hit an enemy.
+                    explosionPosition = ammo.get(i).getBulletPosition();
+                    effect.setPosition((float) (explosionPosition.x + WIDTH/2),(float) (explosionPosition.y + HEIGHT/2));
+                    effect.start();
 
+                    // Now, check whether or not it has hit an enemy.
                     for (Enemy e : enemies) {
                         if (e.isCollided(ammo.get(i), batch, delta)) {
                             e.die();
@@ -320,5 +327,6 @@ public class GameScreen implements Screen {
             boss.dispose();
         }
         backgroundimg.dispose();
+        effect.dispose();
     }
 }
