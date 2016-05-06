@@ -4,6 +4,7 @@ import java.beans.VetoableChangeListener;
 import java.sql.Time;
 import java.util.Iterator;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -31,6 +32,8 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     public Vector3 mousePos;
     private Vector3 mouseClickPos;
+    private Texture backgroundimg;
+    private Sprite backgroundsprite;
 
     // Declaring game components: cannon, wall, enemy, and bullet:
     Cannon cannon = new Cannon(); // instantiate cannon object
@@ -61,6 +64,9 @@ public class GameScreen implements Screen {
      * Creation Date: 3/7/2016
      */
     public GameScreen(final DD gam){
+        backgroundimg = new Texture(GameConstants.backgroundImage);
+        backgroundsprite = new Sprite(backgroundimg);
+        backgroundsprite.setSize(GameConstants.screenWidth, GameConstants.screenHeight);
         this.game = gam;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
@@ -130,6 +136,7 @@ public class GameScreen implements Screen {
 
         batch.begin();
 
+        backgroundsprite.draw(batch); // draw the background as the first thing!
         // print the angle
         //System.out.println("angle: "+-cannon.getAngle());
 
@@ -313,5 +320,6 @@ public class GameScreen implements Screen {
         if (boss != null) {
             boss.dispose();
         }
+        backgroundimg.dispose();
     }
 }

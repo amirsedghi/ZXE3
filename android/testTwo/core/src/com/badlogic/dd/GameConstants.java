@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 public class GameConstants
 {
     public static final String enemyImage = "singleSkeleton.png";
+    public static final String backgroundImage = "snow_template1.jpg";
     public static final String SkeletonWalkSpriteSheet = "skeletonwalksheet.atlas";
     public static final String SkeletonAttackSpriteSheet = "skeletonattack.atlas";
     public static final String SkeletonDeathSpriteSheet = "skeletondead.atlas";
