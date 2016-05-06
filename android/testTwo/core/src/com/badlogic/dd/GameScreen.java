@@ -96,7 +96,7 @@ public class GameScreen implements Screen {
         }
 
         //Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // get the coordinates of mouse position
@@ -112,10 +112,11 @@ public class GameScreen implements Screen {
 
         // Cannon sprite properties
         Sprite cannonSprite = cannon.getSprite();
-        cannonSprite.setOrigin(cannonSprite.getWidth() / 2, 54);
+        cannonSprite.setSize(80,80);
+        cannonSprite.setOrigin(cannonSprite.getWidth() / 2, 60);
         cannonSprite.setRotation(-cannon.getAngle());
-        cannonSprite.setX(340);
-        cannonSprite.setY(10);
+        cannonSprite.setX(360);
+        cannonSprite.setY(4);
 
         // Health bar background
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);

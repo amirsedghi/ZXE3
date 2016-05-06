@@ -42,9 +42,9 @@ public class Cannon{
 
     // constructor, initiating the texture and texture region
     Cannon(){
-        cannonImage = new Texture(Gdx.files.internal("cannonImage.png"));
+        cannonImage = new Texture(Gdx.files.internal("tc.png"));
         //cannonRegion = new TextureRegion(cannonImage, 120, 108);
-        cannonSprite = new Sprite(cannonImage, 120 , 108);
+        cannonSprite = new Sprite(cannonImage, 480 , 480);
 
     }
 
