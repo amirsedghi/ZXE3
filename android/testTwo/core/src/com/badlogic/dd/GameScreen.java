@@ -4,6 +4,7 @@ import java.beans.VetoableChangeListener;
 import java.sql.Time;
 import java.util.Iterator;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -31,6 +32,8 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     public Vector3 mousePos;
     private Vector3 mouseClickPos;
+    private Texture backgroundimg;
+    private Sprite backgroundsprite;
 
     // Declaring game components: cannon, wall, enemy, and bullet:
     Cannon cannon = new Cannon(); // instantiate cannon object
@@ -61,6 +64,9 @@ public class GameScreen implements Screen {
      * Creation Date: 3/7/2016
      */
     public GameScreen(final DD gam){
+        backgroundimg = new Texture(GameConstants.backgroundImage);
+        backgroundsprite = new Sprite(backgroundimg);
+        backgroundsprite.setSize(GameConstants.screenWidth, GameConstants.screenHeight);
         this.game = gam;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
@@ -105,8 +111,6 @@ public class GameScreen implements Screen {
         mousePos = new Vector3(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
         // pass the vector to the cannon instant
         cannon.setVector(mousePos);
-
-
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
@@ -118,18 +122,9 @@ public class GameScreen implements Screen {
         cannonSprite.setX(360);
         cannonSprite.setY(4);
 
-        // Health bar background
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(100, 100, 200, 40);
-        shapeRenderer.end();
-        // Health bar
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(wall.getHealthBarColor());
-        shapeRenderer.rect(100, 100, wall.getHealth() * 2, 40);
-        shapeRenderer.end();
-
         batch.begin();
+
+        backgroundsprite.draw(batch); // draw the background as the first thing!
 
         // print the angle
         //System.out.println("angle: "+-cannon.getAngle());
@@ -204,6 +199,17 @@ public class GameScreen implements Screen {
         }
 
         batch.end();
+
+        // Health bar background
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(100, 100, 200, 40);
+        shapeRenderer.end();
+        // Health bar
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(wall.getHealthBarColor());
+        shapeRenderer.rect(100, 100, wall.getHealth() * 2, 40);
+        shapeRenderer.end();
 
         // Enemy Spawn Timer:
         if(TimeUtils.nanoTime() - lastSpawnTime > 1000000000f)
@@ -314,5 +320,6 @@ public class GameScreen implements Screen {
         if (boss != null) {
             boss.dispose();
         }
+        backgroundimg.dispose();
     }
 }
