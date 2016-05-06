@@ -50,7 +50,7 @@ public class Bullets {
         this.initX = initX;
         this.initY = initY;
         //
-        bulletTexture = new Texture("cannonBallImage.png");
+        bulletTexture = new Texture("Cannonball.png");
         bulletSprite = new Sprite(bulletTexture);
         bulletSprite.setSize(WIDTH,HEIGHT);
         bulletSprite.setOrigin(WIDTH/2, HEIGHT/2);
