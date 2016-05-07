@@ -23,6 +23,8 @@ public class GameConstants
     public static final float SKELETON_VELOCITY = 0.29f;
     public static final float BOSS_VELOCITY = 0.18f;
     public static final float SKELETON_ATTACK_SPEED = 0.1f;
+    public static final int BOSS_COUNTER = 15;
+    public static final int BOSS_MAX_HEALTH = 24;
     public static float WALK_FRAME_DURATION = 0.08f; // Time which each walk frame is kept on the screen
     public static float ATTACK_FRAME_DURATION = 0.12f; // Time which each attack frame is kept on the screen
     public static float DEATH_FRAME_DURATION = 0.11f; // Time which each death frame is kept on the screen

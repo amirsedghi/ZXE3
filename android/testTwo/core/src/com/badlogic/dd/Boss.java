@@ -28,9 +28,8 @@ public class Boss
         // Simple Data Types:
     private int health, maxHealth, attackPower;
     protected boolean isDead;
-    private long prevtime;
-    private float elapsedTime = 0f;
-    private float deathTimer = 0f;
+    private long prevtime, changeColorTimer;
+    private float elapsedTime = 0f, deathTimer = 0f;
     private double WIDTH=60;
     private double HEIGHT=60;
     public Intersector intersector = new Intersector();
@@ -71,13 +70,14 @@ public class Boss
         deathtextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.BossDeathSpriteSheet));
         appeartextureAtlas = new TextureAtlas(Gdx.files.internal(GameConstants.BossAppearSpriteSheet));
 
-        this.setMaxHealth(30);
+        this.setMaxHealth(GameConstants.BOSS_MAX_HEALTH);
         this.setCurrentHealth(this.maxHealth);
         this.setAttackPower(5);
-        position = new Vector2(xcordSpawn, GameConstants.screenHeight);
+
         bossSprite = new Sprite(walkingtextureRegion);
         bossSprite.setSize(bossSprite.getWidth()*(GameConstants.screenWidth/GameConstants.BOSS_RESIZE_FACTOR), bossSprite.getHeight()*(GameConstants.screenWidth/GameConstants.BOSS_RESIZE_FACTOR));
         bossSprite.setSize(bossSprite.getWidth()*GameConstants.unitScale, bossSprite.getHeight()*GameConstants.unitScale);
+        position = new Vector2(xcordSpawn, GameConstants.screenHeight - bossSprite.getHeight() + 30 );
         bossSprite.setPosition(position.x, position.y);
         velocity = new Vector2(0, (-1)*GameConstants.BOSS_VELOCITY);
         rectangle = new Rectangle();
@@ -240,36 +240,44 @@ public class Boss
      * Author: Armand Abrahamian
      * Creation Date: 3/15/2016
      */
-    public void render(SpriteBatch batch, float delta)
-    {
+    public void render(SpriteBatch batch, float delta) {
         elapsedTime += delta;
         //elapsedTime += Gdx.graphics.getDeltaTime();
         // Getting the frame which must be rendered
-        if(bossSprite.getY() > 130 && isDead != true)
-            bossSprite.setRegion(walkingAnimation.getKeyFrame(elapsedTime));
-        else if(bossSprite.getY() <= 130 && isDead != true)
-            bossSprite.setRegion(attackAnimation.getKeyFrame(elapsedTime));
-        // Drawing the frame
-        bossSprite.draw(batch);
-        bossSprite.setColor(Color.WHITE);
+
+        if (appearAnimation.isAnimationFinished(elapsedTime) == false) {
+            bossSprite.setRegion(appearAnimation.getKeyFrame(elapsedTime));
+            bossSprite.draw(batch); // Drawing the frame
+        }
+        else {
+            if (isDead != true && bossSprite.getY() > 130)
+                bossSprite.setRegion(walkingAnimation.getKeyFrame(elapsedTime));
+            else if (isDead != true && bossSprite.getY() <= 130)
+                bossSprite.setRegion(attackAnimation.getKeyFrame(elapsedTime));
+            // Drawing the frame
+            bossSprite.draw(batch);
+            if(TimeUtils.nanoTime() - changeColorTimer > 1000000000/2) {
+                bossSprite.setColor(Color.WHITE);
+                changeColorTimer = TimeUtils.nanoTime();
+            }
+        }
     }
 
     /**
      * Name of Module: playDeathAnimation
      * Purpose: Draws the boss death animation sprite on the screen.
      * Input Parameters: SpriteBatch batch, float delta
-     * Output Parameters: N/A
+     * Output Parameters: boolean ok
      * Author: Armand Abrahamian
      * Creation Date: 4/20/2016
      */
-    public boolean playDeathAnimation(SpriteBatch batch, float delta, Bullets bpos)
+    public boolean playDeathAnimation(SpriteBatch batch, float delta)
     {
         boolean ok = false;
         deathTimer += delta;
 
         bossSprite.setRegion(deathAnimation.getKeyFrame(deathTimer));
-        // Drawing the frame
-        bossSprite.draw(batch);
+        bossSprite.draw(batch); // Drawing the frame
         if (deathAnimation.isAnimationFinished(deathTimer) == true)
             ok = true;
         return ok;

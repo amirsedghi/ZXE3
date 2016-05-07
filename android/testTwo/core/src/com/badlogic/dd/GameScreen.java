@@ -145,16 +145,16 @@ public class GameScreen implements Screen {
             }
         }
 
-        if (bosscounter >= 15 && hasBossSpawned != true)
+        if (bosscounter >= GameConstants.BOSS_COUNTER && hasBossSpawned != true)
         {
             spawnBoss();
         }
 
         if (hasBossSpawned == true) {
-            boss.update();
             boss.render(batch, delta);
+            boss.update();
             if (boss.isDead == true) {
-                if (boss.playDeathAnimation(batch, delta, bullet) == true) {
+                if (boss.playDeathAnimation(batch, delta) == true) {
                     System.out.println("---Boss is dead!---");
                     bosscounter = 0;
                     hasBossSpawned = false;
@@ -201,6 +201,8 @@ public class GameScreen implements Screen {
         }
 
         batch.end();
+
+        // Draw UI elements last:
 
         // Health bar background
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
