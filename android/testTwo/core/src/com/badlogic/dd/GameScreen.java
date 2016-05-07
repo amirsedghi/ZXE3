@@ -181,7 +181,7 @@ public class GameScreen implements Screen {
                 else {
                     // Dispose/hide the bullet, because it landed
                     explosionPosition = ammo.get(i).getBulletPosition();
-                    effect.setPosition((float) (explosionPosition.x + WIDTH/2),(float) (explosionPosition.y + HEIGHT/2));
+                    effect.getEmitters().first().setPosition((float) (explosionPosition.x + WIDTH/2),(float) (explosionPosition.y + HEIGHT/2));
                     effect.start();
 
                     // Now, check whether or not it has hit an enemy.
