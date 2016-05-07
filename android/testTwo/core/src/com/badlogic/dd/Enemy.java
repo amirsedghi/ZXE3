@@ -37,7 +37,6 @@ public class Enemy
     private double WIDTH=60;
     private double HEIGHT=60;
     public Intersector intersector = new Intersector();
-    private ParticleEffect effect = new ParticleEffect();
     private Vector2 bpos;
     private Bullets theBullet;
         // Sprite Properties:
@@ -284,11 +283,6 @@ public class Enemy
         enemySprite.setRegion(deathAnimation.getKeyFrame(deathTimer));
         // Drawing the frame
         enemySprite.draw(batch);
-//        effect.load(Gdx.files.internal("explosion.p"), Gdx.files.internal("img"));
-//        effect.setPosition((float) (bpos.x + WIDTH/2),(float) (bpos.y + HEIGHT/2));
-//        effect.start();
-//        effect.update(deathTimer);
-//        effect.draw(batch);
         if (deathAnimation.isAnimationFinished(deathTimer) == true)
         {
             ok = true;

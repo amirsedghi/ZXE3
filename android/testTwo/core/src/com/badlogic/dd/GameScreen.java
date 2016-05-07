@@ -39,18 +39,17 @@ public class GameScreen implements Screen {
     // Declaring game components: cannon, wall, enemy, and bullet:
     Cannon cannon = new Cannon(); // instantiate cannon object
     private Wall wall;
-    ArrayList<Enemy> enemies;
+    private ArrayList<Enemy> enemies;
     long lastSpawnTime; // holds enemies last spawn time
     long lastBulletTime;
-    Enemy enemy;
+    private Enemy enemy;
     Bullets bullet = null;
     ArrayList<Bullets> ammo;
     ShapeRenderer shapeRenderer = new ShapeRenderer();
-    Boss boss;
-    int bosscounter = 0;
-    boolean hasBossSpawned = false;
-    long startTime = TimeUtils.nanoTime();
-    long elapsedTime = TimeUtils.timeSinceNanos(startTime);
+    private Boss boss;
+    private int bosscounter = 0;
+    private boolean hasBossSpawned = false;
+    private long startTime = TimeUtils.nanoTime();
     private double WIDTH = 60;
     private double HEIGHT = 60;
     private ParticleEffect effect = new ParticleEffect();
@@ -63,7 +62,7 @@ public class GameScreen implements Screen {
      * Author: -
      * Creation Date: 3/7/2016
      */
-    public GameScreen(final DD gam){
+    public GameScreen(final DD gam) {
         backgroundimg = new Texture(GameConstants.backgroundImage);
         backgroundsprite = new Sprite(backgroundimg);
         backgroundsprite.setSize(GameConstants.screenWidth, GameConstants.screenHeight);
@@ -121,9 +120,6 @@ public class GameScreen implements Screen {
         cannonSprite.setRotation(-cannon.getAngle());
         cannonSprite.setX(340);
         cannonSprite.setY(10);
-
-        //effect.update(Gdx.graphics.getDeltaTime());
-        //effect.update(delta);
 
         batch.begin();
 
