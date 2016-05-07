@@ -16,7 +16,7 @@ public class GameConstants
     public static final String BossAppearSpriteSheet = "bossappear.atlas";
     public static final float unitScale = 1/2f;
     public static final float ENEMY_RESIZE_FACTOR = 1500f;
-    public static final float BOSS_RESIZE_FACTOR = 1000f;
+    public static final float BOSS_RESIZE_FACTOR = 1050f;
     public static final float X_MOVE_UNITS = 0.1f; // units will move in x direction
     public static final float Y_MOVE_UNITS = 0.1f; // units will move in y direction
     public static final float maxVelocity = 0.1f;
