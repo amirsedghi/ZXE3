@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.math.*;
 import java.io.PrintWriter;
@@ -47,7 +48,7 @@ public class GameScreen implements Screen {
     ArrayList<Bullets> ammo;
     ShapeRenderer shapeRenderer = new ShapeRenderer();
     private Boss boss;
-    private int bosscounter = 0;
+    private int bosscounter = 0, score = 0;
     private boolean hasBossSpawned = false;
     private long startTime = TimeUtils.nanoTime();
     private double WIDTH = 60;
@@ -96,7 +97,7 @@ public class GameScreen implements Screen {
         //wall.getHealth(); // For health bar
 
         if (wall.getHealth() == 0) {
-            game.setScreen(new MainMenu(game));
+            game.setScreen(new MainMenu(game, score));
             dispose();
             return;
         }
@@ -137,6 +138,7 @@ public class GameScreen implements Screen {
                 if(enemies.get(index).playDeathAnimation(batch, delta) == true) {
                     System.out.println("---Enemy " + index + " is dead!---");
                     enemies.remove(enemies.get(index));
+                    score += 1;
                     if(hasBossSpawned == false) {
                         bosscounter++;
                         System.out.println("Bosscounter: " + bosscounter);
@@ -158,6 +160,7 @@ public class GameScreen implements Screen {
                     System.out.println("---Boss is dead!---");
                     bosscounter = 0;
                     hasBossSpawned = false;
+                    score += 10;
                 }
             }
         }
@@ -259,6 +262,7 @@ public class GameScreen implements Screen {
         System.out.println("----Boss Spawned----");
         hasBossSpawned = true;
     }
+
 
     /**
      * Name of Module: resize

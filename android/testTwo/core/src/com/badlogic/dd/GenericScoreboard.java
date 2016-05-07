@@ -29,8 +29,8 @@ public class GenericScoreboard implements Scoreboard {
         entries = new ScoreField[11];    // Leave 1 extra
         loadScores();
     }
-    /* nameSbumittable
-     * Returns tre if the scoreboard implemenetation can take a player name
+    /* nameSubmittable
+     * Returns true if the scoreboard implementation can take a player name
      * By Jacob
      * 3/21/16
      */
