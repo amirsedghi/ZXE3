@@ -4,6 +4,7 @@ import java.beans.VetoableChangeListener;
 import java.sql.Time;
 import java.util.Iterator;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.math.*;
 import java.io.PrintWriter;
@@ -31,26 +33,27 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     public Vector3 mousePos;
     private Vector3 mouseClickPos;
+    private Texture backgroundimg;
+    private Sprite backgroundsprite;
+    private Vector2 explosionPosition;
 
     // Declaring game components: cannon, wall, enemy, and bullet:
     Cannon cannon = new Cannon(); // instantiate cannon object
     private Wall wall;
-    ArrayList<Enemy> enemies;
+    private ArrayList<Enemy> enemies;
     long lastSpawnTime; // holds enemies last spawn time
     long lastBulletTime;
-    Enemy enemy;
+    private Enemy enemy;
     Bullets bullet = null;
     ArrayList<Bullets> ammo;
     ShapeRenderer shapeRenderer = new ShapeRenderer();
-    Boss boss;
-    int bosscounter = 0;
-    boolean hasBossSpawned = false;
-    long startTime = TimeUtils.nanoTime();
-    long elapsedTime = TimeUtils.timeSinceNanos(startTime);
+    private Boss boss;
+    private int bosscounter = 0, score = 0;
+    private boolean hasBossSpawned = false;
+    private long startTime = TimeUtils.nanoTime();
     private double WIDTH = 60;
     private double HEIGHT = 60;
-    private float deltaTime = 0;
-    ParticleEffect effect = new ParticleEffect();
+    private ParticleEffect effect = new ParticleEffect();
 
     /**
      * Name of Module: GameScreen
@@ -60,7 +63,10 @@ public class GameScreen implements Screen {
      * Author: -
      * Creation Date: 3/7/2016
      */
-    public GameScreen(final DD gam){
+    public GameScreen(final DD gam) {
+        backgroundimg = new Texture(GameConstants.backgroundImage);
+        backgroundsprite = new Sprite(backgroundimg);
+        backgroundsprite.setSize(GameConstants.screenWidth, GameConstants.screenHeight);
         this.game = gam;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
@@ -72,6 +78,7 @@ public class GameScreen implements Screen {
         ammo = new ArrayList();//array list for cannonballs
         lastBulletTime = 0;//last bullet fired
         System.out.println("Initial size of enemies: " + enemies.size());
+        effect.load(Gdx.files.internal("explosion.p"), Gdx.files.internal("img"));
     }
 
     /**
@@ -90,7 +97,7 @@ public class GameScreen implements Screen {
         //wall.getHealth(); // For health bar
 
         if (wall.getHealth() == 0) {
-            game.setScreen(new MainMenu(game));
+            game.setScreen(new MainMenu(game, score));
             dispose();
             return;
         }
@@ -105,8 +112,6 @@ public class GameScreen implements Screen {
         mousePos = new Vector3(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
         // pass the vector to the cannon instant
         cannon.setVector(mousePos);
-
-
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
@@ -117,18 +122,9 @@ public class GameScreen implements Screen {
         cannonSprite.setX(340);
         cannonSprite.setY(10);
 
-        // Health bar background
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(100, wall.getWallHeight() - 20, 200 * (float)game.screenMultiplier, 40 * (float)game.screenMultiplier);
-        shapeRenderer.end();
-        // Health bar
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(wall.getHealthBarColor());
-        shapeRenderer.rect(100, wall.getWallHeight() - 20, wall.getHealth() * 2 * (float)game.screenMultiplier, 40 * (float)game.screenMultiplier);
-        shapeRenderer.end();
-
         batch.begin();
+
+        backgroundsprite.draw(batch); // draw the background as the first thing!
 
         // print the angle
         //System.out.println("angle: "+-cannon.getAngle());
@@ -142,6 +138,7 @@ public class GameScreen implements Screen {
                 if(enemies.get(index).playDeathAnimation(batch, delta) == true) {
                     System.out.println("---Enemy " + index + " is dead!---");
                     enemies.remove(enemies.get(index));
+                    score += 1;
                     if(hasBossSpawned == false) {
                         bosscounter++;
                         System.out.println("Bosscounter: " + bosscounter);
@@ -150,24 +147,26 @@ public class GameScreen implements Screen {
             }
         }
 
-        if (bosscounter >= 15 && hasBossSpawned != true)
+        if (bosscounter >= GameConstants.BOSS_COUNTER && hasBossSpawned != true)
         {
             spawnBoss();
         }
 
         if (hasBossSpawned == true) {
-            boss.update();
             boss.render(batch, delta);
+            boss.update();
             if (boss.isDead == true) {
-                if (boss.playDeathAnimation(batch, delta, bullet) == true) {
+                if (boss.playDeathAnimation(batch, delta) == true) {
                     System.out.println("---Boss is dead!---");
                     bosscounter = 0;
                     hasBossSpawned = false;
+                    score += 10;
                 }
             }
         }
 
         wall.render(batch); // Draw wall onto screen
+        effect.draw(batch, delta);
 
         //Changed the cannon to sprite to add more functionality
         //batch.draw(cannon.getTextureRegion(), 320, 10, 60, 54, 120, 108, 1,1, -cannon.getAngle());
@@ -179,10 +178,12 @@ public class GameScreen implements Screen {
                     ammo.get(i).getSprite().draw(batch);
                 }
                 else {
-
                     // Dispose/hide the bullet, because it landed
-                    // Now, check whether or not it has hit an enemy.
+                    explosionPosition = ammo.get(i).getBulletPosition();
+                    effect.getEmitters().first().setPosition((float) (explosionPosition.x + WIDTH/2),(float) (explosionPosition.y + HEIGHT/2));
+                    effect.start();
 
+                    // Now, check whether or not it has hit an enemy.
                     for (Enemy e : enemies) {
                         if (e.isCollided(ammo.get(i), batch, delta)) {
                             e.die();
@@ -203,6 +204,19 @@ public class GameScreen implements Screen {
         }
 
         batch.end();
+
+        // Draw UI elements last:
+
+        // Health bar background
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(100, wall.getWallHeight() - 20, 200 * (float)game.screenMultiplier, 40 * (float)game.screenMultiplier);
+        shapeRenderer.end();
+        // Health bar
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(wall.getHealthBarColor());
+        shapeRenderer.rect(100, wall.getWallHeight() - 20, wall.getHealth() * 2 * (float)game.screenMultiplier, 40 * (float)game.screenMultiplier);
+        shapeRenderer.end();
 
         // Enemy Spawn Timer:
         if(TimeUtils.nanoTime() - lastSpawnTime > 1000000000f)
@@ -248,6 +262,7 @@ public class GameScreen implements Screen {
         System.out.println("----Boss Spawned----");
         hasBossSpawned = true;
     }
+
 
     /**
      * Name of Module: resize
@@ -310,6 +325,10 @@ public class GameScreen implements Screen {
         hasBossSpawned = false;
         enemies.clear();
         enemy.dispose();
-        boss.dispose();
+        if (boss != null) {
+            boss.dispose();
+        }
+        backgroundimg.dispose();
+        effect.dispose();
     }
 }
