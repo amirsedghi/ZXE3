@@ -120,12 +120,12 @@ public class GameScreen implements Screen {
         // Health bar background
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(100, 100, 200, 40);
+        shapeRenderer.rect(100, wall.getWallHeight() - 20, 200 * (float)game.screenMultiplier, 40 * (float)game.screenMultiplier);
         shapeRenderer.end();
         // Health bar
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(wall.getHealthBarColor());
-        shapeRenderer.rect(100, 100, wall.getHealth() * 2, 40);
+        shapeRenderer.rect(100, wall.getWallHeight() - 20, wall.getHealth() * 2 * (float)game.screenMultiplier, 40 * (float)game.screenMultiplier);
         shapeRenderer.end();
 
         batch.begin();

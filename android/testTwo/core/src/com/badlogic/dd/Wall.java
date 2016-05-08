@@ -65,6 +65,7 @@ public class Wall {
         Author: John Pinson
         Created: 3/13/2016, modified: 4/2/2016
     */
+    public int getWallHeight(){return WALL_HEIGHT;}
     public void render(SpriteBatch batch) {
         Texture wallImage = new Texture(getImage());
         batch.draw(wallImage, 0, positionY);
