@@ -166,7 +166,7 @@ public class GameScreen implements Screen {
             }
         }
 
-        wall.render(batch); // Draw wall onto screen
+        wall.render(batch, delta); // Draw wall onto screen
         effect.draw(batch, delta);
 
         //Changed the cannon to sprite to add more functionality
