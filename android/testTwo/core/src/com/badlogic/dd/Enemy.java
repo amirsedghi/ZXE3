@@ -228,7 +228,16 @@ public class Enemy
         Gdx.app.log("Collision Detected", ""+ rectangle.overlaps(rect));
         return rect.overlaps(rectangle);
     }
-    public boolean isCollided(Bullets b, SpriteBatch batch, float delta)
+
+    /**
+     * Name of Module: isCollided
+     * Purpose: checks collision with the bullet
+     * Input Parameters: N/A
+     * Output Parameters: Rectangle rectangle
+     * Author: Armand Abrahamian
+     * Creation Date: 3/15/2016
+     */
+    public boolean isCollided(Bullets b)
     {
         theBullet = b;
         if (b != null) {

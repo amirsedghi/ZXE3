@@ -52,8 +52,8 @@ public class Bullets {
         //
         bulletTexture = new Texture("Cannonball.png");
         bulletSprite = new Sprite(bulletTexture);
-        bulletSprite.setSize(WIDTH/2,HEIGHT/2);
-        bulletSprite.setOrigin(WIDTH/4, HEIGHT/4);
+        bulletSprite.setSize(WIDTH,HEIGHT);
+        bulletSprite.setOrigin(WIDTH, HEIGHT);
 
         xCC = initX + WIDTH/2;
         yCC = initY + HEIGHT/2;
@@ -79,11 +79,6 @@ public class Bullets {
 
     public Sprite getSprite(){
         return bulletSprite;
-    }
-
-    public Vector3 getCoordinates(){
-        coordinates = new Vector3((float) (mousepos.x - xCC+ initX),(float) (mousepos.y-yCC+initY),0);
-        return coordinates;
     }
 
 
