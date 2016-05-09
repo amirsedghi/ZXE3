@@ -71,7 +71,7 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
-        wall = new Wall(100, 120); // instantiate wall object
+        wall = new Wall(100, 70); // instantiate wall object
         System.out.println("Wall Created");
         System.out.println("Wall Current Health: " + wall.getHealth());
         enemies = new ArrayList();// Create array list of enemies
@@ -203,12 +203,12 @@ public class GameScreen implements Screen {
         // Health bar background
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(100, 100, 200, 40);
+        shapeRenderer.rect(10, 10, 200, 10);
         shapeRenderer.end();
         // Health bar
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(wall.getHealthBarColor());
-        shapeRenderer.rect(100, 100, wall.getHealth() * 2, 40);
+        shapeRenderer.rect(10, 10, wall.getHealth() * 2, 10);
         shapeRenderer.end();
 
         // Enemy Spawn Timer:

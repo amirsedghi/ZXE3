@@ -81,7 +81,7 @@ public class Enemy
         position = new Vector2(xcordSpawn, GameConstants.screenHeight);
         enemySprite = new Sprite(walkingtextureRegion);
         enemySprite.setSize(enemySprite.getWidth()*(GameConstants.screenWidth/GameConstants.ENEMY_RESIZE_FACTOR), enemySprite.getHeight()*(GameConstants.screenWidth/GameConstants.ENEMY_RESIZE_FACTOR));
-        enemySprite.setSize(enemySprite.getWidth()*GameConstants.unitScale, enemySprite.getHeight()*GameConstants.unitScale);
+        enemySprite.setSize(enemySprite.getWidth()*GameConstants.unitScale/2, enemySprite.getHeight()*GameConstants.unitScale/2);
         enemySprite.setPosition(position.x, position.y);
         velocity = new Vector2(0, (-1)*GameConstants.SKELETON_VELOCITY);
         rectangle = new Rectangle();

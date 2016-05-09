@@ -3,6 +3,7 @@ package com.badlogic.dd;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
@@ -21,6 +22,7 @@ public class Wall {
     private int health;
     private int positionY;
     private final int WALL_HEIGHT = 55;
+    private Sprite wallSprite;
     /*  Name of Module: Wall constructor
         Purpose: Gives the wall its attributes.
         List of input params: int maxHealth, int positionY
@@ -67,7 +69,13 @@ public class Wall {
     */
     public void render(SpriteBatch batch) {
         Texture wallImage = new Texture(getImage());
-        batch.draw(wallImage, 0, positionY);
+        wallSprite = new Sprite(wallImage,800, 45);
+        wallSprite.setSize(800, 80);
+        wallSprite.setX(0);
+        wallSprite.setY(positionY);
+        wallSprite.draw(batch);
+
+        //batch.draw(wallImage, 0, positionY);
     }
     /*  Name of Module: getDistanceToWall
         Purpose: To check distance to/from Wall, so as to check for collision/interaction
@@ -91,18 +99,18 @@ public class Wall {
     */
     public String getImage(){
         if(health == 0){
-            return "wall0.png";         //Game over. The wall has been destroyed.
+            return "theWall.png";         //Game over. The wall has been destroyed.
         }
         if(health < maxHealth/4){       //The wall is a 25% health.
-            return "wall25.png";
+            return "theWall.png";
         }
         if(health < maxHealth/2){       //The wall is at 50% health.
-            return "wall50.png";
+            return "theWall.png";
         }
         if(health < maxHealth * .75){   //The wall is at 75% health.
-            return "wall75.png";
+            return "theWall.png";
         }
-        return "wall.png";              //The wall is at 100% health.
+        return "theWall.png";              //The wall is at 100% health.
     }
 
 
