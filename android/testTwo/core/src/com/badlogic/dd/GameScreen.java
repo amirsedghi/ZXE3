@@ -222,7 +222,7 @@ public class GameScreen implements Screen {
         shapeRenderer.end();
 
         // Enemy Spawn Timer:
-        if(TimeUtils.nanoTime() - lastSpawnTime > 100000000f)
+        if(TimeUtils.nanoTime() - lastSpawnTime > 1000000000f)
         {
             if(enemies.size() > 20)
             {
