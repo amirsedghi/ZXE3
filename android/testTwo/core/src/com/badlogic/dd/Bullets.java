@@ -52,8 +52,8 @@ public class Bullets {
         //
         bulletTexture = new Texture("Cannonball.png");
         bulletSprite = new Sprite(bulletTexture);
-        bulletSprite.setSize(WIDTH,HEIGHT);
-        bulletSprite.setOrigin(WIDTH/2, HEIGHT/2);
+        bulletSprite.setSize(WIDTH/2,HEIGHT/2);
+        bulletSprite.setOrigin(WIDTH/4, HEIGHT/4);
 
         xCC = initX + WIDTH/2;
         yCC = initY + HEIGHT/2;
