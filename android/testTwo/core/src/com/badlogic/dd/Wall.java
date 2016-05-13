@@ -140,19 +140,8 @@ public class Wall {
         Created: 3/13/2016
     */
     public String getImage(){
-        if(health == 0){
-            return "theWall.png";         //Game over. The wall has been destroyed.
-        }
-        if(health < maxHealth/4){       //The wall is a 25% health.
-            return "theWall.png";
-        }
-        if(health < maxHealth/2){       //The wall is at 50% health.
-            return "theWall.png";
-        }
-        if(health < maxHealth * .75){   //The wall is at 75% health.
-            return "theWall.png";
-        }
-        return "theWall.png";              //The wall is at 100% health.
+        return "thewall.png";         //Game over. The wall has been destroyed.
+
     }
 
 
